@@ -285,12 +285,12 @@ if(PACKAGE)
     )
 
     # Qt Libraries
-    install(FILES
-      ${MINGW_DLL_DIR}/Qt5Core.dll
-      ${MINGW_DLL_DIR}/Qt5Gui.dll
-      ${MINGW_DLL_DIR}/Qt5Widgets.dll
-      DESTINATION bin COMPONENT libraries
-    )
+    # install(FILES
+    #   ${MINGW_DLL_DIR}/Qt5Core.dll
+    #   ${MINGW_DLL_DIR}/Qt5Gui.dll
+    #   ${MINGW_DLL_DIR}/Qt5Widgets.dll
+    #   DESTINATION bin COMPONENT libraries
+    # )
   endif()
 endif()
 

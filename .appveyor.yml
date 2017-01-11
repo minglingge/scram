@@ -12,21 +12,21 @@ install:
     - git submodule update --init --recursive
     - set PATH=C:\msys64\mingw64\bin;C:\msys64\usr\bin;%PATH%
     - pacman --noconfirm -Syu
-    - pacman --noconfirm -Syu
     - pacman --noconfirm -S mingw-w64-x86_64-jemalloc
     - pacman --noconfirm -S mingw-w64-x86_64-boost
     - pacman --noconfirm -S mingw-w64-x86_64-libxml++2.6
-    - pacman --noconfirm -S mingw-w64-x86_64-qt5
+    # - pacman --noconfirm -S mingw-w64-x86_64-qt5
 
 before_build:
     - md install
     - md build
 
 build_script:
-    - python .\install.py --mingw64 --prefix=.\install --build-type=%CONFIGURATION% -j 2
+    - python .\install.py --mingw64 --release -j 2 --prefix=.\install -DBUILD_GUI=OFF -DBUILD_TESTS=OFF
+    - cd build
+    - cmake .. -DPACKAGE=ON
+    - cpack
 
-after_build:
-    - set PATH=%PATH%;%CD%\install\bin
-
-test_script:
-    - scram_tests
+artifacts:
+    - path: build/SCRAM*.exe
+      name: installer

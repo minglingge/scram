@@ -23,6 +23,8 @@ before_build:
 
 build_script:
     - python .\install.py --mingw64 -j 2 --prefix=.\install -DBUILD_GUI=OFF -DBUILD_TESTS=OFF --build-type=%CONFIGURATION%
+    - install\bin\scram.exe --version
+    - install\bin\scram.exe input\TwoTrain\two_train.xml
     - cd build
     - cmake .. -DPACKAGE=ON
     - cpack

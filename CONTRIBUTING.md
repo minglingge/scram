@@ -9,6 +9,7 @@ Best practices are encouraged:
 * [Branching Model](http://nvie.com/posts/a-successful-git-branching-model/)
 * [Writing Good Commit Messages](https://github.com/erlang/otp/wiki/Writing-good-commit-messages)
 * [On Commit Messages](http://who-t.blogspot.com/2009/12/on-commit-messages.html)
+* [Atomic Commit](https://en.wikipedia.org/wiki/Atomic_commit#Atomic_commit_convention)
 
 
 ## Developer Workflow
@@ -28,7 +29,7 @@ Best practices are encouraged:
 7. Submit your [pull request] from **your topic** branch to the **upstream develop** branch.
 8. Your pull request will be reviewed by another developer before merging.
 
-[Coding Style and Quality Assurance]: http://scram-pra.org/doc/coding_standards.html
+[Coding Style and Quality Assurance]: https://scram-pra.org/doc/coding_standards.html
 [developer mailing list]: https://groups.google.com/forum/#!forum/scram-dev
 [pull request]: https://help.github.com/articles/using-pull-requests/
 
@@ -44,3 +45,12 @@ it does not change your rights to use your own contributions for any other purpo
 
 [Contributor License Agreement]: https://github.com/rakhimov/scram/blob/develop/ICLA.md
 [CLA Assistant]: https://cla-assistant.io/
+
+
+## Contributor Code of Conduct
+
+Please note that this project is released with a [Contributor Code of Conduct].
+By participating in this project,
+you agree to abide by its terms.
+
+[Contributor Code of Conduct]: https://github.com/rakhimov/scram/blob/develop/CODE_OF_CONDUCT.md

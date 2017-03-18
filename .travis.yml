@@ -3,54 +3,67 @@ dist: trusty
 
 language: cpp
 
+cache:
+    ccache: true
+    directories:
+        - $HOME/.cache/pip
+
 os:
     - linux
+    - osx
 
 compiler:
     - gcc
     - clang
 
-# This explicit matrix inclusion is provided
-# to work around the default beta-xcode6.1 clang,
-# which is having a trouble with C++11 features.
-# There seems not to be a way to use 'osx_image' multiplier
-# outside of this matrix
-# without messing with Linux builds.
-matrix:
-    include:
-        - os: osx
-          compiler: clang
-          osx_image: xcode6.4
-          env: RELEASE=
-        - os: osx
-          compiler: clang
-          osx_image: xcode6.4
-          env: RELEASE=true
-
 env:
     global:
         - PATH=$PATH:`pwd`/install/bin
+        - CLANG_VERSION="3.6"
+        # Intel Parallel Studio
+        - secure: "AY6adQXVk/3J43z6PHbqVxq3Bn5HZ5Qrf8fvPeF+BR56Oa4+9YryfDDJyiDRISuyh7PoDUw+PERJiZpAL3rkFefxUkYTB3hdU4lsMIAgl37MuT4/kP5CW9TC+gsPJl41y4i8XKFtJXF1K4PW2oDRZCbDDB9oUWPZjNPPe0jg4e8="
     matrix:
         - RELEASE=
         - RELEASE=true
 
+matrix:
+    exclude:
+        - os: osx
+          compiler: gcc  # GCC is Clang on OS X.
+        - os: osx
+          env: RELEASE=  # OS X builds are slow and limited.
+    include:
+        - os: linux
+          compiler: icc
+          env: INTEL_COMPILER=true
+
 addons:
     apt:
         packages:
-            - libboost-program-options-dev
-            - libboost-filesystem-dev
-            - libboost-system-dev
-            - libboost-math-dev
+            - gcc-4.9
+            - g++-4.9
             - libxml2-dev
-            - libxml++2.6-dev
+            - libglibmm-2.4-dev
             - libgoogle-perftools-dev
             # - qt5-default
+        sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty
 
 install:
-    - .travis/install.sh
+    - .travis/install.sh  # Dependencies are built with gcc or clang.
+    - if [[ -n "${INTEL_COMPILER}" ]]; then
+          export CC=icc;
+          export CXX=icpc;
+          export RELEASE=true;
+      fi
+    - if [[ "$CXX" == "clang++" ]] && [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+          export CC=clang-${CLANG_VERSION};
+          export CXX=clang++-${CLANG_VERSION};
+      fi
 
 before_script:
-    - mkdir install
+    - .travis/before_script.sh
 
 script:
     - .travis/script.sh

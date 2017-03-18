@@ -1,0 +1,30 @@
+clone_depth: 50
+
+platform:
+    - x64
+
+configuration:
+    # - Debug
+    # - Release
+    - RelWithDebInfo
+
+install:
+    - git submodule update --init --recursive
+    - set PATH=C:\msys64\mingw64\bin;C:\msys64\usr\bin;%PATH%
+    - set PATH=%PATH%;%CD%\install\bin
+    - pacman --noconfirm -Syu
+    - pacman --noconfirm -Syu
+    - pacman --noconfirm -S mingw-w64-x86_64-jemalloc
+    - pacman --noconfirm -S mingw-w64-x86_64-boost
+    - pacman --noconfirm -S mingw-w64-x86_64-libxml++2.6
+    # - pacman --noconfirm -S mingw-w64-x86_64-qt5
+
+before_build:
+    - md install
+    - md build
+
+build_script:
+    - python .\install.py --mingw64 --prefix=.\install --build-type=%CONFIGURATION% -j 2 -DBUILD_TESTS=OFF -DBUILD_GUI=OFF
+
+test_script:
+    - bash .\logs\platform_check.sh

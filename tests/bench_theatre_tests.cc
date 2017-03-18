@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Olzhas Rakhimov
+ * Copyright (C) 2014-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,8 +28,8 @@ TEST_P(RiskAnalysisTest, Theatre) {
   std::string tree_input = "./share/scram/input/Theatre/theatre.xml";
   settings.probability_analysis(true);
   ASSERT_NO_THROW(ProcessInputFile(tree_input));
-  ASSERT_NO_THROW(ran->Analyze());
-  if (settings.approximation() == "rare-event") {
+  ASSERT_NO_THROW(analysis->Analyze());
+  if (settings.approximation() == Approximation::kRareEvent) {
     EXPECT_DOUBLE_EQ(0.00210, p_total());
   } else {
     EXPECT_DOUBLE_EQ(0.00207, p_total());

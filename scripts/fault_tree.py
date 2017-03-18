@@ -77,13 +77,13 @@ class BasicEvent(Event):
         self.prob = prob
 
     def to_xml(self):
-        """Produces OpenPSA MEF XML definition of the basic event."""
+        """Produces the Open-PSA MEF XML definition of the basic event."""
         return ("<define-basic-event name=\"" + self.name + "\">\n"
                 "<float value=\"" + str(self.prob) + "\"/>\n"
                 "</define-basic-event>\n")
 
-    def to_shorthand(self):
-        """Produces the shorthand definition of the basic event."""
+    def to_aralia(self):
+        """Produces the Aralia definition of the basic event."""
         return "p(" + self.name + ") = " + str(self.prob) + "\n"
 
 
@@ -105,13 +105,13 @@ class HouseEvent(Event):
         self.state = state
 
     def to_xml(self):
-        """Produces OpenPSA MEF XML definition of the house event."""
+        """Produces the Open-PSA MEF XML definition of the house event."""
         return ("<define-house-event name=\"" + self.name + "\">\n"
                 "<constant value=\"" + self.state + "\"/>\n"
                 "</define-house-event>\n")
 
-    def to_shorthand(self):
-        """Produces the shorthand definition of the house event."""
+    def to_aralia(self):
+        """Produces the Aralia definition of the house event."""
         return "s(" + self.name + ") = " + str(self.state) + "\n"
 
 
@@ -194,7 +194,7 @@ class Gate(Event):  # pylint: disable=too-many-instance-attributes
         return ancestors
 
     def to_xml(self, nest=0):
-        """Produces OpenPSA MEF XML definition of the gate.
+        """Produces the Open-PSA MEF XML definition of the gate.
 
         Args:
             nest: The level for nesting formulas of argument gates.
@@ -241,10 +241,10 @@ class Gate(Event):  # pylint: disable=too-many-instance-attributes
         mef_xml += "</define-gate>\n"
         return mef_xml
 
-    def to_shorthand(self):
-        """Produces the shorthand definition of the gate.
+    def to_aralia(self):
+        """Produces the Aralia definition of the gate.
 
-        The transformation to the shorthand format
+        The transformation to the Aralia format
         does not support complement or undefined arguments.
 
         Raises:
@@ -303,7 +303,7 @@ class CcfGroup(object):  # pylint: disable=too-few-public-methods
         self.factors = []
 
     def to_xml(self):
-        """Produces OpenPSA MEF XML definition of the CCF group."""
+        """Produces the Open-PSA MEF XML definition of the CCF group."""
         mef_xml = ("<define-CCF-group name=\"" + self.name + "\""
                    " model=\"" + self.model + "\">\n<members>\n")
         for member in self.members:
@@ -353,7 +353,7 @@ class FaultTree(object):  # pylint: disable=too-many-instance-attributes
         self.non_ccf_events = []  # must be assigned directly.
 
     def to_xml(self, nest=0):
-        """Produces OpenPSA MEF XML definition of the fault tree.
+        """Produces the Open-PSA MEF XML definition of the fault tree.
 
         The fault tree is produced breadth-first.
         The output XML representation is not formatted for human readability.
@@ -391,10 +391,10 @@ class FaultTree(object):  # pylint: disable=too-many-instance-attributes
         mef_xml += "</opsa-mef>\n"
         return mef_xml
 
-    def to_shorthand(self):
-        """Produces the shorthand definition of the fault tree.
+    def to_aralia(self):
+        """Produces the Aralia definition of the fault tree.
 
-        Note that the shorthand format does not support advanced features.
+        Note that the Aralia format does not support advanced features.
         The fault tree must be valid and well formed for printing.
 
         Returns:
@@ -406,13 +406,13 @@ class FaultTree(object):  # pylint: disable=too-many-instance-attributes
         out_txt = self.name + "\n\n"
         sorted_gates = toposort_gates([self.top_gate], self.gates)
         for gate in sorted_gates:
-            out_txt += gate.to_shorthand()
+            out_txt += gate.to_aralia()
         out_txt += "\n"
         for basic_event in self.basic_events:
-            out_txt += basic_event.to_shorthand()
+            out_txt += basic_event.to_aralia()
         out_txt += "\n"
         for house_event in self.house_events:
-            out_txt += house_event.to_shorthand()
+            out_txt += house_event.to_aralia()
         return out_txt
 
 

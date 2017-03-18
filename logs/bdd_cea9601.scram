@@ -6,7 +6,7 @@ DEBUG2: 		Applying CCF models...
 INFO: Running analysis: r1
 DEBUG2: 		Preprocessing...
 DEBUG2: 		Preprocessing Phase I...
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G188
 DEBUG4: 				Total # of gates: 201
 DEBUG4: 				# of modules: 0
 DEBUG4: 				# of gates with negative indices: 0
@@ -17,7 +17,7 @@ DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG3: 			Partial normalization of gates...
 DEBUG3: 			Finished the partial normalization of gates!
 DEBUG2: 		Preprocessing Phase II...
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G188
 DEBUG4: 				Total # of gates: 171
 DEBUG4: 				# of modules: 0
 DEBUG4: 				# of gates with negative indices: 26
@@ -30,19 +30,19 @@ DEBUG4: 				1 gates are multiply defined.
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
 DEBUG4: 				Timings are assigned to nodes.
-DEBUG4: 				Found original module: G1000060
-DEBUG4: 				Created a module G1000201 with 3 arguments for G1000003
-DEBUG4: 				Found original module: G1000107
-DEBUG4: 				Found original module: G1000106
-DEBUG4: 				Created a module G1000202 with 3 arguments for G1000061
-DEBUG4: 				Found original module: G1000193
-DEBUG4: 				Found original module: G1000195
-DEBUG4: 				Found original module: G1000194
-DEBUG4: 				Created a module G1000203 with 6 arguments for G1000108
-DEBUG4: 				Created a module G1000204 with 3 arguments for G1000197
-DEBUG4: 				Created a module G1000205 with 3 arguments for G1000199
-DEBUG4: 				Created a module G1000206 with 6 arguments for G1000200
-DEBUG4: 				Found original module: G1000000
+DEBUG4: 				Found original module: G248
+DEBUG4: 				Created a module G389 with 3 arguments for G191
+DEBUG4: 				Found original module: G295
+DEBUG4: 				Found original module: G294
+DEBUG4: 				Created a module G390 with 3 arguments for G249
+DEBUG4: 				Found original module: G381
+DEBUG4: 				Found original module: G383
+DEBUG4: 				Found original module: G382
+DEBUG4: 				Created a module G391 with 6 arguments for G296
+DEBUG4: 				Created a module G392 with 3 arguments for G385
+DEBUG4: 				Created a module G393 with 3 arguments for G387
+DEBUG4: 				Created a module G394 with 6 arguments for G388
+DEBUG4: 				Found original module: G188
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Coalescing gates...
 DEBUG3: 			Gate coalescence is done!
@@ -78,29 +78,29 @@ DEBUG3: 			Distributivity detection is done!
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
 DEBUG4: 				Timings are assigned to nodes.
-DEBUG4: 				Found original module: G1000105
-DEBUG4: 				Created a module G1000238 with 2 arguments for G1000221
-DEBUG4: 				Created a module G1000239 with 3 arguments for G1000222
-DEBUG4: 				Found original module: G1000192
-DEBUG4: 				Created a module G1000240 with 2 arguments for G1000207
-DEBUG4: 				Created a module G1000241 with 3 arguments for G1000208
+DEBUG4: 				Found original module: G293
+DEBUG4: 				Created a module G426 with 2 arguments for G409
+DEBUG4: 				Created a module G427 with 3 arguments for G410
+DEBUG4: 				Found original module: G380
+DEBUG4: 				Created a module G428 with 2 arguments for G395
+DEBUG4: 				Created a module G429 with 3 arguments for G396
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Boolean optimization...
-DEBUG4: 				Node 1000105: 1 redundant parent(s) and 2 failure destination(s)
-DEBUG4: 				Node 1000192: 1 redundant parent(s) and 2 failure destination(s)
-DEBUG4: 				Node 1000213: 1 redundant parent(s) and 2 failure destination(s)
-DEBUG4: 				Node 1000232: 1 redundant parent(s) and 28 failure destination(s)
-DEBUG4: 				Node 1000216: 1 redundant parent(s) and 2 failure destination(s)
-DEBUG4: 				Node 1000212: 1 redundant parent(s) and 4 failure destination(s)
-DEBUG4: 				Node 1000219: 1 redundant parent(s) and 2 failure destination(s)
-DEBUG4: 				Node 1000210: 1 redundant parent(s) and 2 failure destination(s)
-DEBUG4: 				Node 1000223: 1 redundant parent(s) and 12 failure destination(s)
-DEBUG4: 				Node 1000215: 1 redundant parent(s) and 4 failure destination(s)
-DEBUG4: 				Node 1000226: 1 redundant parent(s) and 20 failure destination(s)
-DEBUG4: 				Node 1000218: 1 redundant parent(s) and 4 failure destination(s)
-DEBUG4: 				Node 1000230: 1 redundant parent(s) and 14 failure destination(s)
-DEBUG4: 				Node 1000209: 1 redundant parent(s) and 4 failure destination(s)
-DEBUG4: 				Node 1000229: 1 redundant parent(s) and 28 failure destination(s)
+DEBUG4: 				Node 293: 1 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 380: 1 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 404: 1 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 420: 1 redundant parent(s) and 28 failure destination(s)
+DEBUG4: 				Node 401: 1 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 398: 1 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 403: 1 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 407: 1 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 411: 1 redundant parent(s) and 12 failure destination(s)
+DEBUG4: 				Node 400: 1 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 414: 1 redundant parent(s) and 20 failure destination(s)
+DEBUG4: 				Node 397: 1 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 406: 1 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 418: 1 redundant parent(s) and 14 failure destination(s)
+DEBUG4: 				Node 417: 1 redundant parent(s) and 28 failure destination(s)
 DEBUG3: 			Decomposition of common nodes...
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
@@ -112,7 +112,7 @@ DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G188
 DEBUG4: 				Total # of gates: 197
 DEBUG4: 				# of modules: 19
 DEBUG4: 				# of gates with negative indices: 26
@@ -121,7 +121,7 @@ DEBUG4: 				Total # of variables: 186
 DEBUG4: 				# of variables with negative indices: 4
 DEBUG4: 				# of variables with positive and negative indices: 4
 DEBUG2: 		Preprocessing Phase III...
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G188
 DEBUG4: 				Total # of gates: 197
 DEBUG4: 				# of modules: 19
 DEBUG4: 				# of gates with negative indices: 26
@@ -131,7 +131,7 @@ DEBUG4: 				# of variables with negative indices: 4
 DEBUG4: 				# of variables with positive and negative indices: 4
 DEBUG3: 			Full normalization of gates...
 DEBUG3: 			Finished the full normalization of gates!
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G188
 DEBUG4: 				Total # of gates: 245
 DEBUG4: 				# of modules: 19
 DEBUG4: 				# of gates with negative indices: 26
@@ -168,33 +168,33 @@ DEBUG4: 				Assigning timings to nodes...
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Boolean optimization...
-DEBUG4: 				Node 1000105: 1 redundant parent(s) and 2 failure destination(s)
-DEBUG4: 				Node 1000192: 1 redundant parent(s) and 2 failure destination(s)
-DEBUG4: 				Node 1000400: 1 redundant parent(s) and 4 failure destination(s)
-DEBUG4: 				Node 1000209: 4 redundant parent(s) and 8 failure destination(s)
-DEBUG4: 				Node 1000226: 9 redundant parent(s) and 20 failure destination(s)
-DEBUG4: 				Node 1000215: 4 redundant parent(s) and 8 failure destination(s)
-DEBUG4: 				Node 1000229: 10 redundant parent(s) and 32 failure destination(s)
-DEBUG4: 				Node 1000212: 4 redundant parent(s) and 16 failure destination(s)
-DEBUG4: 				Node 1000232: 9 redundant parent(s) and 32 failure destination(s)
-DEBUG4: 				Node 1000218: 4 redundant parent(s) and 8 failure destination(s)
-DEBUG4: 				Node 1000223: 8 redundant parent(s) and 16 failure destination(s)
-DEBUG4: 				Node 51: 2 redundant parent(s) and 4 failure destination(s)
-DEBUG4: 				Node 22: 4 redundant parent(s) and 8 failure destination(s)
-DEBUG4: 				Node 45: 2 redundant parent(s) and 4 failure destination(s)
-DEBUG4: 				Node 11: 2 redundant parent(s) and 8 failure destination(s)
-DEBUG4: 				Node 23: 2 redundant parent(s) and 12 failure destination(s)
-DEBUG4: 				Node 134: 2 redundant parent(s) and 4 failure destination(s)
-DEBUG4: 				Node 10: 2 redundant parent(s) and 20 failure destination(s)
-DEBUG4: 				Node 39: 2 redundant parent(s) and 4 failure destination(s)
-DEBUG4: 				Node 128: 2 redundant parent(s) and 4 failure destination(s)
-DEBUG4: 				Node 131: 2 redundant parent(s) and 4 failure destination(s)
-DEBUG4: 				Node 114: 2 redundant parent(s) and 8 failure destination(s)
-DEBUG4: 				Node 120: 2 redundant parent(s) and 12 failure destination(s)
-DEBUG4: 				Node 33: 2 redundant parent(s) and 8 failure destination(s)
-DEBUG4: 				Node 119: 2 redundant parent(s) and 16 failure destination(s)
-DEBUG4: 				Node 113: 2 redundant parent(s) and 20 failure destination(s)
-DEBUG4: 				Node 125: 2 redundant parent(s) and 8 failure destination(s)
+DEBUG4: 				Node 293: 1 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 380: 1 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 588: 1 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 397: 4 redundant parent(s) and 8 failure destination(s)
+DEBUG4: 				Node 414: 9 redundant parent(s) and 20 failure destination(s)
+DEBUG4: 				Node 400: 4 redundant parent(s) and 8 failure destination(s)
+DEBUG4: 				Node 417: 10 redundant parent(s) and 32 failure destination(s)
+DEBUG4: 				Node 403: 4 redundant parent(s) and 16 failure destination(s)
+DEBUG4: 				Node 420: 9 redundant parent(s) and 32 failure destination(s)
+DEBUG4: 				Node 406: 4 redundant parent(s) and 8 failure destination(s)
+DEBUG4: 				Node 411: 8 redundant parent(s) and 16 failure destination(s)
+DEBUG4: 				Node 52: 2 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 23: 4 redundant parent(s) and 8 failure destination(s)
+DEBUG4: 				Node 46: 2 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 12: 2 redundant parent(s) and 8 failure destination(s)
+DEBUG4: 				Node 24: 2 redundant parent(s) and 12 failure destination(s)
+DEBUG4: 				Node 135: 2 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 11: 2 redundant parent(s) and 20 failure destination(s)
+DEBUG4: 				Node 40: 2 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 129: 2 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 132: 2 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 115: 2 redundant parent(s) and 8 failure destination(s)
+DEBUG4: 				Node 121: 2 redundant parent(s) and 12 failure destination(s)
+DEBUG4: 				Node 34: 2 redundant parent(s) and 8 failure destination(s)
+DEBUG4: 				Node 120: 2 redundant parent(s) and 16 failure destination(s)
+DEBUG4: 				Node 114: 2 redundant parent(s) and 20 failure destination(s)
+DEBUG4: 				Node 126: 2 redundant parent(s) and 8 failure destination(s)
 DEBUG3: 			Decomposition of common nodes...
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
@@ -206,7 +206,7 @@ DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G188
 DEBUG4: 				Total # of gates: 226
 DEBUG4: 				# of modules: 19
 DEBUG4: 				# of gates with negative indices: 26
@@ -215,23 +215,23 @@ DEBUG4: 				Total # of variables: 186
 DEBUG4: 				# of variables with negative indices: 4
 DEBUG4: 				# of variables with positive and negative indices: 4
 DEBUG2: 		Launching the algorithm...
-DEBUG3: 			Converting Boolean graph into BDD...
-DEBUG4: 				# of BDD vertices created: 3384634
-DEBUG4: 				# of entries in unique table: 3002767
+DEBUG3: 			Converting PDAG into BDD...
+DEBUG4: 				# of BDD vertices created: 2652730
+DEBUG4: 				# of entries in unique table: 2371605
 DEBUG4: 				# of entries in AND table: 0
 DEBUG4: 				# of entries in OR table: 0
-DEBUG4: 				# of ITE in BDD: 1883648
+DEBUG4: 				# of ITE in BDD: 1160828
 DEBUG2: 		Creating ZBDD from BDD: G0
 DEBUG4: 				Limit on product order: 4
-DEBUG4: 				# of ZBDD nodes created: 2696
-DEBUG4: 				# of entries in unique table: 2695
+DEBUG4: 				# of ZBDD nodes created: 2669
+DEBUG4: 				# of entries in unique table: 2668
 DEBUG4: 				# of entries in AND table: 0
 DEBUG4: 				# of entries in OR table: 0
-DEBUG4: 				# of entries in subsume table: 15038
-DEBUG4: 				# of entries in minimal table: 1974
-DEBUG4: 				# of SetNodes in ZBDD: 1586
+DEBUG4: 				# of entries in subsume table: 15278
+DEBUG4: 				# of entries in minimal table: 1976
+DEBUG4: 				# of SetNodes in ZBDD: 1585
 DEBUG4: 				# of products: 28754
-DEBUG2: 		Creating ZBDD from BDD: G1000105
+DEBUG2: 		Creating ZBDD from BDD: G293
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 4
 DEBUG4: 				# of entries in unique table: 3
@@ -241,7 +241,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 3
 DEBUG4: 				# of SetNodes in ZBDD: 3
 DEBUG4: 				# of products: 3
-DEBUG2: 		Creating ZBDD from BDD: G1000060
+DEBUG2: 		Creating ZBDD from BDD: G248
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 3
 DEBUG4: 				# of entries in unique table: 2
@@ -251,7 +251,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 2
 DEBUG4: 				# of SetNodes in ZBDD: 2
 DEBUG4: 				# of products: 1
-DEBUG2: 		Creating ZBDD from BDD: G1000106
+DEBUG2: 		Creating ZBDD from BDD: G294
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 3
 DEBUG4: 				# of entries in unique table: 2
@@ -261,7 +261,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 2
 DEBUG4: 				# of SetNodes in ZBDD: 2
 DEBUG4: 				# of products: 2
-DEBUG2: 		Creating ZBDD from BDD: G1000107
+DEBUG2: 		Creating ZBDD from BDD: G295
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 3
 DEBUG4: 				# of entries in unique table: 2
@@ -271,7 +271,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 2
 DEBUG4: 				# of SetNodes in ZBDD: 2
 DEBUG4: 				# of products: 1
-DEBUG2: 		Creating ZBDD from BDD: G1000192
+DEBUG2: 		Creating ZBDD from BDD: G380
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 4
 DEBUG4: 				# of entries in unique table: 3
@@ -281,7 +281,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 3
 DEBUG4: 				# of SetNodes in ZBDD: 3
 DEBUG4: 				# of products: 3
-DEBUG2: 		Creating ZBDD from BDD: G1000193
+DEBUG2: 		Creating ZBDD from BDD: G381
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 3
 DEBUG4: 				# of entries in unique table: 2
@@ -291,7 +291,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 2
 DEBUG4: 				# of SetNodes in ZBDD: 2
 DEBUG4: 				# of products: 1
-DEBUG2: 		Creating ZBDD from BDD: G1000194
+DEBUG2: 		Creating ZBDD from BDD: G382
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 3
 DEBUG4: 				# of entries in unique table: 2
@@ -301,7 +301,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 2
 DEBUG4: 				# of SetNodes in ZBDD: 2
 DEBUG4: 				# of products: 2
-DEBUG2: 		Creating ZBDD from BDD: G1000195
+DEBUG2: 		Creating ZBDD from BDD: G383
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 3
 DEBUG4: 				# of entries in unique table: 2
@@ -311,7 +311,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 2
 DEBUG4: 				# of SetNodes in ZBDD: 2
 DEBUG4: 				# of products: 1
-DEBUG2: 		Creating ZBDD from BDD: G1000201
+DEBUG2: 		Creating ZBDD from BDD: G389
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 4
 DEBUG4: 				# of entries in unique table: 3
@@ -321,7 +321,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 3
 DEBUG4: 				# of SetNodes in ZBDD: 3
 DEBUG4: 				# of products: 3
-DEBUG2: 		Creating ZBDD from BDD: G1000202
+DEBUG2: 		Creating ZBDD from BDD: G390
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 4
 DEBUG4: 				# of entries in unique table: 3
@@ -331,7 +331,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 3
 DEBUG4: 				# of SetNodes in ZBDD: 3
 DEBUG4: 				# of products: 3
-DEBUG2: 		Creating ZBDD from BDD: G1000203
+DEBUG2: 		Creating ZBDD from BDD: G391
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 7
 DEBUG4: 				# of entries in unique table: 6
@@ -341,7 +341,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 6
 DEBUG4: 				# of SetNodes in ZBDD: 6
 DEBUG4: 				# of products: 6
-DEBUG2: 		Creating ZBDD from BDD: G1000204
+DEBUG2: 		Creating ZBDD from BDD: G392
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 4
 DEBUG4: 				# of entries in unique table: 3
@@ -351,7 +351,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 3
 DEBUG4: 				# of SetNodes in ZBDD: 3
 DEBUG4: 				# of products: 3
-DEBUG2: 		Creating ZBDD from BDD: G1000205
+DEBUG2: 		Creating ZBDD from BDD: G393
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 4
 DEBUG4: 				# of entries in unique table: 3
@@ -361,7 +361,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 3
 DEBUG4: 				# of SetNodes in ZBDD: 3
 DEBUG4: 				# of products: 3
-DEBUG2: 		Creating ZBDD from BDD: G1000206
+DEBUG2: 		Creating ZBDD from BDD: G394
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 7
 DEBUG4: 				# of entries in unique table: 6
@@ -371,7 +371,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 6
 DEBUG4: 				# of SetNodes in ZBDD: 6
 DEBUG4: 				# of products: 6
-DEBUG2: 		Creating ZBDD from BDD: G1000238
+DEBUG2: 		Creating ZBDD from BDD: G426
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 3
 DEBUG4: 				# of entries in unique table: 2
@@ -381,7 +381,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 2
 DEBUG4: 				# of SetNodes in ZBDD: 2
 DEBUG4: 				# of products: 2
-DEBUG2: 		Creating ZBDD from BDD: G1000239
+DEBUG2: 		Creating ZBDD from BDD: G427
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 4
 DEBUG4: 				# of entries in unique table: 3
@@ -391,7 +391,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 3
 DEBUG4: 				# of SetNodes in ZBDD: 3
 DEBUG4: 				# of products: 3
-DEBUG2: 		Creating ZBDD from BDD: G1000240
+DEBUG2: 		Creating ZBDD from BDD: G428
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 3
 DEBUG4: 				# of entries in unique table: 2
@@ -401,7 +401,7 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 2
 DEBUG4: 				# of SetNodes in ZBDD: 2
 DEBUG4: 				# of products: 2
-DEBUG2: 		Creating ZBDD from BDD: G1000241
+DEBUG2: 		Creating ZBDD from BDD: G429
 DEBUG4: 				Limit on product order: 2
 DEBUG4: 				# of ZBDD nodes created: 4
 DEBUG4: 				# of entries in unique table: 3
@@ -411,44 +411,6 @@ DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 3
 DEBUG4: 				# of SetNodes in ZBDD: 3
 DEBUG4: 				# of products: 3
-DEBUG3: 			Getting products from minimized ZBDD: G1000060
-DEBUG4: 				# of generated products: 1
-DEBUG3: 			Getting products from minimized ZBDD: G1000105
-DEBUG4: 				# of generated products: 3
-DEBUG3: 			Getting products from minimized ZBDD: G1000107
-DEBUG4: 				# of generated products: 1
-DEBUG3: 			Getting products from minimized ZBDD: G1000106
-DEBUG4: 				# of generated products: 2
-DEBUG3: 			Getting products from minimized ZBDD: G1000193
-DEBUG4: 				# of generated products: 1
-DEBUG3: 			Getting products from minimized ZBDD: G1000192
-DEBUG4: 				# of generated products: 3
-DEBUG3: 			Getting products from minimized ZBDD: G1000195
-DEBUG4: 				# of generated products: 1
-DEBUG3: 			Getting products from minimized ZBDD: G1000194
-DEBUG4: 				# of generated products: 2
-DEBUG3: 			Getting products from minimized ZBDD: G1000201
-DEBUG4: 				# of generated products: 3
-DEBUG3: 			Getting products from minimized ZBDD: G1000202
-DEBUG4: 				# of generated products: 3
-DEBUG3: 			Getting products from minimized ZBDD: G1000203
-DEBUG4: 				# of generated products: 6
-DEBUG3: 			Getting products from minimized ZBDD: G1000204
-DEBUG4: 				# of generated products: 3
-DEBUG3: 			Getting products from minimized ZBDD: G1000205
-DEBUG4: 				# of generated products: 3
-DEBUG3: 			Getting products from minimized ZBDD: G1000206
-DEBUG4: 				# of generated products: 6
-DEBUG3: 			Getting products from minimized ZBDD: G1000238
-DEBUG4: 				# of generated products: 2
-DEBUG3: 			Getting products from minimized ZBDD: G1000239
-DEBUG4: 				# of generated products: 3
-DEBUG3: 			Getting products from minimized ZBDD: G1000240
-DEBUG4: 				# of generated products: 2
-DEBUG3: 			Getting products from minimized ZBDD: G1000241
-DEBUG4: 				# of generated products: 3
-DEBUG3: 			Getting products from minimized ZBDD: G0
-DEBUG4: 				# of generated products: 54436
 DEBUG2: 		# of products: 54436
 INFO: Finished analysis: r1
 DEBUG1: 	Reporting analysis results...

@@ -20,19 +20,11 @@
 
 #include "risk_analysis.h"
 
-#include <fstream>
-#include <map>
 #include <set>
-#include <sstream>
-#include <string>
 #include <vector>
 
+#include <boost/range/algorithm.hpp>
 #include <gtest/gtest.h>
-
-#include "env.h"
-#include "ext.h"
-#include "initializer.h"
-#include "xml_parser.h"
 
 namespace scram {
 namespace core {
@@ -40,177 +32,115 @@ namespace test {
 
 class RiskAnalysisTest : public ::testing::TestWithParam<const char*> {
  protected:
-  void SetUp() override {
-    if (HasParam()) {
-      std::string param = GetParam();
-      if (param == "pi") {
-        settings.algorithm("bdd");
-        settings.prime_implicants(true);
-      } else {
-        settings.algorithm(GetParam());
-      }
-    }
-  }
+  using ImportanceContainer =
+      std::vector<std::pair<std::string, ImportanceFactors>>;
 
-  void TearDown() override {}
+  static const std::set<std::set<std::string>> kUnity;  ///< Special unity set.
+
+  void SetUp() override;
 
   // Parsing multiple input files.
-  void ProcessInputFiles(const std::vector<std::string>& input_files) {
-    ResetInitializer();
-    init->ProcessInputFiles(input_files);
-    ResetRiskAnalysis();
-  }
-
-  // Resets the initializer with the settings of the object.
-  void ResetInitializer() {
-    init = ext::make_unique<mef::Initializer>(settings);
-  }
-
-  // Resets the risk analysis with the initialized model and settings.
-  void ResetRiskAnalysis() {
-    assert(init && "Missing initializer");
-    ran = ext::make_unique<RiskAnalysis>(init->model(), settings);
-  }
+  void ProcessInputFiles(const std::vector<std::string>& input_files);
 
   // Parsing an input file to get the model.
   void ProcessInputFile(const std::string& input_file) {
-    std::vector<std::string> input_files;
-    input_files.push_back(input_file);
-    ProcessInputFiles(input_files);
+    ProcessInputFiles({input_file});
   }
 
   // Collection of assertions on the reporting after running analysis.
   // Note that the analysis is run by this function.
-  void CheckReport(const std::string& tree_input) {
-    std::stringstream schema;
-    std::string schema_path = Env::report_schema();
-    std::ifstream schema_stream(schema_path.c_str());
-    schema << schema_stream.rdbuf();
-    schema_stream.close();
-
-    ASSERT_NO_THROW(ProcessInputFile(tree_input));
-    ASSERT_NO_THROW(ran->Analyze());
-    std::stringstream output;
-    ASSERT_NO_THROW(ran->Report(output));
-
-    std::unique_ptr<XmlParser> parser;
-    ASSERT_NO_THROW(parser = ext::make_unique<XmlParser>(output));
-    ASSERT_NO_THROW(parser->Validate(schema));
-  }
+  void CheckReport(const std::string& tree_input);
 
   // Returns a single fault tree, assuming one fault tree with single top gate.
   const mef::FaultTreePtr& fault_tree() {
-    return init->model()->fault_trees().begin()->second;
+    return *model->fault_trees().begin();
   }
 
-  const std::unordered_map<std::string, mef::GatePtr>& gates() {
-    return init->model()->gates();
+  const mef::IdTable<mef::GatePtr>& gates() { return model->gates(); }
+
+  const mef::IdTable<mef::HouseEventPtr>& house_events() {
+    return model->house_events();
   }
 
-  const std::unordered_map<std::string, mef::HouseEventPtr>& house_events() {
-    return init->model()->house_events();
+  const mef::IdTable<mef::BasicEventPtr>& basic_events() {
+    return model->basic_events();
   }
 
-  const std::unordered_map<std::string, mef::BasicEventPtr>& basic_events() {
-    return init->model()->basic_events();
-  }
-
-  const std::set<std::set<std::string>>& products() {
-    assert(!ran->fault_tree_analyses().empty());
-    assert(ran->fault_tree_analyses().size() == 1);
-    if (products_.empty()) {
-      const FaultTreeAnalysis* fta =
-          ran->fault_tree_analyses().begin()->second.get();
-      for (const Product& product : fta->products()) {
-        products_.emplace(Convert(product));
-      }
-    }
-    return products_;
-  }
+  /// @returns The resultant products of the fault tree analysis.
+  const std::set<std::set<std::string>>& products();
 
   // Provides the number of products per order of sets.
   // The order starts from 1.
-  std::vector<int> ProductDistribution() {
-    assert(!ran->fault_tree_analyses().empty());
-    assert(ran->fault_tree_analyses().size() == 1);
-    std::vector<int> distr(settings.limit_order(), 0);
-    const FaultTreeAnalysis* fta =
-        ran->fault_tree_analyses().begin()->second.get();
-    for (const Product& product : fta->products()) {
-      distr[GetOrder(product) - 1]++;
-    }
-    while (!distr.empty() && !distr.back()) distr.pop_back();
-    return distr;
-  }
+  std::vector<int> ProductDistribution();
 
   /// Prints products to the standard error.
-  void PrintProducts() {
-    assert(!ran->fault_tree_analyses().empty());
-    assert(ran->fault_tree_analyses().size() == 1);
-    const FaultTreeAnalysis* fta =
-        ran->fault_tree_analyses().begin()->second.get();
-    Print(fta->products());
-  }
+  void PrintProducts();
 
   double p_total() {
-    assert(!ran->probability_analyses().empty());
-    assert(ran->probability_analyses().size() == 1);
-    return ran->probability_analyses().begin()->second->p_total();
+    assert(!analysis->probability_analyses().empty());
+    assert(analysis->probability_analyses().size() == 1);
+    return analysis->probability_analyses().begin()->second->p_total();
   }
 
-  const std::map<std::set<std::string>, double>& product_probability() {
-    assert(!ran->fault_tree_analyses().empty());
-    assert(ran->fault_tree_analyses().size() == 1);
-    if (product_probability_.empty()) {
-      const FaultTreeAnalysis* fta =
-          ran->fault_tree_analyses().begin()->second.get();
-      for (const Product& product : fta->products()) {
-        product_probability_.emplace(Convert(product),
-                                     CalculateProbability(product));
-      }
+  /// @returns Products and their probabilities.
+  const std::map<std::set<std::string>, double>& product_probability();
+
+  const ImportanceFactors& importance(const std::string& id) {
+    assert(!analysis->importance_analyses().empty());
+    assert(analysis->importance_analyses().size() == 1);
+    const auto& importance =
+        analysis->importance_analyses().begin()->second->importance();
+    auto it = boost::find_if(importance, [&id](const ImportanceRecord& record) {
+      return record.event.id() == id;
+    });
+    assert(it != importance.end());
+    return it->factors;
+  }
+
+  void TestImportance(const ImportanceContainer& expected) {
+#define IMP_EQ(field) \
+  EXPECT_NEAR(test.field, result.field, (1e-3 * result.field)) << entry.first
+    for (const auto& entry : expected) {
+      const ImportanceFactors& result = importance(entry.first);
+      const ImportanceFactors& test = entry.second;
+      EXPECT_EQ(test.occurrence, result.occurrence) << entry.first;
+      IMP_EQ(mif);
+      IMP_EQ(cif);
+      IMP_EQ(dif);
+      IMP_EQ(raw);
+      IMP_EQ(rrw);
     }
-    return product_probability_;
-  }
-
-  const ImportanceFactors& importance(std::string id) {
-    assert(!ran->importance_analyses().empty());
-    assert(ran->importance_analyses().size() == 1);
-    return ran->importance_analyses().begin()->second->importance().at(id);
+#undef IMP_EQ
   }
 
   // Uncertainty analysis.
   double mean() {
-    assert(!ran->uncertainty_analyses().empty());
-    assert(ran->uncertainty_analyses().size() == 1);
-    return ran->uncertainty_analyses().begin()->second->mean();
+    assert(!analysis->uncertainty_analyses().empty());
+    assert(analysis->uncertainty_analyses().size() == 1);
+    return analysis->uncertainty_analyses().begin()->second->mean();
   }
 
   double sigma() {
-    assert(!ran->uncertainty_analyses().empty());
-    assert(ran->uncertainty_analyses().size() == 1);
-    return ran->uncertainty_analyses().begin()->second->sigma();
-  }
-
-  /// Converts a set of pointers to events with complement flags
-  /// into readable and testable strings.
-  /// Complements are communicated with "not" prefix.
-  std::set<std::string> Convert(const Product& product) {
-    std::set<std::string> string_set;
-    for (const Literal& literal : product) {
-      string_set.insert((literal.complement ? "not " : "") +
-                        literal.event.id());
-    }
-    return string_set;
+    assert(!analysis->uncertainty_analyses().empty());
+    assert(analysis->uncertainty_analyses().size() == 1);
+    return analysis->uncertainty_analyses().begin()->second->sigma();
   }
 
   // Members
-  std::unique_ptr<RiskAnalysis> ran;
-  std::unique_ptr<mef::Initializer> init;
+  std::unique_ptr<RiskAnalysis> analysis;
+  std::shared_ptr<mef::Model> model;
   Settings settings;
 
  private:
-  std::map<std::set<std::string>, double> product_probability_;
-  std::set<std::set<std::string>> products_;
+  /// Converts a set of pointers to events with complement flags
+  /// into readable and testable strings.
+  /// Complements are communicated with "not" prefix.
+  std::set<std::string> Convert(const Product& product);
+
+  struct Result {
+    std::map<std::set<std::string>, double> product_probability;
+    std::set<std::set<std::string>> products;
+  } result_;
 };
 
 }  // namespace test

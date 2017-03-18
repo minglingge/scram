@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Olzhas Rakhimov
+ * Copyright (C) 2014-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,9 +28,9 @@
 
 #include "config.h"
 #include "error.h"
-#include "ext.h"
 #include "initializer.h"
 #include "logger.h"
+#include "reporter.h"
 #include "risk_analysis.h"
 #include "settings.h"
 #include "version.h"
@@ -45,8 +45,6 @@ po::options_description ConstructOptions() {
   desc.add_options()
       ("help", "Display this help message")
       ("version", "Display version information")
-      ("input-files", po::value<std::vector<std::string>>(),
-       "XML input files with analysis constructs")
       ("config-file", po::value<std::string>(),
        "XML file with analysis configurations")
       ("validate", "Validate input files without analysis")
@@ -58,11 +56,14 @@ po::options_description ConstructOptions() {
       ("importance", po::value<bool>(), "Perform importance analysis")
       ("uncertainty", po::value<bool>(), "Perform uncertainty analysis")
       ("ccf", po::value<bool>(), "Perform common-cause failure analysis")
+      ("sil", po::value<bool>(), "Compute the Safety Integrity Level metrics")
       ("rare-event", "Use the rare event approximation")
       ("mcub", "Use the MCUB approximation")
       ("limit-order,l", po::value<int>(), "Upper limit for the product order")
       ("cut-off", po::value<double>(), "Cut-off probability for products")
       ("mission-time", po::value<double>(), "System mission time in hours")
+      ("time-step", po::value<double>(),
+       "Time step in hours for probability analysis")
       ("num-trials", po::value<int>(),
        "Number of trials for Monte Carlo simulations")
       ("num-quantiles", po::value<int>(),
@@ -73,10 +74,12 @@ po::options_description ConstructOptions() {
       ("output-path,o", po::value<std::string>(), "Output path for reports")
       ("verbosity", po::value<int>(), "Set log verbosity");
 #ifndef NDEBUG
-  desc.add_options()
+  po::options_description debug("Debug Options");
+  debug.add_options()
       ("preprocessor", "Stop analysis after the preprocessing step")
       ("print", "Print analysis results in a terminal friendly way")
       ("no-report", "Don't generate analysis report");
+  desc.add(debug);
 #endif
   return desc;
 }
@@ -91,7 +94,7 @@ po::options_description ConstructOptions() {
 /// @returns 1 for errored state.
 /// @returns -1 for information only state like help and version.
 int ParseArguments(int argc, char* argv[], po::variables_map* vm) {
-  std::string usage = "Usage:    scram [input-files] [options]";
+  const char* usage = "Usage:    scram [options] input-files...";
   po::options_description desc = ConstructOptions();
   try {
     po::store(po::parse_command_line(argc, argv, desc), *vm);
@@ -100,11 +103,14 @@ int ParseArguments(int argc, char* argv[], po::variables_map* vm) {
               << desc << std::endl;
     return 1;
   }
-  po::notify(*vm);
+  po::options_description options("All options with positional input files.");
+  options.add(desc).add_options()("input-files",
+                                  po::value<std::vector<std::string>>(),
+                                  "XML input files with analysis constructs");
   po::positional_options_description p;
-  p.add("input-files", -1);
+  p.add("input-files", -1);  // All input files are implicit.
   po::store(
-      po::command_line_parser(argc, argv).options(desc).positional(p).run(),
+      po::command_line_parser(argc, argv).options(options).positional(p).run(),
       *vm);
   po::notify(*vm);
 
@@ -117,8 +123,8 @@ int ParseArguments(int argc, char* argv[], po::variables_map* vm) {
     std::cout << "SCRAM " << scram::version::core()
               << " (" << scram::version::describe() << ")"
               << "\n\nDependencies:\n"
-              << "   Boost    " << scram::version::boost() << "\n"
-              << "   xml2     " << scram::version::xml2() << std::endl;
+              << "   Boost       " << scram::version::boost() << "\n"
+              << "   LibXML++    " << scram::version::xml() << std::endl;
     return -1;
   }
   if (!vm->count("input-files") && !vm->count("config-file")) {
@@ -172,6 +178,8 @@ void ConstructSettings(const po::variables_map& vm,
   } else if (vm.count("mcub")) {
     settings->approximation("mcub");
   }
+  SET("time-step", double, time_step);
+  SET("sil", bool, safety_integrity_levels);
 
   SET("probability", bool, probability_analysis);
   SET("importance", bool, importance_analysis);
@@ -195,13 +203,10 @@ void ConstructSettings(const po::variables_map& vm,
 ///
 /// @param[in] vm  Variables map of program options.
 ///
-/// @returns 0 for success.
-/// @returns 1 for errored state.
-///
 /// @throws Error  Exceptions specific to SCRAM.
 /// @throws boost::exception  Boost errors.
 /// @throws std::exception  All other problems.
-int RunScram(const po::variables_map& vm) {
+void RunScram(const po::variables_map& vm) {
   if (vm.count("verbosity")) {
     scram::Logger::SetVerbosity(vm["verbosity"].as<int>());
   }
@@ -212,7 +217,7 @@ int RunScram(const po::variables_map& vm) {
   // Invalid configurations will throw.
   if (vm.count("config-file")) {
     auto config =
-        ext::make_unique<scram::Config>(vm["config-file"].as<std::string>());
+        std::make_unique<scram::Config>(vm["config-file"].as<std::string>());
     settings = config->settings();
     input_files = config->input_files();
     output_path = config->output_path();
@@ -229,29 +234,39 @@ int RunScram(const po::variables_map& vm) {
   }
   // Process input files
   // into valid analysis containers and constructs.
-  auto init = ext::make_unique<scram::mef::Initializer>(settings);
-  init->ProcessInputFiles(input_files);  // Throws if anything is invalid.
-  if (vm.count("validate")) return 0;  // Stop if only validation is requested.
+  // Throws if anything is invalid.
+  auto init = std::make_unique<scram::mef::Initializer>(input_files, settings);
+  if (vm.count("validate"))
+    return;  // Stop if only validation is requested.
 
   // Initiate risk analysis with the given information.
-  auto ran =
-      ext::make_unique<scram::core::RiskAnalysis>(init->model(), settings);
+  auto analysis =
+      std::make_unique<scram::core::RiskAnalysis>(init->model(), settings);
   init.reset();  // Remove extra reference counts to shared objects.
 
-  ran->Analyze();
+  analysis->Analyze();
 #ifndef NDEBUG
   if (vm.count("no-report") || vm.count("preprocessor") || vm.count("print"))
-    return 0;
+    return;
 #endif
+  scram::Reporter reporter;
   if (output_path.empty()) {
-    ran->Report(std::cout);
+    reporter.Report(*analysis, std::cout);
   } else {
-    ran->Report(output_path);
+    reporter.Report(*analysis, output_path);
   }
-  return 0;
 }
 
 }  // namespace
+
+/// Catches an exception,
+/// prints its message to the standard error,
+/// and returns error code of 1 to exit from the main function.
+#define CATCH(exception_type)                                         \
+  catch (const exception_type& err) {                                 \
+    std::cerr << #exception_type << ":\n" << err.what() << std::endl; \
+    return 1;                                                         \
+  }
 
 /// Command-line SCRAM entrance.
 ///
@@ -268,41 +283,26 @@ int main(int argc, char* argv[]) {
     // Parse command-line options.
     po::variables_map vm;
     int ret = ParseArguments(argc, argv, &vm);
-    if (ret == 1) return 1;
-    if (ret == -1) return 0;
-
-    return RunScram(vm);
+    if (ret == 1)
+      return 1;
+    if (ret == 0)
+      RunScram(vm);
 
 #ifdef NDEBUG
-  } catch (scram::IOError& io_err) {
-    std::cerr << "SCRAM I/O Error:\n" << io_err.what() << std::endl;
-    return 1;
-  } catch (scram::ValidationError& vld_err) {
-    std::cerr << "SCRAM Validation Error:\n" << vld_err.what() << std::endl;
-    return 1;
-  } catch (scram::ValueError& val_err) {
-    std::cerr << "SCRAM Value Error:\n" << val_err.what() << std::endl;
-    return 1;
-  } catch (scram::LogicError& logic_err) {
-    std::cerr << "SCRAM Logic Error:\n" << logic_err.what() << std::endl;
-    return 1;
-  } catch (scram::IllegalOperation& iopp_err) {
-    std::cerr << "SCRAM Illegal Operation:\n" << iopp_err.what() << std::endl;
-    return 1;
-  } catch (scram::InvalidArgument& iarg_err) {
-    std::cerr << "SCRAM Invalid Argument Error:\n" << iarg_err.what()
-              << std::endl;
-    return 1;
-  } catch (scram::Error& scram_err) {
-    std::cerr << "SCRAM Error:\n" << scram_err.what() << std::endl;
-    return 1;
-  } catch (boost::exception& boost_err) {
+  }
+  CATCH(scram::IOError)
+  CATCH(scram::ValidationError)
+  CATCH(scram::ValueError)
+  CATCH(scram::LogicError)
+  CATCH(scram::IllegalOperation)
+  CATCH(scram::InvalidArgument)
+  CATCH(scram::Error)
+  catch (boost::exception& boost_err) {
     std::cerr << "Boost Exception:\n"
               << boost::diagnostic_information(boost_err) << std::endl;
     return 1;
-  } catch (std::exception& std_err) {
-    std::cerr << "Standard Exception:\n" << std_err.what() << std::endl;
-    return 1;
   }
+  CATCH(std::exception)
 #endif
 }  // End of main.
+#undef CATCH

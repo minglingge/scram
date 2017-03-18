@@ -13,35 +13,98 @@ endif()
 
 project(SCRAM)
 set(SCRAM_VERSION_MAJOR 0)  # Indicate major API change after 1.0.0
-set(SCRAM_VERSION_MINOR 11)  # New features and improvements.
-set(SCRAM_VERSION_MICRO 2)  # Bug fixes.
+set(SCRAM_VERSION_MINOR 12)  # New features and improvements.
+set(SCRAM_VERSION_MICRO 0)  # Bug fixes.
+
+####################### Begin Options ###################
+
+option(BUILD_SHARED_LIBS OFF)
+
+option(INSTALL_LIBS "Install the generated libraries" ON)
+
+# Linking of external libraries, such as BOOST.
+option(WITH_STATIC_LIBS "Try to link against static libraries" OFF)
+
+option(WITH_TCMALLOC "Use TCMalloc if available (#1 preference)" ON)
+option(WITH_JEMALLOC "Use JEMalloc if available (#2 preference)" ON)
+
+option(WITH_COVERAGE "Instrument for coverage analysis" OFF)
+option(WITH_PROFILE "Instrument for performance profiling" OFF)
+
+option(BUILD_GUI "Build the GUI front-end" ON)
+option(BUILD_TESTS "Build the tests" ON)
+
+option(PACKAGE "Package for distribution" OFF)
+
+####################### End Options ###################
 
 ####################### Begin compiler configurations ###################
 
-# Default to C++11.
-include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-if(NOT COMPILER_SUPPORTS_CXX11)
-  message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support.")
+# Default to C++14.
+if(CMAKE_VERSION VERSION_LESS 3.1)
+  include(CheckCXXCompilerFlag)
+  CHECK_CXX_COMPILER_FLAG("-std=c++1y" COMPILER_SUPPORTS_CXX14)
+  if(NOT COMPILER_SUPPORTS_CXX14)
+    message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++14 support.")
+  endif()
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
+else()
+  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+  set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
+function(CHECK_COMPILER_VERSION MIN_VERSION)
+  if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS MIN_VERSION)
+    message(FATAL_ERROR "${CMAKE_CXX_COMPILER_ID} Compiler version too old. Required minimum version: ${MIN_VERSION}")
+  endif()
+endfunction()
 
 set(CMAKE_CXX_FLAGS_DEBUG
-  "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra -Werror -Wpedantic -Wno-sign-compare -Wnon-virtual-dtor -Wno-missing-field-initializers")
+  "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra -Werror -Wno-sign-compare -Wnon-virtual-dtor -Wno-missing-field-initializers")
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-  if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5.3)
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wshadow -Wsuggest-override")
+  CHECK_COMPILER_VERSION("4.9")  # TODO: Wpedantic with gcc 4.9 errors with default arg lambdas.
+  if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5)
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wshadow -Wpedantic")
+  endif()
+  if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6)
+    # TODO: Boost sign bit shift fails to compile on GCC 6.1
+    add_definitions("-fpermissive")
   endif()
 
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
-       "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  CHECK_COMPILER_VERSION("3.6")
   set(CMAKE_CXX_FLAGS_DEBUG
     "${CMAKE_CXX_FLAGS_DEBUG} -Wno-missing-braces -Wshadow -Wunused-exception-parameter")
+
+elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+  CHECK_COMPILER_VERSION("6.1")
+
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
+  CHECK_COMPILER_VERSION("17.0.1")
+  # TODO: CMAKE_CXX_STANDARD has no effect on icc.
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+  # TODO: Failure to deduce lambda return type with Boost 1.56.
+  add_definitions("-DBOOST_RESULT_OF_USE_DECLTYPE=1")
+  # TODO: Bug in Intel compiler with multi-initialization with auto and final-is-not-override.
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -diag-disable=3373,1125")
 endif()
 
 if(WIN32)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wno-error")
+endif()
+
+find_program(CCACHE_FOUND ccache)
+if(CCACHE_FOUND)
+  message(STATUS "Using CCache for builds")
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
+
+  if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
+     "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+    add_definitions("-Qunused-arguments")  # TODO: CCache bug with not splitting args.
+  endif()
 endif()
 
 ######################## End compiler configurations ####################
@@ -55,11 +118,6 @@ set(SCRAM_GUI_DIR "${PROJECT_SOURCE_DIR}/gui")
 set(SCRAM_SHARE_DIR "${PROJECT_SOURCE_DIR}/share")
 set(SCRAM_TEST_DIR "${PROJECT_SOURCE_DIR}/tests")
 set(SCRAM_INPUT_DIR "${PROJECT_SOURCE_DIR}/input")
-
-set(BUILD_SHARED_LIBS TRUE)  # Change this for static building.
-
-# Linking of external libraries, such as BOOST.
-set(USE_STATIC_LIBS OFF)  # Change this for static building
 
 # Setup build locations.
 if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
@@ -82,7 +140,9 @@ set(CMAKE_SKIP_BUILD_RPATH FALSE)
 # (but later on when installing).
 set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
 
-set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+if(INSTALL_LIBS)
+  set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+endif()
 
 # Add the automatically determined parts of the RPATH,
 # which point to directories outside the build tree
@@ -96,31 +156,34 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 ######################## Begin find libraries ######################
 
-set(LIBS "")
-
-# Optional TCMalloc for optimization.
-if(NOT NTCMALLOC)
+set(MALLOC "System Malloc")
+# Optional alternative Malloc for optimization.
+if(NOT WITH_PROFILE)
   find_package(Tcmalloc)
-  set(LIBS ${LIBS} ${Tcmalloc_LIBRARIES})
+  find_package(JeMalloc)
+  if(WITH_TCMALLOC AND Tcmalloc_FOUND)
+    set(LIBS ${LIBS} ${Tcmalloc_LIBRARIES})
+    set(MALLOC "TCMalloc")
+  elseif(WITH_JEMALLOC AND JEMALLOC_FOUND)
+    set(LIBS ${LIBS} ${JEMALLOC_LIBRARIES})
+    set(MALLOC "JEMalloc")
+  endif()
 endif()
-
-# Debian installs useful LibXML2 files to /usr/include/libxml2/libxml.
-# libxml2 is required for relaxng schema validation.
-find_package(LibXml2 REQUIRED)
-add_definitions(${LIBXML2_DEFINITIONS})
-set(LIBS ${LIBS} ${LIBXML2_LIBRARIES})
+message(STATUS "The memory allocator: ${MALLOC}")
 
 # Find LibXML++ and dependencies.
-find_package(LibXML++ REQUIRED)
+set(LIBXML++_MIN_VERSION "2.38.1")  # TODO: Fix the minimum version check.
+find_package(LibXML++ "${LIBXML++_MIN_VERSION}" REQUIRED)
 set(LIBS ${LIBS} ${LibXML++_LIBRARIES})
+
 message(STATUS ${LIBS})
 
 # Include the boost header files and the program_options library.
 # Please be sure to use Boost rather than BOOST.
 # Capitalization matters on some platforms.
-set(BOOST_MIN_VERSION "1.54.0")
-set(Boost_USE_STATIC_LIBS ${USE_STATIC_LIBS})
-set(Boost_USE_STATIC_RUNTIME ${USE_STATIC_LIBS})
+set(BOOST_MIN_VERSION "1.56.0")
+set(Boost_USE_STATIC_LIBS ${WITH_STATIC_LIBS})
+set(Boost_USE_STATIC_RUNTIME ${WITH_STATIC_LIBS})
 
 if(NOT WIN32)
   set(Boost_USE_MULTITHREADED OFF)
@@ -129,10 +192,10 @@ endif()
 unset(Boost_INCLUDE_DIR CACHE)
 unset(Boost_LIBRARY_DIRS CACHE)
 find_package(Boost ${BOOST_MIN_VERSION} COMPONENTS
-  program_options filesystem system
+  program_options filesystem system date_time random
   REQUIRED)
 
-if(USE_STATIC_LIBS)
+if(Boost_USE_STATIC_LIBS)
   message(STATUS "Linking against boost static libraries")
 else()
   message(STATUS "Linking against boost dynamic libraries")
@@ -150,8 +213,10 @@ set(LIBS ${LIBS} ${Boost_SYSTEM_LIBRARY})
 message(STATUS "    Boost System location: ${Boost_SYSTEM_LIBRARY}")
 set(LIBS ${LIBS} ${Boost_FILESYSTEM_LIBRARY})
 message(STATUS "    Boost Filesystem location: ${Boost_FILESYSTEM_LIBRARY}")
+set(LIBS ${LIBS} ${Boost_DATE_TIME_LIBRARY})
+message(STATUS "    Boost Date-Time location: ${Boost_DATE_TIME_LIBRARY}")
 
-if(NOT NGUI)
+if(BUILD_GUI)
   # Find the QtWidgets library.
   if(APPLE)
     # Qt5 with Homebrew.
@@ -170,18 +235,22 @@ endif()
 
 # Include all the discovered system directories.
 include_directories(SYSTEM "${Boost_INCLUDE_DIR}")
-include_directories(SYSTEM "${LIBXML2_INCLUDE_DIR}")
 include_directories(SYSTEM "${LibXML++_INCLUDE_DIR}")
 include_directories(SYSTEM "${LibXML++Config_INCLUDE_DIR}")
 include_directories(SYSTEM ${Glibmm_INCLUDE_DIRS})
 
+include_directories("${PROJECT_SOURCE_DIR}")  # Include the core headers via "src".
+
 add_subdirectory("${SCRAM_SOURCE_DIR}")
 add_subdirectory("${SCRAM_SHARE_DIR}")
-# add_subdirectory("${SCRAM_TEST_DIR}")
 add_subdirectory("${SCRAM_INPUT_DIR}")
 
-if(NOT NGUI)
+if(BUILD_GUI)
   add_subdirectory("${SCRAM_GUI_DIR}")
+endif()
+
+if(BUILD_TESTS)
+  add_subdirectory("${SCRAM_TEST_DIR}")
 endif()
 
 ####################### End includes ####################################
@@ -201,26 +270,28 @@ add_custom_target(uninstall
 
 ###################### Begin CPACK configurations ###########################
 
-if(WIN32)
-  set(CPACK_GENERATOR "NSIS")
-  # TODO: Find a way to programmatically detect shared libraries and add to installation.
-  # The following configuration assumes MinGW64 is setup specifically for this project.
-  get_filename_component(MINGW_DLL_DIR "${CMAKE_CXX_COMPILER}" PATH)
-  message(STATUS "MinGW bin location: ${MINGW_DLL_DIR}")
-  file(GLOB all_libs "${MINGW_DLL_DIR}/lib*.dll")
-  install(FILES
-    ${all_libs}
-    ${MINGW_DLL_DIR}/zlib1.dll
-    DESTINATION bin COMPONENT libraries
-  )
+if(PACKAGE)
+  if(WIN32)
+    set(CPACK_GENERATOR "NSIS")
+    # TODO: Find a way to programmatically detect shared libraries and add to installation.
+    # The following configuration assumes MinGW64 is setup specifically for this project.
+    get_filename_component(MINGW_DLL_DIR "${CMAKE_CXX_COMPILER}" PATH)
+    message(STATUS "MinGW bin location: ${MINGW_DLL_DIR}")
+    file(GLOB all_libs "${MINGW_DLL_DIR}/lib*.dll")
+    install(FILES
+      ${all_libs}
+      ${MINGW_DLL_DIR}/zlib1.dll
+      DESTINATION bin COMPONENT libraries
+    )
 
-  # Qt Libraries
-  #  install(FILES
-  #    ${MINGW_DLL_DIR}/Qt5Core.dll
-  #    ${MINGW_DLL_DIR}/Qt5Gui.dll
-  #    ${MINGW_DLL_DIR}/Qt5Widgets.dll
-  #    DESTINATION bin COMPONENT libraries
-  #  )
+    # Qt Libraries
+    install(FILES
+      ${MINGW_DLL_DIR}/Qt5Core.dll
+      ${MINGW_DLL_DIR}/Qt5Gui.dll
+      ${MINGW_DLL_DIR}/Qt5Widgets.dll
+      DESTINATION bin COMPONENT libraries
+    )
+  endif()
 endif()
 
 set(CPACK_PACKAGE_VENDOR "Olzhas Rakhimov")

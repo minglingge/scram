@@ -22,8 +22,14 @@
 #ifndef SCRAM_SRC_ELEMENT_H_
 #define SCRAM_SRC_ELEMENT_H_
 
-#include <map>
+#include <cstdint>
+
 #include <string>
+#include <vector>
+
+#include <boost/multi_index_container.hpp>
+#include <boost/multi_index/hashed_index.hpp>
+#include <boost/multi_index/mem_fun.hpp>
 
 namespace scram {
 namespace mef {
@@ -42,7 +48,7 @@ struct Attribute {
 class Element {
  public:
   /// Constructs an element with an original name.
-  /// The name is expected to be a conform to identifier requirements
+  /// The name is expected to conform to identifier requirements
   /// described in the MEF documentation and additions.
   ///
   /// @param[in] name  The local identifier name.
@@ -65,29 +71,32 @@ class Element {
   ///
   /// @throws LogicError  The label is already set,
   ///                     or the new label is empty.
-  void label(const std::string& new_label);
+  void label(std::string new_label);
 
   /// Adds an attribute to the attribute map.
   ///
   /// @param[in] attr  Unique attribute of this element.
   ///
-  /// @throws LogicError  The attribute already exists.
-  void AddAttribute(const Attribute& attr);
+  /// @throws DuplicateArgumentError  A member attribute with the same name
+  ///                                 already exists.
+  ///
+  /// @post Pointers or references
+  ///       to existing attributes may get invalidated.
+  void AddAttribute(Attribute attr);
 
   /// Checks if the element has a given attribute.
   ///
-  /// @param[in] id  The identification name of the attribute.
+  /// @param[in] name  The identifying name of the attribute.
   ///
-  /// @returns true if this element has an attribute with the given ID.
-  /// @returns false otherwise.
-  bool HasAttribute(const std::string& id) const;
+  /// @returns true if this element has an attribute with the given name.
+  bool HasAttribute(const std::string& name) const;
 
-  /// @returns Reference to the attribute if it exists.
+  /// @returns A member attribute with the given name.
   ///
-  /// @param[in] id  The id name of the attribute.
+  /// @param[in] name  The id name of the attribute.
   ///
   /// @throws LogicError  There is no such attribute.
-  const Attribute& GetAttribute(const std::string& id) const;
+  const Attribute& GetAttribute(const std::string& name) const;
 
  protected:
   ~Element() = default;
@@ -95,11 +104,27 @@ class Element {
  private:
   const std::string kName_;  ///< The original name of the element.
   std::string label_;  ///< The label text for the element.
-  std::map<std::string, Attribute> attributes_;  ///< Collection of attributes.
+
+  /// Container of attributes ordered by insertion time.
+  /// The attributes are unique by their names.
+  ///
+  /// @note Using a hash table incurs a huge memory overhead (~400B / element).
+  /// @note Elements are expected to have few attributes,
+  ///       complex containers may be overkill.
+  std::vector<Attribute> attributes_;
 };
 
+/// Table of elements with unique names.
+///
+/// @tparam T  Value or (smart/raw) pointer type deriving from Element class.
+template <typename T>
+using ElementTable = boost::multi_index_container<
+    T, boost::multi_index::indexed_by<
+           boost::multi_index::hashed_unique<boost::multi_index::const_mem_fun<
+               Element, const std::string&, &Element::name>>>>;
+
 /// Role, access attributes for elements.
-enum class RoleSpecifier { kPublic, kPrivate };
+enum class RoleSpecifier : std::uint8_t { kPublic, kPrivate };
 
 /// Mixin class that manages private or public roles
 /// for elements as needed.
@@ -128,9 +153,21 @@ class Role {
   ~Role() = default;
 
  private:
-  const RoleSpecifier kRole_;  ///< The role of the element.
   const std::string kBasePath_;  ///< A series of ancestor containers.
+  const RoleSpecifier kRole_;  ///< The role of the element.
 };
+
+/// Computes the full path of an element.
+///
+/// @tparam T  Pointer to Element type deriving from Role.
+///
+/// @param[in] element  A valid element with a name and base path.
+///
+/// @returns A string representation of the full path.
+template <typename T>
+std::string GetFullPath(const T& element) {
+  return element->base_path() + "." + element->name();
+}
 
 /// Mixin class for assigning unique identifiers to elements.
 class Id {
@@ -153,6 +190,40 @@ class Id {
 
  private:
   const std::string kId_;  ///< Unique Id name of an element.
+};
+
+/// Table of elements with unique ids.
+///
+/// @tparam T  Value or (smart/raw) pointer type deriving from Id class.
+template <typename T>
+using IdTable = boost::multi_index_container<
+    T,
+    boost::multi_index::indexed_by<boost::multi_index::hashed_unique<
+        boost::multi_index::const_mem_fun<Id, const std::string&, &Id::id>>>>;
+
+/// Mixin class for providing marks for graph nodes.
+class NodeMark {
+ public:
+  /// Possible marks for the node.
+  enum Mark : std::uint8_t {
+    kClear = 0,  ///< Implicit conversion to Boolean false.
+    kTemporary,
+    kPermanent
+  };
+
+  /// @returns The mark of this node.
+  Mark mark() const { return mark_; }
+
+  /// Sets the mark for this node.
+  ///
+  /// @param[in] label  The specific label for the node.
+  void mark(Mark label) { mark_ = label; }
+
+ protected:
+  ~NodeMark() = default;
+
+ private:
+  Mark mark_ = kClear;  ///< The mark for traversal or toposort.
 };
 
 }  // namespace mef

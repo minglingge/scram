@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Olzhas Rakhimov
+ * Copyright (C) 2014-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,8 +35,8 @@ TEST_F(RiskAnalysisTest, Baobab1) {
       "./share/scram/input/Baobab/baobab1-basic-events.xml"};
   settings.probability_analysis(true);
   ASSERT_NO_THROW(ProcessInputFiles(input_files));
-  ASSERT_NO_THROW(ran->Analyze());
-  if (settings.approximation() == "rare-event") {
+  ASSERT_NO_THROW(analysis->Analyze());
+  if (settings.approximation() == Approximation::kRareEvent) {
     EXPECT_NEAR(1.6815e-6, p_total(), 1e-8);
   } else {  // Probability with BDD.
     EXPECT_NEAR(1.2823e-6, p_total(), 1e-8);
@@ -53,7 +53,7 @@ TEST_P(RiskAnalysisTest, Baobab1L8) {
       "./share/scram/input/Baobab/baobab1-basic-events.xml"};
   settings.limit_order(8);
   ASSERT_NO_THROW(ProcessInputFiles(input_files));
-  ASSERT_NO_THROW(ran->Analyze());
+  ASSERT_NO_THROW(analysis->Analyze());
   EXPECT_EQ(25892, products().size());
   std::vector<int> distr = {0, 1, 1, 70, 400, 2212, 14748, 8460};
   EXPECT_EQ(distr, ProductDistribution());

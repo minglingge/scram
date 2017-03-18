@@ -6,7 +6,7 @@ DEBUG2: 		Applying CCF models...
 INFO: Running analysis: r1
 DEBUG2: 		Preprocessing...
 DEBUG2: 		Preprocessing Phase I...
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 84
 DEBUG4: 				# of modules: 0
 DEBUG4: 				# of gates with negative indices: 0
@@ -18,7 +18,7 @@ DEBUG4: 				Total # of variables: 61
 DEBUG4: 				# of variables with negative indices: 0
 DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG2: 		Preprocessing Phase II...
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 84
 DEBUG4: 				# of modules: 0
 DEBUG4: 				# of gates with negative indices: 0
@@ -32,22 +32,16 @@ DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG3: 			Detecting multiple definitions...
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
-DEBUG4: 				Found original module: G1000000
+DEBUG4: 				Found original module: G63
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Coalescing gates...
 DEBUG3: 			Gate coalescence is done!
 DEBUG3: 			Merging common arguments...
 DEBUG4: 				Merging common arguments for AND gates...
-DEBUG5: 					Clearing node counts...
-DEBUG5: 					Node counts are clear!
 DEBUG4: 				Working with 1 modules...
 DEBUG4: 				Finished merging for AND gates!
 DEBUG4: 				Merging common arguments for OR gates...
-DEBUG5: 					Clearing node counts...
-DEBUG5: 					Node counts are clear!
 DEBUG4: 				Working with 1 modules...
 DEBUG4: 				Merging 2 collection...
 DEBUG4: 				Transforming 2 table groups...
@@ -83,55 +77,35 @@ DEBUG5: 					Got NULL gates to clear!
 DEBUG3: 			Distributivity detection is done!
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Boolean optimization...
-DEBUG5: 					Clearing OptiValues...
-DEBUG5: 					Node OptiValues are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG4: 				Node 1000032: 2 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 95: 2 redundant parent(s) and 2 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
-DEBUG4: 				Node 1000034: 2 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 97: 2 redundant parent(s) and 2 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
-DEBUG4: 				Node 1000036: 2 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 99: 2 redundant parent(s) and 2 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
-DEBUG4: 				Node 1000038: 2 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 101: 2 redundant parent(s) and 2 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
-DEBUG4: 				Node 1000018: 2 redundant parent(s) and 3 failure destination(s)
-DEBUG4: 				Node 1000024: 2 redundant parent(s) and 3 failure destination(s)
-DEBUG4: 				Node 1000053: 2 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 81: 2 redundant parent(s) and 3 failure destination(s)
+DEBUG4: 				Node 87: 2 redundant parent(s) and 3 failure destination(s)
+DEBUG4: 				Node 116: 2 redundant parent(s) and 4 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
-DEBUG4: 				Node 1000070: 2 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 133: 2 redundant parent(s) and 4 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
 DEBUG3: 			Decomposition of common nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Coalescing gates...
 DEBUG3: 			Gate coalescence is done!
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 77
 DEBUG4: 				# of modules: 1
 DEBUG4: 				# of gates with negative indices: 0
@@ -143,7 +117,7 @@ DEBUG4: 				Total # of variables: 61
 DEBUG4: 				# of variables with negative indices: 0
 DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG2: 		Preprocessing Phase III...
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 77
 DEBUG4: 				# of modules: 1
 DEBUG4: 				# of gates with negative indices: 0
@@ -155,12 +129,8 @@ DEBUG4: 				Total # of variables: 61
 DEBUG4: 				# of variables with negative indices: 0
 DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG3: 			Full normalization of gates...
-DEBUG5: 					Clearing node order marks...
-DEBUG5: 					Node order marks are clear!
-DEBUG5: 					Clearing node order marks...
-DEBUG5: 					Node order marks are clear!
 DEBUG3: 			Finished the full normalization of gates!
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 131
 DEBUG4: 				# of modules: 1
 DEBUG4: 				# of gates with negative indices: 0
@@ -173,21 +143,15 @@ DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG3: 			Detecting multiple definitions...
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Coalescing gates...
 DEBUG3: 			Gate coalescence is done!
 DEBUG3: 			Merging common arguments...
 DEBUG4: 				Merging common arguments for AND gates...
-DEBUG5: 					Clearing node counts...
-DEBUG5: 					Node counts are clear!
 DEBUG4: 				Working with 1 modules...
 DEBUG4: 				Finished merging for AND gates!
 DEBUG4: 				Merging common arguments for OR gates...
-DEBUG5: 					Clearing node counts...
-DEBUG5: 					Node counts are clear!
 DEBUG4: 				Working with 1 modules...
 DEBUG4: 				Merging 6 collection...
 DEBUG4: 				Transforming 4 table groups...
@@ -255,64 +219,44 @@ DEBUG5: 					Considering 2 candidates...
 DEBUG3: 			Distributivity detection is done!
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Boolean optimization...
-DEBUG5: 					Clearing OptiValues...
-DEBUG5: 					Node OptiValues are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG4: 				Node 1000036: 1 redundant parent(s) and 2 failure destination(s)
-DEBUG4: 				Node 1000038: 1 redundant parent(s) and 2 failure destination(s)
-DEBUG4: 				Node 1000032: 1 redundant parent(s) and 8 failure destination(s)
-DEBUG4: 				Node 1000034: 1 redundant parent(s) and 8 failure destination(s)
-DEBUG4: 				Node 1000053: 2 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 99: 1 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 101: 1 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 95: 1 redundant parent(s) and 8 failure destination(s)
+DEBUG4: 				Node 97: 1 redundant parent(s) and 8 failure destination(s)
+DEBUG4: 				Node 116: 2 redundant parent(s) and 4 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
-DEBUG4: 				Node 1000070: 2 redundant parent(s) and 5 failure destination(s)
+DEBUG4: 				Node 133: 2 redundant parent(s) and 5 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
 DEBUG3: 			Decomposition of common nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
-DEBUG5: 					Reached decomposition sub-parent G1000042
-DEBUG5: 					Reached decomposition sub-parent G1000068
-DEBUG5: 					Reached decomposition sub-parent G1000047
-DEBUG5: 					Reached decomposition sub-parent G1000060
-DEBUG5: 					Reached decomposition sub-parent G1000033
-DEBUG5: 					Reached decomposition sub-parent G1000065
-DEBUG5: 					Reached decomposition sub-parent G1000041
-DEBUG5: 					Reached decomposition sub-parent G1000046
-DEBUG5: 					Reached decomposition sub-parent G1000059
-DEBUG5: 					Reached decomposition sub-parent G1000064
-DEBUG5: 					Reached decomposition sub-parent G1000051
-DEBUG5: 					Reached decomposition sub-parent G1000031
-DEBUG5: 					Reached decomposition sub-parent G1000068
-DEBUG5: 					Reached decomposition sub-parent G1000074
-DEBUG5: 					Reached decomposition sub-parent G1000051
+DEBUG5: 					Reached decomposition sub-parent G105
+DEBUG5: 					Reached decomposition sub-parent G131
+DEBUG5: 					Reached decomposition sub-parent G110
+DEBUG5: 					Reached decomposition sub-parent G123
+DEBUG5: 					Reached decomposition sub-parent G96
+DEBUG5: 					Reached decomposition sub-parent G128
+DEBUG5: 					Reached decomposition sub-parent G104
+DEBUG5: 					Reached decomposition sub-parent G109
+DEBUG5: 					Reached decomposition sub-parent G122
+DEBUG5: 					Reached decomposition sub-parent G127
+DEBUG5: 					Reached decomposition sub-parent G114
+DEBUG5: 					Reached decomposition sub-parent G94
+DEBUG5: 					Reached decomposition sub-parent G131
+DEBUG5: 					Reached decomposition sub-parent G137
+DEBUG5: 					Reached decomposition sub-parent G114
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Coalescing gates...
 DEBUG3: 			Gate coalescence is done!
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 124
 DEBUG4: 				# of modules: 1
 DEBUG4: 				# of gates with negative indices: 0
@@ -323,7 +267,7 @@ DEBUG4: 				Total # of variables: 61
 DEBUG4: 				# of variables with negative indices: 0
 DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG2: 		Preprocessing Phase V...
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 124
 DEBUG4: 				# of modules: 1
 DEBUG4: 				# of gates with negative indices: 0
@@ -334,21 +278,21 @@ DEBUG4: 				Total # of variables: 61
 DEBUG4: 				# of variables with negative indices: 0
 DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG3: 			Coalescing gates...
-DEBUG5: 					Handling duplicate argument for G1000096
-DEBUG5: 					Handling duplicate argument for G1000096
-DEBUG5: 					Handling duplicate argument for G1000102
-DEBUG5: 					Handling duplicate argument for G1000102
-DEBUG5: 					Handling duplicate argument for G1000126
-DEBUG5: 					Handling duplicate argument for G1000126
-DEBUG5: 					Handling duplicate argument for G1000132
-DEBUG5: 					Handling duplicate argument for G1000132
-DEBUG5: 					Handling duplicate argument for G1000138
-DEBUG5: 					Handling duplicate argument for G1000138
-DEBUG5: 					Handling duplicate argument for G1000138
-DEBUG5: 					Handling duplicate argument for G1000144
-DEBUG5: 					Handling duplicate argument for G1000144
+DEBUG5: 					Handling duplicate argument for G159
+DEBUG5: 					Handling duplicate argument for G159
+DEBUG5: 					Handling duplicate argument for G165
+DEBUG5: 					Handling duplicate argument for G165
+DEBUG5: 					Handling duplicate argument for G189
+DEBUG5: 					Handling duplicate argument for G189
+DEBUG5: 					Handling duplicate argument for G195
+DEBUG5: 					Handling duplicate argument for G195
+DEBUG5: 					Handling duplicate argument for G201
+DEBUG5: 					Handling duplicate argument for G201
+DEBUG5: 					Handling duplicate argument for G201
+DEBUG5: 					Handling duplicate argument for G207
+DEBUG5: 					Handling duplicate argument for G207
 DEBUG3: 			Gate coalescence is done!
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 123
 DEBUG4: 				# of modules: 1
 DEBUG4: 				# of gates with negative indices: 0
@@ -361,21 +305,15 @@ DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG3: 			Detecting multiple definitions...
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Coalescing gates...
 DEBUG3: 			Gate coalescence is done!
 DEBUG3: 			Merging common arguments...
 DEBUG4: 				Merging common arguments for AND gates...
-DEBUG5: 					Clearing node counts...
-DEBUG5: 					Node counts are clear!
 DEBUG4: 				Working with 1 modules...
 DEBUG4: 				Finished merging for AND gates!
 DEBUG4: 				Merging common arguments for OR gates...
-DEBUG5: 					Clearing node counts...
-DEBUG5: 					Node counts are clear!
 DEBUG4: 				Working with 1 modules...
 DEBUG4: 				Merging 5 collection...
 DEBUG4: 				Transforming 5 table groups...
@@ -445,64 +383,44 @@ DEBUG5: 					Considering 2 candidates...
 DEBUG3: 			Distributivity detection is done!
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Boolean optimization...
-DEBUG5: 					Clearing OptiValues...
-DEBUG5: 					Node OptiValues are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG4: 				Node 1000036: 1 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 99: 1 redundant parent(s) and 2 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
-DEBUG4: 				Node 1000038: 1 redundant parent(s) and 2 failure destination(s)
-DEBUG4: 				Node 1000032: 1 redundant parent(s) and 8 failure destination(s)
+DEBUG4: 				Node 101: 1 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 95: 1 redundant parent(s) and 8 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
-DEBUG4: 				Node 1000034: 1 redundant parent(s) and 8 failure destination(s)
-DEBUG4: 				Node 1000070: 2 redundant parent(s) and 5 failure destination(s)
+DEBUG4: 				Node 97: 1 redundant parent(s) and 8 failure destination(s)
+DEBUG4: 				Node 133: 2 redundant parent(s) and 5 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
 DEBUG3: 			Decomposition of common nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
-DEBUG5: 					Reached decomposition sub-parent G1000042
-DEBUG5: 					Reached decomposition sub-parent G1000068
-DEBUG5: 					Reached decomposition sub-parent G1000047
-DEBUG5: 					Reached decomposition sub-parent G1000060
-DEBUG5: 					Reached decomposition sub-parent G1000033
-DEBUG5: 					Reached decomposition sub-parent G1000065
-DEBUG5: 					Reached decomposition sub-parent G1000041
-DEBUG5: 					Reached decomposition sub-parent G1000046
-DEBUG5: 					Reached decomposition sub-parent G1000059
-DEBUG5: 					Reached decomposition sub-parent G1000064
-DEBUG5: 					Reached decomposition sub-parent G1000051
-DEBUG5: 					Reached decomposition sub-parent G1000031
-DEBUG5: 					Reached decomposition sub-parent G1000068
-DEBUG5: 					Reached decomposition sub-parent G1000074
-DEBUG5: 					Reached decomposition sub-parent G1000051
+DEBUG5: 					Reached decomposition sub-parent G105
+DEBUG5: 					Reached decomposition sub-parent G131
+DEBUG5: 					Reached decomposition sub-parent G110
+DEBUG5: 					Reached decomposition sub-parent G123
+DEBUG5: 					Reached decomposition sub-parent G96
+DEBUG5: 					Reached decomposition sub-parent G128
+DEBUG5: 					Reached decomposition sub-parent G104
+DEBUG5: 					Reached decomposition sub-parent G109
+DEBUG5: 					Reached decomposition sub-parent G122
+DEBUG5: 					Reached decomposition sub-parent G127
+DEBUG5: 					Reached decomposition sub-parent G114
+DEBUG5: 					Reached decomposition sub-parent G94
+DEBUG5: 					Reached decomposition sub-parent G131
+DEBUG5: 					Reached decomposition sub-parent G137
+DEBUG5: 					Reached decomposition sub-parent G114
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Coalescing gates...
 DEBUG3: 			Gate coalescence is done!
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 124
 DEBUG4: 				# of modules: 1
 DEBUG4: 				# of gates with negative indices: 0
@@ -513,21 +431,21 @@ DEBUG4: 				Total # of variables: 61
 DEBUG4: 				# of variables with negative indices: 0
 DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG3: 			Coalescing gates...
-DEBUG5: 					Handling duplicate argument for G1000096
-DEBUG5: 					Handling duplicate argument for G1000096
-DEBUG5: 					Handling duplicate argument for G1000102
-DEBUG5: 					Handling duplicate argument for G1000102
-DEBUG5: 					Handling duplicate argument for G1000126
-DEBUG5: 					Handling duplicate argument for G1000126
-DEBUG5: 					Handling duplicate argument for G1000132
-DEBUG5: 					Handling duplicate argument for G1000132
-DEBUG5: 					Handling duplicate argument for G1000138
-DEBUG5: 					Handling duplicate argument for G1000138
-DEBUG5: 					Handling duplicate argument for G1000138
-DEBUG5: 					Handling duplicate argument for G1000144
-DEBUG5: 					Handling duplicate argument for G1000144
+DEBUG5: 					Handling duplicate argument for G159
+DEBUG5: 					Handling duplicate argument for G159
+DEBUG5: 					Handling duplicate argument for G165
+DEBUG5: 					Handling duplicate argument for G165
+DEBUG5: 					Handling duplicate argument for G189
+DEBUG5: 					Handling duplicate argument for G189
+DEBUG5: 					Handling duplicate argument for G195
+DEBUG5: 					Handling duplicate argument for G195
+DEBUG5: 					Handling duplicate argument for G201
+DEBUG5: 					Handling duplicate argument for G201
+DEBUG5: 					Handling duplicate argument for G201
+DEBUG5: 					Handling duplicate argument for G207
+DEBUG5: 					Handling duplicate argument for G207
 DEBUG3: 			Gate coalescence is done!
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 123
 DEBUG4: 				# of modules: 1
 DEBUG4: 				# of gates with negative indices: 0
@@ -537,269 +455,263 @@ DEBUG5: 					OR gates: 72
 DEBUG4: 				Total # of variables: 61
 DEBUG4: 				# of variables with negative indices: 0
 DEBUG4: 				# of variables with positive and negative indices: 0
-DEBUG5: 					Clearing node order marks...
-DEBUG5: 					Node order marks are clear!
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG2: 		Launching the algorithm...
 DEBUG2: 		Start minimal cut set generation.
-DEBUG3: 			Finding cut sets from module: G1000000
+DEBUG3: 			Finding cut sets from module: G63
 DEBUG4: 				Limit on product order: 20
-DEBUG5: 					Expanding gate G1000029
-DEBUG5: 					Extracting cut sets for G1000029
-DEBUG5: 					Expanding gate G1000140
-DEBUG5: 					Extracting cut sets for G1000140
-DEBUG5: 					Expanding gate G1000141
-DEBUG5: 					Extracting cut sets for G1000141
-DEBUG5: 					Expanding gate G1000145
-DEBUG5: 					Extracting cut sets for G1000145
-DEBUG5: 					Expanding gate G1000143
-DEBUG5: 					Extracting cut sets for G1000143
-DEBUG5: 					Expanding gate G1000144
-DEBUG5: 					Extracting cut sets for G1000144
-DEBUG5: 					Expanding gate G1000044
-DEBUG5: 					Extracting cut sets for G1000044
-DEBUG5: 					Expanding gate G1000134
-DEBUG5: 					Extracting cut sets for G1000134
-DEBUG5: 					Expanding gate G1000135
-DEBUG5: 					Extracting cut sets for G1000135
-DEBUG5: 					Expanding gate G1000139
-DEBUG5: 					Extracting cut sets for G1000139
-DEBUG5: 					Expanding gate G1000137
-DEBUG5: 					Extracting cut sets for G1000137
-DEBUG5: 					Expanding gate G1000138
-DEBUG5: 					Extracting cut sets for G1000138
-DEBUG5: 					Expanding gate G1000076
-DEBUG5: 					Extracting cut sets for G1000076
-DEBUG5: 					Expanding gate G1000128
-DEBUG5: 					Extracting cut sets for G1000128
-DEBUG5: 					Expanding gate G1000129
-DEBUG5: 					Extracting cut sets for G1000129
-DEBUG5: 					Expanding gate G1000133
-DEBUG5: 					Extracting cut sets for G1000133
-DEBUG5: 					Expanding gate G1000131
-DEBUG5: 					Extracting cut sets for G1000131
-DEBUG5: 					Expanding gate G1000132
-DEBUG5: 					Extracting cut sets for G1000132
-DEBUG5: 					Expanding gate G1000049
-DEBUG5: 					Extracting cut sets for G1000049
-DEBUG5: 					Expanding gate G1000122
-DEBUG5: 					Extracting cut sets for G1000122
-DEBUG5: 					Expanding gate G1000123
-DEBUG5: 					Extracting cut sets for G1000123
-DEBUG5: 					Expanding gate G1000127
-DEBUG5: 					Extracting cut sets for G1000127
-DEBUG5: 					Expanding gate G1000125
-DEBUG5: 					Extracting cut sets for G1000125
-DEBUG5: 					Expanding gate G1000126
-DEBUG5: 					Extracting cut sets for G1000126
-DEBUG5: 					Expanding gate G1000037
-DEBUG5: 					Extracting cut sets for G1000037
-DEBUG5: 					Expanding gate G1000142
-DEBUG5: 					Extracting cut sets for G1000142
-DEBUG5: 					Expanding gate G1000041
-DEBUG5: 					Extracting cut sets for G1000041
-DEBUG5: 					Expanding gate G1000042
-DEBUG5: 					Extracting cut sets for G1000042
-DEBUG5: 					Expanding gate G1000043
-DEBUG5: 					Extracting cut sets for G1000043
-DEBUG5: 					Expanding gate G1000136
-DEBUG5: 					Extracting cut sets for G1000136
-DEBUG5: 					Expanding gate G1000051
-DEBUG5: 					Extracting cut sets for G1000051
-DEBUG5: 					Expanding gate G1000068
-DEBUG5: 					Extracting cut sets for G1000068
-DEBUG5: 					Expanding gate G1000074
-DEBUG5: 					Extracting cut sets for G1000074
-DEBUG5: 					Expanding gate G1000130
-DEBUG5: 					Extracting cut sets for G1000130
-DEBUG5: 					Expanding gate G1000046
-DEBUG5: 					Extracting cut sets for G1000046
-DEBUG5: 					Expanding gate G1000047
-DEBUG5: 					Extracting cut sets for G1000047
-DEBUG5: 					Expanding gate G1000048
-DEBUG5: 					Extracting cut sets for G1000048
-DEBUG5: 					Expanding gate G1000124
-DEBUG5: 					Extracting cut sets for G1000124
-DEBUG5: 					Expanding gate G1000031
-DEBUG5: 					Extracting cut sets for G1000031
-DEBUG5: 					Expanding gate G1000033
-DEBUG5: 					Extracting cut sets for G1000033
-DEBUG5: 					Expanding gate G1000035
-DEBUG5: 					Extracting cut sets for G1000035
-DEBUG5: 					Expanding gate G1000089
-DEBUG5: 					Extracting cut sets for G1000089
-DEBUG5: 					Expanding gate G1000116
-DEBUG5: 					Extracting cut sets for G1000116
-DEBUG5: 					Expanding gate G1000117
-DEBUG5: 					Extracting cut sets for G1000117
-DEBUG5: 					Expanding gate G1000121
-DEBUG5: 					Extracting cut sets for G1000121
-DEBUG5: 					Expanding gate G1000119
-DEBUG5: 					Extracting cut sets for G1000119
-DEBUG5: 					Expanding gate G1000120
-DEBUG5: 					Extracting cut sets for G1000120
-DEBUG5: 					Expanding gate G1000009
-DEBUG5: 					Extracting cut sets for G1000009
-DEBUG5: 					Expanding gate G1000110
-DEBUG5: 					Extracting cut sets for G1000110
-DEBUG5: 					Expanding gate G1000111
-DEBUG5: 					Extracting cut sets for G1000111
-DEBUG5: 					Expanding gate G1000115
-DEBUG5: 					Extracting cut sets for G1000115
-DEBUG5: 					Expanding gate G1000113
-DEBUG5: 					Extracting cut sets for G1000113
-DEBUG5: 					Expanding gate G1000114
-DEBUG5: 					Extracting cut sets for G1000114
-DEBUG5: 					Expanding gate G1000015
-DEBUG5: 					Extracting cut sets for G1000015
-DEBUG5: 					Expanding gate G1000118
-DEBUG5: 					Extracting cut sets for G1000118
-DEBUG5: 					Expanding gate G1000003
-DEBUG5: 					Extracting cut sets for G1000003
-DEBUG5: 					Expanding gate G1000005
-DEBUG5: 					Extracting cut sets for G1000005
-DEBUG5: 					Expanding gate G1000007
-DEBUG5: 					Extracting cut sets for G1000007
-DEBUG5: 					Expanding gate G1000112
-DEBUG5: 					Extracting cut sets for G1000112
-DEBUG5: 					Expanding gate G1000012
-DEBUG5: 					Extracting cut sets for G1000012
-DEBUG5: 					Expanding gate G1000013
-DEBUG5: 					Extracting cut sets for G1000013
-DEBUG5: 					Expanding gate G1000014
-DEBUG5: 					Extracting cut sets for G1000014
-DEBUG5: 					Expanding gate G1000090
-DEBUG5: 					Extracting cut sets for G1000090
-DEBUG5: 					Expanding gate G1000150
-DEBUG5: 					Extracting cut sets for G1000150
-DEBUG5: 					Expanding gate G1000025
-DEBUG5: 					Extracting cut sets for G1000025
-DEBUG5: 					Expanding gate G1000027
-DEBUG5: 					Extracting cut sets for G1000027
-DEBUG5: 					Expanding gate G1000026
-DEBUG5: 					Extracting cut sets for G1000026
-DEBUG5: 					Expanding gate G1000151
-DEBUG5: 					Extracting cut sets for G1000151
-DEBUG5: 					Expanding gate G1000083
-DEBUG5: 					Extracting cut sets for G1000083
-DEBUG5: 					Expanding gate G1000081
-DEBUG5: 					Extracting cut sets for G1000081
-DEBUG5: 					Expanding gate G1000070
-DEBUG5: 					Extracting cut sets for G1000070
-DEBUG5: 					Expanding gate G1000072
-DEBUG5: 					Extracting cut sets for G1000072
-DEBUG5: 					Expanding gate G1000073
-DEBUG5: 					Extracting cut sets for G1000073
-DEBUG5: 					Expanding gate G1000091
-DEBUG5: 					Extracting cut sets for G1000091
-DEBUG5: 					Expanding gate G1000109
-DEBUG5: 					Extracting cut sets for G1000109
-DEBUG5: 					Expanding gate G1000028
-DEBUG5: 					Extracting cut sets for G1000028
-DEBUG5: 					Expanding gate G1000017
-DEBUG5: 					Extracting cut sets for G1000017
-DEBUG5: 					Expanding gate G1000107
-DEBUG5: 					Extracting cut sets for G1000107
-DEBUG5: 					Expanding gate G1000108
-DEBUG5: 					Extracting cut sets for G1000108
-DEBUG5: 					Expanding gate G1000022
-DEBUG5: 					Extracting cut sets for G1000022
-DEBUG5: 					Expanding gate G1000104
-DEBUG5: 					Extracting cut sets for G1000104
-DEBUG5: 					Expanding gate G1000105
-DEBUG5: 					Extracting cut sets for G1000105
-DEBUG5: 					Expanding gate G1000010
-DEBUG5: 					Extracting cut sets for G1000010
-DEBUG5: 					Expanding gate G1000023
-DEBUG5: 					Extracting cut sets for G1000023
-DEBUG5: 					Expanding gate G1000006
-DEBUG5: 					Extracting cut sets for G1000006
-DEBUG5: 					Expanding gate G1000152
-DEBUG5: 					Extracting cut sets for G1000152
-DEBUG5: 					Expanding gate G1000019
-DEBUG5: 					Extracting cut sets for G1000019
-DEBUG5: 					Expanding gate G1000021
-DEBUG5: 					Extracting cut sets for G1000021
-DEBUG5: 					Expanding gate G1000020
-DEBUG5: 					Extracting cut sets for G1000020
-DEBUG5: 					Expanding gate G1000053
-DEBUG5: 					Extracting cut sets for G1000053
-DEBUG5: 					Expanding gate G1000055
-DEBUG5: 					Extracting cut sets for G1000055
-DEBUG5: 					Expanding gate G1000057
-DEBUG5: 					Extracting cut sets for G1000057
-DEBUG5: 					Expanding gate G1000098
-DEBUG5: 					Extracting cut sets for G1000098
-DEBUG5: 					Expanding gate G1000099
-DEBUG5: 					Extracting cut sets for G1000099
-DEBUG5: 					Expanding gate G1000103
-DEBUG5: 					Extracting cut sets for G1000103
-DEBUG5: 					Expanding gate G1000101
-DEBUG5: 					Extracting cut sets for G1000101
-DEBUG5: 					Expanding gate G1000102
-DEBUG5: 					Extracting cut sets for G1000102
-DEBUG5: 					Expanding gate G1000067
-DEBUG5: 					Extracting cut sets for G1000067
-DEBUG5: 					Expanding gate G1000092
-DEBUG5: 					Extracting cut sets for G1000092
-DEBUG5: 					Expanding gate G1000093
-DEBUG5: 					Extracting cut sets for G1000093
-DEBUG5: 					Expanding gate G1000097
-DEBUG5: 					Extracting cut sets for G1000097
-DEBUG5: 					Expanding gate G1000095
-DEBUG5: 					Extracting cut sets for G1000095
-DEBUG5: 					Expanding gate G1000096
-DEBUG5: 					Extracting cut sets for G1000096
-DEBUG5: 					Expanding gate G1000062
-DEBUG5: 					Extracting cut sets for G1000062
-DEBUG5: 					Expanding gate G1000038
-DEBUG5: 					Extracting cut sets for G1000038
-DEBUG5: 					Expanding gate G1000100
-DEBUG5: 					Extracting cut sets for G1000100
-DEBUG5: 					Expanding gate G1000064
-DEBUG5: 					Extracting cut sets for G1000064
-DEBUG5: 					Expanding gate G1000065
-DEBUG5: 					Extracting cut sets for G1000065
-DEBUG5: 					Expanding gate G1000066
-DEBUG5: 					Extracting cut sets for G1000066
-DEBUG5: 					Expanding gate G1000094
-DEBUG5: 					Extracting cut sets for G1000094
-DEBUG5: 					Expanding gate G1000059
-DEBUG5: 					Extracting cut sets for G1000059
-DEBUG5: 					Expanding gate G1000060
-DEBUG5: 					Extracting cut sets for G1000060
-DEBUG5: 					Expanding gate G1000034
-DEBUG5: 					Extracting cut sets for G1000034
-DEBUG5: 					Expanding gate G1000061
-DEBUG5: 					Extracting cut sets for G1000061
-DEBUG5: 					Expanding gate G1000056
-DEBUG5: 					Extracting cut sets for G1000056
-DEBUG5: 					Expanding gate G1000153
-DEBUG5: 					Extracting cut sets for G1000153
-DEBUG5: 					Expanding gate G1000082
-DEBUG5: 					Extracting cut sets for G1000082
-DEBUG5: 					Expanding gate G1000036
-DEBUG5: 					Extracting cut sets for G1000036
-DEBUG5: 					Expanding gate G1000008
-DEBUG5: 					Extracting cut sets for G1000008
-DEBUG5: 					Expanding gate G1000080
-DEBUG5: 					Extracting cut sets for G1000080
-DEBUG5: 					Expanding gate G1000032
-DEBUG5: 					Extracting cut sets for G1000032
-DEBUG5: 					Expanding gate G1000004
-DEBUG5: 					Extracting cut sets for G1000004
-DEBUG4: 				# of ZBDD nodes created: 43713
-DEBUG4: 				# of entries in unique table: 11706
+DEBUG5: 					Expanding gate G92
+DEBUG5: 					Extracting cut sets for G92
+DEBUG5: 					Expanding gate G203
+DEBUG5: 					Extracting cut sets for G203
+DEBUG5: 					Expanding gate G204
+DEBUG5: 					Extracting cut sets for G204
+DEBUG5: 					Expanding gate G208
+DEBUG5: 					Extracting cut sets for G208
+DEBUG5: 					Expanding gate G206
+DEBUG5: 					Extracting cut sets for G206
+DEBUG5: 					Expanding gate G207
+DEBUG5: 					Extracting cut sets for G207
+DEBUG5: 					Expanding gate G107
+DEBUG5: 					Extracting cut sets for G107
+DEBUG5: 					Expanding gate G197
+DEBUG5: 					Extracting cut sets for G197
+DEBUG5: 					Expanding gate G198
+DEBUG5: 					Extracting cut sets for G198
+DEBUG5: 					Expanding gate G202
+DEBUG5: 					Extracting cut sets for G202
+DEBUG5: 					Expanding gate G200
+DEBUG5: 					Extracting cut sets for G200
+DEBUG5: 					Expanding gate G201
+DEBUG5: 					Extracting cut sets for G201
+DEBUG5: 					Expanding gate G139
+DEBUG5: 					Extracting cut sets for G139
+DEBUG5: 					Expanding gate G191
+DEBUG5: 					Extracting cut sets for G191
+DEBUG5: 					Expanding gate G192
+DEBUG5: 					Extracting cut sets for G192
+DEBUG5: 					Expanding gate G196
+DEBUG5: 					Extracting cut sets for G196
+DEBUG5: 					Expanding gate G194
+DEBUG5: 					Extracting cut sets for G194
+DEBUG5: 					Expanding gate G195
+DEBUG5: 					Extracting cut sets for G195
+DEBUG5: 					Expanding gate G112
+DEBUG5: 					Extracting cut sets for G112
+DEBUG5: 					Expanding gate G185
+DEBUG5: 					Extracting cut sets for G185
+DEBUG5: 					Expanding gate G186
+DEBUG5: 					Extracting cut sets for G186
+DEBUG5: 					Expanding gate G190
+DEBUG5: 					Extracting cut sets for G190
+DEBUG5: 					Expanding gate G188
+DEBUG5: 					Extracting cut sets for G188
+DEBUG5: 					Expanding gate G189
+DEBUG5: 					Extracting cut sets for G189
+DEBUG5: 					Expanding gate G100
+DEBUG5: 					Extracting cut sets for G100
+DEBUG5: 					Expanding gate G205
+DEBUG5: 					Extracting cut sets for G205
+DEBUG5: 					Expanding gate G104
+DEBUG5: 					Extracting cut sets for G104
+DEBUG5: 					Expanding gate G105
+DEBUG5: 					Extracting cut sets for G105
+DEBUG5: 					Expanding gate G106
+DEBUG5: 					Extracting cut sets for G106
+DEBUG5: 					Expanding gate G199
+DEBUG5: 					Extracting cut sets for G199
+DEBUG5: 					Expanding gate G114
+DEBUG5: 					Extracting cut sets for G114
+DEBUG5: 					Expanding gate G131
+DEBUG5: 					Extracting cut sets for G131
+DEBUG5: 					Expanding gate G137
+DEBUG5: 					Extracting cut sets for G137
+DEBUG5: 					Expanding gate G193
+DEBUG5: 					Extracting cut sets for G193
+DEBUG5: 					Expanding gate G109
+DEBUG5: 					Extracting cut sets for G109
+DEBUG5: 					Expanding gate G110
+DEBUG5: 					Extracting cut sets for G110
+DEBUG5: 					Expanding gate G111
+DEBUG5: 					Extracting cut sets for G111
+DEBUG5: 					Expanding gate G187
+DEBUG5: 					Extracting cut sets for G187
+DEBUG5: 					Expanding gate G94
+DEBUG5: 					Extracting cut sets for G94
+DEBUG5: 					Expanding gate G96
+DEBUG5: 					Extracting cut sets for G96
+DEBUG5: 					Expanding gate G98
+DEBUG5: 					Extracting cut sets for G98
+DEBUG5: 					Expanding gate G152
+DEBUG5: 					Extracting cut sets for G152
+DEBUG5: 					Expanding gate G179
+DEBUG5: 					Extracting cut sets for G179
+DEBUG5: 					Expanding gate G180
+DEBUG5: 					Extracting cut sets for G180
+DEBUG5: 					Expanding gate G184
+DEBUG5: 					Extracting cut sets for G184
+DEBUG5: 					Expanding gate G182
+DEBUG5: 					Extracting cut sets for G182
+DEBUG5: 					Expanding gate G183
+DEBUG5: 					Extracting cut sets for G183
+DEBUG5: 					Expanding gate G72
+DEBUG5: 					Extracting cut sets for G72
+DEBUG5: 					Expanding gate G173
+DEBUG5: 					Extracting cut sets for G173
+DEBUG5: 					Expanding gate G174
+DEBUG5: 					Extracting cut sets for G174
+DEBUG5: 					Expanding gate G178
+DEBUG5: 					Extracting cut sets for G178
+DEBUG5: 					Expanding gate G176
+DEBUG5: 					Extracting cut sets for G176
+DEBUG5: 					Expanding gate G177
+DEBUG5: 					Extracting cut sets for G177
+DEBUG5: 					Expanding gate G78
+DEBUG5: 					Extracting cut sets for G78
+DEBUG5: 					Expanding gate G181
+DEBUG5: 					Extracting cut sets for G181
+DEBUG5: 					Expanding gate G66
+DEBUG5: 					Extracting cut sets for G66
+DEBUG5: 					Expanding gate G68
+DEBUG5: 					Extracting cut sets for G68
+DEBUG5: 					Expanding gate G70
+DEBUG5: 					Extracting cut sets for G70
+DEBUG5: 					Expanding gate G175
+DEBUG5: 					Extracting cut sets for G175
+DEBUG5: 					Expanding gate G75
+DEBUG5: 					Extracting cut sets for G75
+DEBUG5: 					Expanding gate G76
+DEBUG5: 					Extracting cut sets for G76
+DEBUG5: 					Expanding gate G77
+DEBUG5: 					Extracting cut sets for G77
+DEBUG5: 					Expanding gate G153
+DEBUG5: 					Extracting cut sets for G153
+DEBUG5: 					Expanding gate G213
+DEBUG5: 					Extracting cut sets for G213
+DEBUG5: 					Expanding gate G88
+DEBUG5: 					Extracting cut sets for G88
+DEBUG5: 					Expanding gate G90
+DEBUG5: 					Extracting cut sets for G90
+DEBUG5: 					Expanding gate G89
+DEBUG5: 					Extracting cut sets for G89
+DEBUG5: 					Expanding gate G214
+DEBUG5: 					Extracting cut sets for G214
+DEBUG5: 					Expanding gate G146
+DEBUG5: 					Extracting cut sets for G146
+DEBUG5: 					Expanding gate G144
+DEBUG5: 					Extracting cut sets for G144
+DEBUG5: 					Expanding gate G133
+DEBUG5: 					Extracting cut sets for G133
+DEBUG5: 					Expanding gate G135
+DEBUG5: 					Extracting cut sets for G135
+DEBUG5: 					Expanding gate G136
+DEBUG5: 					Extracting cut sets for G136
+DEBUG5: 					Expanding gate G154
+DEBUG5: 					Extracting cut sets for G154
+DEBUG5: 					Expanding gate G172
+DEBUG5: 					Extracting cut sets for G172
+DEBUG5: 					Expanding gate G91
+DEBUG5: 					Extracting cut sets for G91
+DEBUG5: 					Expanding gate G80
+DEBUG5: 					Extracting cut sets for G80
+DEBUG5: 					Expanding gate G170
+DEBUG5: 					Extracting cut sets for G170
+DEBUG5: 					Expanding gate G171
+DEBUG5: 					Extracting cut sets for G171
+DEBUG5: 					Expanding gate G85
+DEBUG5: 					Extracting cut sets for G85
+DEBUG5: 					Expanding gate G167
+DEBUG5: 					Extracting cut sets for G167
+DEBUG5: 					Expanding gate G168
+DEBUG5: 					Extracting cut sets for G168
+DEBUG5: 					Expanding gate G73
+DEBUG5: 					Extracting cut sets for G73
+DEBUG5: 					Expanding gate G86
+DEBUG5: 					Extracting cut sets for G86
+DEBUG5: 					Expanding gate G69
+DEBUG5: 					Extracting cut sets for G69
+DEBUG5: 					Expanding gate G215
+DEBUG5: 					Extracting cut sets for G215
+DEBUG5: 					Expanding gate G216
+DEBUG5: 					Extracting cut sets for G216
+DEBUG5: 					Expanding gate G145
+DEBUG5: 					Extracting cut sets for G145
+DEBUG5: 					Expanding gate G143
+DEBUG5: 					Extracting cut sets for G143
+DEBUG5: 					Expanding gate G82
+DEBUG5: 					Extracting cut sets for G82
+DEBUG5: 					Expanding gate G84
+DEBUG5: 					Extracting cut sets for G84
+DEBUG5: 					Expanding gate G83
+DEBUG5: 					Extracting cut sets for G83
+DEBUG5: 					Expanding gate G116
+DEBUG5: 					Extracting cut sets for G116
+DEBUG5: 					Expanding gate G118
+DEBUG5: 					Extracting cut sets for G118
+DEBUG5: 					Expanding gate G67
+DEBUG5: 					Extracting cut sets for G67
+DEBUG5: 					Expanding gate G119
+DEBUG5: 					Extracting cut sets for G119
+DEBUG5: 					Expanding gate G71
+DEBUG5: 					Extracting cut sets for G71
+DEBUG5: 					Expanding gate G120
+DEBUG5: 					Extracting cut sets for G120
+DEBUG5: 					Expanding gate G161
+DEBUG5: 					Extracting cut sets for G161
+DEBUG5: 					Expanding gate G162
+DEBUG5: 					Extracting cut sets for G162
+DEBUG5: 					Expanding gate G166
+DEBUG5: 					Extracting cut sets for G166
+DEBUG5: 					Expanding gate G164
+DEBUG5: 					Extracting cut sets for G164
+DEBUG5: 					Expanding gate G165
+DEBUG5: 					Extracting cut sets for G165
+DEBUG5: 					Expanding gate G130
+DEBUG5: 					Extracting cut sets for G130
+DEBUG5: 					Expanding gate G155
+DEBUG5: 					Extracting cut sets for G155
+DEBUG5: 					Expanding gate G156
+DEBUG5: 					Extracting cut sets for G156
+DEBUG5: 					Expanding gate G160
+DEBUG5: 					Extracting cut sets for G160
+DEBUG5: 					Expanding gate G158
+DEBUG5: 					Extracting cut sets for G158
+DEBUG5: 					Expanding gate G159
+DEBUG5: 					Extracting cut sets for G159
+DEBUG5: 					Expanding gate G125
+DEBUG5: 					Extracting cut sets for G125
+DEBUG5: 					Expanding gate G101
+DEBUG5: 					Extracting cut sets for G101
+DEBUG5: 					Expanding gate G163
+DEBUG5: 					Extracting cut sets for G163
+DEBUG5: 					Expanding gate G127
+DEBUG5: 					Extracting cut sets for G127
+DEBUG5: 					Expanding gate G128
+DEBUG5: 					Extracting cut sets for G128
+DEBUG5: 					Expanding gate G129
+DEBUG5: 					Extracting cut sets for G129
+DEBUG5: 					Expanding gate G157
+DEBUG5: 					Extracting cut sets for G157
+DEBUG5: 					Expanding gate G122
+DEBUG5: 					Extracting cut sets for G122
+DEBUG5: 					Expanding gate G95
+DEBUG5: 					Extracting cut sets for G95
+DEBUG5: 					Expanding gate G123
+DEBUG5: 					Extracting cut sets for G123
+DEBUG5: 					Expanding gate G97
+DEBUG5: 					Extracting cut sets for G97
+DEBUG5: 					Expanding gate G124
+DEBUG5: 					Extracting cut sets for G124
+DEBUG5: 					Expanding gate G99
+DEBUG5: 					Extracting cut sets for G99
+DEBUG4: 				# of ZBDD nodes created: 30140
+DEBUG4: 				# of entries in unique table: 20400
 DEBUG4: 				# of entries in AND table: 0
 DEBUG4: 				# of entries in OR table: 0
 DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 0
-DEBUG4: 				# of SetNodes in ZBDD: 4266
+DEBUG4: 				# of SetNodes in ZBDD: 3653
 DEBUG4: 				# of products: 46188
 DEBUG2: 		Delegating cut set extraction to ZBDD.
-DEBUG3: 			Getting products from minimized ZBDD: G1000000
-DEBUG4: 				# of generated products: 46188
 DEBUG2: 		# of products: 46188
 INFO: Finished analysis: r1
 DEBUG1: 	Reporting analysis results...

@@ -1,4 +1,7 @@
 # Default configuration for most C++ code
-Language:        Cpp
-BasedOnStyle:  Google
-ExperimentalAutoDetectBinPacking: true
+Language: Cpp
+BasedOnStyle: Google
+DerivePointerAlignment: false
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+# ExperimentalAutoDetectBinPacking: true

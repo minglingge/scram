@@ -71,6 +71,38 @@ The input tries to utilize all the functionality including optional cases.
         <system-mission-time/>
       </Weibull>
     </define-basic-event>
+    <define-basic-event name="PeriodicTest4">
+      <periodic-test>
+        <float value="0.3"/>
+        <float value="100"/>
+        <float value="200"/>
+        <system-mission-time/>
+      </periodic-test>
+    </define-basic-event>
+    <define-basic-event name="PeriodicTest5">
+      <periodic-test>
+        <float value="0.3"/>
+        <float value="0.5"/>
+        <float value="100"/>
+        <float value="200"/>
+        <system-mission-time/>
+      </periodic-test>
+    </define-basic-event>
+    <define-basic-event name="PeriodicTest11">
+      <periodic-test>
+        <float value="0.3"/>
+        <float value="0.4"/>
+        <float value="0.5"/>
+        <float value="100"/>
+        <float value="200"/>
+        <float value="0.1"/>
+        <float value="10"/>
+        <bool value="true"/>
+        <float value="0.9"/>
+        <float value="0.1"/>
+        <system-mission-time/>
+      </periodic-test>
+    </define-basic-event>
     <define-basic-event name="UniformDeviate">
       <uniform-deviate>
         <float value="0"/>
@@ -83,11 +115,17 @@ The input tries to utilize all the functionality including optional cases.
         <float value="0.02"/>
       </normal-deviate>
     </define-basic-event>
-    <define-basic-event name="LogNormalDeviate">
+    <define-basic-event name="LogNormalDeviate3">
       <lognormal-deviate>
         <float value="2e-3"/>
         <float value="2"/>
         <float value="0.95"/>
+      </lognormal-deviate>
+    </define-basic-event>
+    <define-basic-event name="LogNormalDeviate2">
+      <lognormal-deviate>
+        <float value="-10"/>
+        <float value="2"/>
       </lognormal-deviate>
     </define-basic-event>
     <define-basic-event name="GammaDeviate">
@@ -104,6 +142,7 @@ The input tries to utilize all the functionality including optional cases.
     </define-basic-event>
     <define-basic-event name="Histogram">
       <histogram>
+        <float value="0"/>
         <bin>
           <float value="0.1"/>
           <float value="2"/>

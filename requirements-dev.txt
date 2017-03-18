@@ -1,0 +1,5 @@
+lizard
+codecov
+coverage
+cpplint
+prospector

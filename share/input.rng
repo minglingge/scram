@@ -60,7 +60,7 @@
 
   <define name="NonEmptyString">  <!-- Texts without LF and other special chars. -->
     <data type="normalizedString">
-      <param name="pattern">.*\S+.*</param>
+      <param name="minLength">1</param>
     </data>
   </define>
 
@@ -513,6 +513,7 @@
       <ref name="exponential"/>
       <ref name="GLM"/>
       <ref name="Weibull"/>
+      <ref name="periodic-test"/>
     </choice>
   </define>
 
@@ -627,6 +628,14 @@
       </element>
     </define>
 
+    <define name="periodic-test">
+      <element name="periodic-test">
+        <oneOrMore>
+          <ref name="expression"/>
+        </oneOrMore>
+      </element>
+    </define>
+
     <!-- *********************************************************** -->
     <!-- V.2.7. Random-Deviates -->
     <!-- *********************************************************** -->
@@ -649,7 +658,9 @@
       <element name="lognormal-deviate">
         <ref name="expression"/>
         <ref name="expression"/>
-        <ref name="expression"/>
+        <optional>
+          <ref name="expression"/>
+        </optional>
       </element>
     </define>
 
@@ -669,6 +680,7 @@
 
     <define name="histogram">
       <element name="histogram">
+        <ref name="expression"/>
         <oneOrMore>
           <ref name="bin"/>
         </oneOrMore>

@@ -11,25 +11,37 @@ configure_file(
   )
 ################### End File Configurations ####################
 
+set(LIB_LINK_FLAGS "")
+if(WITH_COVERAGE)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+endif()
+
+if(WITH_PROFILE)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
+endif()
+
 set(SCRAM_CORE_SRC
   "${CMAKE_CURRENT_SOURCE_DIR}/env.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/version.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/error.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/logger.cc"
-  "${CMAKE_CURRENT_SOURCE_DIR}/xml_parser.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/xml_stream.cc"
-  "${CMAKE_CURRENT_SOURCE_DIR}/relax_ng_validator.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/random.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/settings.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/config.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/cycle.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/element.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/expression.cc"
+  "${CMAKE_CURRENT_SOURCE_DIR}/parameter.cc"
+  "${CMAKE_CURRENT_SOURCE_DIR}/expression/constant.cc"
+  "${CMAKE_CURRENT_SOURCE_DIR}/expression/arithmetic.cc"
+  "${CMAKE_CURRENT_SOURCE_DIR}/expression/exponential.cc"
+  "${CMAKE_CURRENT_SOURCE_DIR}/expression/random_deviate.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/event.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/ccf_group.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/fault_tree.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/model.cc"
-  "${CMAKE_CURRENT_SOURCE_DIR}/boolean_graph.cc"
+  "${CMAKE_CURRENT_SOURCE_DIR}/pdag.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/preprocessor.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/mocus.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/bdd.cc"
@@ -45,28 +57,29 @@ set(SCRAM_CORE_SRC
   )
 add_library(scramcore ${SCRAM_CORE_SRC})
 
-set_target_properties(scramcore
-  PROPERTIES
-  INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
-  INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
-  )
+if(INSTALL_LIBS)
+  set_target_properties(scramcore
+    PROPERTIES
+    INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
+    INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
+    )
+  if(WIN32)
+    install(
+      TARGETS scramcore
+      RUNTIME DESTINATION bin COMPONENT scram
+      LIBRARY DESTINATION lib COMPONENT scram
+      ARCHIVE DESTINATION lib COMPONENT scram
+      )
+  else()
+    install(
+      TARGETS scramcore
+      DESTINATION lib
+      COMPONENT scram
+      )
+  endif()
+endif()
 
 target_link_libraries(scramcore ${LIBS})
-
-if(WIN32)
-  install(
-    TARGETS scramcore
-    RUNTIME DESTINATION bin COMPONENT scram
-    LIBRARY DESTINATION lib COMPONENT scram
-    ARCHIVE DESTINATION lib COMPONENT scram
-    )
-else()
-  install(
-    TARGETS scramcore
-    DESTINATION lib
-    COMPONENT scram
-    )
-endif()
 
 add_executable(scram scram.cc)
 target_link_libraries(scram scramcore ${Boost_LIBRARIES})

@@ -2,69 +2,78 @@
 Design Description
 ##################
 
-- XML Parser leverages external libraries to process XML files.
+.. figure:: http://img.thedailywtf.com/images/201101/DependencyGraph.png
+    :align: center
 
-- Validator validates XML configuration and input files against the RelaxNG schema.
-  The validation against the schema is an integral part of the initialization.
-  Values that pass the validation against the schema are not re-checked by users of those values.
+    Complex Dependency Diagram (TheDailyWTF)
 
-- Settings manages overall analysis settings per run.
+Core
+====
 
-- Config manages program configurations and analysis settings from a configuration file.
+#. XML Parser leverages external libraries to process XML files.
 
-- Containers: models, fault trees, event trees, components.
+#. Validator validates XML configuration and input files against the RELAX NG schema.
+   The validation against the schema is an integral part of the initialization.
+   Values that pass the validation against the schema are not re-checked by users of those values.
 
-- Constructs: anything that is stored in containers and can be an input for analysis.
-  Note that some containers are constructs as well.
+#. Settings manages overall analysis settings per run.
+#. Config manages program configurations and analysis settings from a configuration file.
+#. Containers: models, fault trees, event trees, components.
 
-- Initializer processes input files to construct a model
-  with fault trees, event trees, CCF, and other analysis containers and constructs.
-  This initialization phase validates the values and logic supplied from the input files.
-  The constructs and analyses are initialized according to the configurations
-  supplied from the configuration file and command-line.
-  After the initialization step,
-  it is not expected that constructs of the analysis change.
+#. Analysis constructs: anything that is stored in containers and can be an input for analysis.
+   Note that some containers are constructs as well.
 
-- Risk Analyzer operates on the valid model
-  with the initialized fault, event trees, and other constructs
-  to provide the requested results.
-  It runs after the initialization phase with the user-specified analysis settings.
+    * Formula, Expressions, and other facilities used by the analysis constructs.
 
-- Analyzers of fault trees, event trees, CCF, uncertainty,
-  and other analysis kinds.
-  These analyzers are employed by the main Risk Analyzer
-  to produce final results.
-  Common facilities, utilities, and functionalities
-  can be shared among these analyzers.
-  Analyzers and analysis facilities are designed
-  in the spirit of `Design by Contract`_ and `Policy-based design`_
-  to keep the code simple and flexible with algorithms.
+#. Initializer processes input files to construct a model
+   with fault trees, event trees, CCF, and other analysis containers and constructs.
+   This initialization phase validates the values and logic supplied from the input files.
+   The constructs and analyses are initialized according to the configurations
+   supplied from the configuration file and command-line.
+   After the initialization step,
+   it is not expected that constructs of the analysis change.
 
-    * Fault Tree Analyzer operates on one fault tree with a single top event,
-      and may provide primary events, intermediate events,
-      and  products (minimal cut sets or prime implicants) as output,
-      or other information about the passed fault tree.
-      This fault tree analyzer uses many other helper facilities
-      specifically designed to make the analysis efficient and fast.
+#. Risk Analyzer operates on a valid model
+   with initialized fault, event trees, and other constructs
+   to provide the requested results.
+   It runs after the initialization phase with the user-specified analysis settings.
 
-    * Probability Calculator accepts the results of Fault Tree Analyzer
-      to calculate the total probability
-      and to provide facilities for other Quantitative analyzers.
+#. Analyzers of fault trees, event trees, CCF, uncertainty,
+   and other analysis kinds.
+   These analyzers are employed by the main Risk Analyzer
+   to produce final results.
+   Common facilities, utilities, and functionalities
+   can be shared among these analyzers.
+   Analyzers and analysis facilities are designed
+   in the spirit of `Design by Contract`_ and `Policy-based design`_
+   to keep the code simple and flexible with algorithms.
 
-    * Importance Analyzer calculates
-      importance factors of *important* basic events
-      with Probability Calculator facilities.
+    1. Fault Tree Analyzer operates on one fault tree with a single top event,
+       and may provide primary events, intermediate events,
+       and  products (minimal cut sets or prime implicants) as output,
+       or other information about the passed fault tree.
+       This fault tree analyzer uses many other helper facilities
+       specifically designed to make the analysis efficient and fast.
 
-    * Uncertainty Analyzer uses Probability Calculator facilities
-      to sample basic event probabilities
-      and calculate the total probability.
-      Sampled results are processed to find statistical information,
-      such as mean, confidence ranges, standard deviation, and distributions.
+    2. Probability Calculator accepts the results of Fault Tree Analyzer
+       to calculate the total probability
+       and to provide facilities for other Quantitative analyzers.
 
-- Supporting classes: Formula, Expressions.
+    3. Importance Analyzer calculates
+       importance factors of *important* basic events
+       with Probability Calculator facilities.
 
-- Reporter outputs the results of the work of Risk Analyzer
-  to specified files or streams in XML format.
+    4. Uncertainty Analyzer uses Probability Calculator facilities
+       to sample basic event probabilities
+       and calculate the total probability.
+       Sampled results are processed to find statistical information,
+       such as mean, confidence ranges, standard deviation, and distributions.
+
+#. Reporter outputs the results of the work of Risk Analyzer
+   to specified files or streams in XML format.
+
+#. Support components:
+   Logger, XML stream, and library extensions in the ext namespace.
 
 .. _Design by Contract: https://en.wikipedia.org/wiki/Design_by_contract
 .. _Policy-based design: https://en.wikipedia.org/wiki/Policy-based_design
@@ -73,6 +82,12 @@ Design Description
 API Documentation
 =================
 
-`API Docs Generated by Doxygen`_
+`API Docs Generated by Doxygen <../api/index.xhtml>`_
 
-.. _API Docs Generated by Doxygen: http://scram-pra.org/api/
+
+cppdep Component Dependency Report
+==================================
+
+.. image:: ../build/scram_core.svg
+
+.. literalinclude:: ../build/dep_report.txt

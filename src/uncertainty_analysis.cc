@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Olzhas Rakhimov
+ * Copyright (C) 2014-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@
 #include <boost/accumulators/statistics/stats.hpp>
 #include <boost/accumulators/statistics/variance.hpp>
 
+#include "event.h"
+#include "expression.h"
 #include "logger.h"
 
 namespace scram {
@@ -52,48 +54,59 @@ void UncertaintyAnalysis::Analyze() noexcept {
   CLOCK(stat_time);
   LOG(DEBUG3) << "Calculating statistics...";
   // Perform statistical analysis.
-  UncertaintyAnalysis::CalculateStatistics(samples);
+  CalculateStatistics(samples);
   LOG(DEBUG3) << "Finished calculating statistics in " << DUR(stat_time);
 
   Analysis::AddAnalysisTime(DUR(analysis_time));
 }
 
-std::vector<std::pair<int, mef::BasicEvent*>>
-UncertaintyAnalysis::FilterUncertainEvents(const BooleanGraph* graph) noexcept {
-  std::vector<std::pair<int, mef::BasicEvent*>> uncertain_events;
-  int index = 1;
-  for (mef::BasicEvent* event : graph->basic_events()) {
-    if (!event->IsConstant()) uncertain_events.emplace_back(index, event);
+std::vector<std::pair<int, mef::Expression&>>
+UncertaintyAnalysis::GatherDeviateExpressions(const Pdag* graph) noexcept {
+  std::vector<std::pair<int, mef::Expression&>> deviate_expressions;
+  int index = Pdag::kVariableStartIndex;
+  for (const mef::BasicEvent* event : graph->basic_events()) {
+    if (event->expression().IsDeviate())
+      deviate_expressions.emplace_back(index, event->expression());
     ++index;
   }
-  return uncertain_events;
+  return deviate_expressions;
+}
+
+void UncertaintyAnalysis::SampleExpressions(
+    const std::vector<std::pair<int, mef::Expression&>>& deviate_expressions,
+    Pdag::IndexMap<double>* p_vars) noexcept {
+  // Reset distributions.
+  for (const auto& expression : deviate_expressions)
+    expression.second.Reset();
+
+  // Sample all expressions with distributions.
+  for (const auto& expression : deviate_expressions) {
+    double prob = expression.second.Sample();
+    (*p_vars)[expression.first] = prob > 1 ? 1 : prob < 0 ? 0 : prob;
+  }
 }
 
 void UncertaintyAnalysis::CalculateStatistics(
     const std::vector<double>& samples) noexcept {
   using namespace boost;  // NOLINT
   using namespace boost::accumulators;  // NOLINT
-  using accumulator_q =
-      accumulator_set<double, stats<tag::extended_p_square_quantile>>;
+  using histogram_type =
+      iterator_range<std::vector<std::pair<double, double>>::iterator>;
   quantiles_.clear();
   int num_quantiles = Analysis::settings().num_quantiles();
   double delta = 1.0 / num_quantiles;
   for (int i = 0; i < num_quantiles; ++i) {
     quantiles_.push_back(delta * (i + 1));
   }
-  accumulator_q acc_q(extended_p_square_probabilities = quantiles_);
-
   int num_trials = Analysis::settings().num_trials();
-  accumulator_set<double, stats<tag::mean, tag::variance, tag::density> >
+  accumulator_set<double, stats<tag::mean, tag::variance, tag::density,
+                                tag::extended_p_square_quantile>>
       acc(tag::density::num_bins = Analysis::settings().num_bins(),
-          tag::density::cache_size = num_trials);
-
+          tag::density::cache_size = num_trials,
+          extended_p_square_probabilities = quantiles_);
   for (double sample : samples) {
     acc(sample);
-    acc_q(sample);
   }
-  using histogram_type =
-      iterator_range<std::vector<std::pair<double, double>>::iterator>;
   histogram_type hist = density(acc);
   for (int i = 1; i < hist.size(); i++) {
     distribution_.push_back(hist[i]);
@@ -105,7 +118,7 @@ void UncertaintyAnalysis::CalculateStatistics(
   confidence_interval_.second = mean_ + sigma_ * 1.96 / std::sqrt(num_trials);
 
   for (int i = 0; i < num_quantiles; ++i) {
-    quantiles_[i] = quantile(acc_q, quantile_probability = quantiles_[i]);
+    quantiles_[i] = quantile(acc, quantile_probability = quantiles_[i]);
   }
 }
 

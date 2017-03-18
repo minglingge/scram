@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Olzhas Rakhimov
+ * Copyright (C) 2016-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ TEST_P(RiskAnalysisTest, BSCU) {
   settings.uncertainty_analysis(true);
   settings.num_trials(10000);
   ASSERT_NO_THROW(ProcessInputFile(tree_input));
-  ASSERT_NO_THROW(ran->Analyze());
+  ASSERT_NO_THROW(analysis->Analyze());
   std::set<std::set<std::string>> mcs = {
       {"SwitchStuckInIntermediatePosition"},
       {"ValidityMonitorFailure"},
@@ -46,14 +46,14 @@ TEST_P(RiskAnalysisTest, BSCU) {
   EXPECT_EQ(10, products().size());
   EXPECT_EQ(mcs, products());
 
-  if (settings.approximation() == "rare-event") {
+  if (settings.approximation() == Approximation::kRareEvent) {
     EXPECT_NEAR(0.135372, p_total(), 1e-4);
-    EXPECT_NEAR(0.1448961, mean(), 5e-3);
-    EXPECT_NEAR(0.203192, sigma(), 5e-3);
+    EXPECT_NEAR(0.137, mean(), 5e-3);
+    EXPECT_NEAR(0.217, sigma(), 5e-3);
   } else {
     EXPECT_NEAR(0.1124087, p_total(), 1e-4);
-    EXPECT_NEAR(0.1212541, mean(), 5e-3);
-    EXPECT_NEAR(0.1646726, sigma(), 5e-3);
+    EXPECT_NEAR(0.117, mean(), 5e-3);
+    EXPECT_NEAR(0.183, sigma(), 5e-3);
   }
 }
 

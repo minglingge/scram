@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Olzhas Rakhimov
+ * Copyright (C) 2014-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,13 @@
 
 #include "ccf_group.h"
 
-#include <sstream>
+#include <cmath>
 
-#include "ext.h"
+#include <boost/range/algorithm.hpp>
+
+#include "expression/arithmetic.h"
+#include "expression/constant.h"
+#include "ext/combination_iterator.h"
 
 namespace scram {
 namespace mef {
@@ -38,28 +42,28 @@ void CcfGroup::AddMember(const BasicEventPtr& basic_event) {
                            Element::name() +
                            " CCF group has already been defined.");
   }
-  if (members_.emplace(basic_event->name(), basic_event).second == false) {
+  if (members_.insert(basic_event).second == false) {
     throw DuplicateArgumentError("Duplicate member " + basic_event->name() +
                                  " in " + Element::name() + " CCF group.");
   }
 }
 
 void CcfGroup::AddDistribution(const ExpressionPtr& distr) {
-  if (distribution_) throw LogicError("CCF distribution is already defined.");
+  if (distribution_)
+    throw LogicError("CCF distribution is already defined.");
   distribution_ = distr;
   // Define probabilities of all basic events.
-  for (const std::pair<const std::string, BasicEventPtr>& mem : members_) {
-    mem.second->expression(distribution_);
-  }
+  for (const BasicEventPtr& member : members_)
+    member->expression(distribution_);
 }
 
 void CcfGroup::CheckLevel(int level) {
-  if (level <= 0) throw LogicError("CCF group level is not positive.");
+  if (level <= 0)
+    throw LogicError("CCF group level is not positive.");
   if (level != factors_.size() + 1) {
-    std::stringstream msg;
-    msg << Element::name() << " CCF group level expected "
-        << factors_.size() + 1 << ". Instead was given " << level;
-    throw ValidationError(msg.str());
+    throw ValidationError(Element::name() + " CCF group level expected " +
+                          std::to_string(factors_.size() + 1) +
+                          ". Instead was given " + std::to_string(level));
   }
 }
 
@@ -90,39 +94,6 @@ void CcfGroup::Validate() const {
 
 namespace {
 
-/// Generates combinations of elements from a range.
-///
-/// @tparam Iterator  Iterator type of the range.
-///                   Best if it's a random access iterator.
-///
-/// @param[in] first1  The beginning of the range.
-/// @param[in] last1  The end of the range.
-/// @param[in] k  The number of elements to choose into a combination.
-///
-/// @returns  A container of all possible combinations.
-template <typename Iterator>
-std::vector<std::vector<typename Iterator::value_type>>
-GenerateCombinations(Iterator first1, Iterator last1, int k) {
-  assert(k >= 0 && "No negative choice number.");
-
-  auto size = std::distance(first1, last1);
-  assert(size >= 0 && "Invalid iterators.");
-
-  if (k > size) return {};
-  if (k == 0) return {{}};  // The notion of 'nothing'.
-  if (k == size) return {{first1, last1}};
-
-  auto c = GenerateCombinations(std::next(first1), last1, k - 1);
-  for (auto& v : c) v.push_back(*first1);
-
-  auto rest = GenerateCombinations(std::next(first1), last1, k);
-  c.reserve(c.size() + rest.size());
-  std::move(rest.begin(), rest.end(), std::back_inserter(c));
-  assert(rest.empty() || rest.front().empty());  // Verify the move.
-
-  return c;
-}
-
 /// Joins CCF combination proxy gate names
 /// to create a distinct name for a new CCF event.
 ///
@@ -141,15 +112,25 @@ std::string JoinNames(const std::vector<Gate*>& combination) {
 
 }  // namespace
 
+std::vector<BasicEvent*> CcfGroup::StabilizeMembers() {
+  std::vector<BasicEvent*> stable_members;
+  stable_members.reserve(members_.size());
+  for (const BasicEventPtr& member : members_)
+    stable_members.push_back(member.get());
+
+  boost::sort(stable_members,
+              [](auto* lhs, auto* rhs) { return lhs->name() < rhs->name(); });
+  return stable_members;
+}
+
 void CcfGroup::ApplyModel() {
   // Construct replacement proxy gates for member basic events.
   std::vector<Gate*> proxy_gates;
-  for (const std::pair<const std::string, BasicEventPtr>& mem : members_) {
-    const BasicEventPtr& member = mem.second;
-    auto new_gate = ext::make_unique<Gate>(member->name(), member->base_path(),
+  for (BasicEvent* member : StabilizeMembers()) {
+    auto new_gate = std::make_unique<Gate>(member->name(), member->base_path(),
                                            member->role());
     assert(member->id() == new_gate->id());
-    new_gate->formula(ext::make_unique<Formula>("or"));
+    new_gate->formula(std::make_unique<Formula>(kOr));
 
     proxy_gates.push_back(new_gate.get());
     member->ccf_gate(std::move(new_gate));
@@ -161,20 +142,21 @@ void CcfGroup::ApplyModel() {
   for (auto& entry : probabilities) {
     int level = entry.first;
     ExpressionPtr prob = entry.second;
-    std::vector<std::vector<Gate*>> combinations =
-        GenerateCombinations(proxy_gates.begin(), proxy_gates.end(), level);
-
-    for (auto& combination : combinations) {
+    for (auto combination :
+         ext::make_combination_generator(level, proxy_gates.begin(),
+                                         proxy_gates.end())) {
       auto ccf_event = std::make_shared<CcfEvent>(JoinNames(combination), this);
       ccf_event->expression(prob);
-      for (Gate* gate : combination) gate->formula().AddArgument(ccf_event);
+      for (Gate* gate : combination)
+        gate->formula().AddArgument(ccf_event);
       ccf_event->members(std::move(combination));  // Move, at last.
     }
   }
 }
 
 void BetaFactorModel::CheckLevel(int level) {
-  if (level <= 0) throw LogicError("CCF group level is not positive.");
+  if (level <= 0)
+    throw LogicError("CCF group level is not positive.");
   if (!CcfGroup::factors().empty()) {
     throw ValidationError("Beta-Factor Model " + CcfGroup::name() +
                           " CCF group must have exactly one factor.");
@@ -205,12 +187,13 @@ CcfGroup::ExpressionMap BetaFactorModel::CalculateProbabilities() {
 }
 
 void MglModel::CheckLevel(int level) {
-  if (level <= 0) throw LogicError("CCF group level is not positive.");
+  if (level <= 0)
+    throw LogicError("CCF group level is not positive.");
   if (level != CcfGroup::factors().size() + 2) {
-    std::stringstream msg;
-    msg << CcfGroup::name() << " MGL model CCF group level expected "
-        << CcfGroup::factors().size() + 2 << ". Instead was given " << level;
-    throw ValidationError(msg.str());
+    throw ValidationError(CcfGroup::name() +
+                          " MGL model CCF group level expected " +
+                          std::to_string(CcfGroup::factors().size() + 2) +
+                          ". Instead was given " + std::to_string(level));
   }
 }
 
@@ -227,7 +210,8 @@ double CalculateCombinationReciprocal(int n, int k) {
   assert(n >= 0);
   assert(k >= 0);
   assert(n >= k);
-  if (n - k > k) k = n - k;
+  if (n - k > k)
+    k = n - k;
   double result = 1;
   for (int i = 1; i <= n - k; ++i) {
     result *= static_cast<double>(i) / static_cast<double>(k + i);
@@ -267,16 +251,19 @@ CcfGroup::ExpressionMap AlphaFactorModel::CalculateProbabilities() {
   assert(CcfGroup::factors().size() == max_level);
   std::vector<ExpressionPtr> sum_args;
   for (const std::pair<int, ExpressionPtr>& factor : CcfGroup::factors()) {
-    sum_args.push_back(factor.second);
+    sum_args.emplace_back(new Mul(
+        {ExpressionPtr(new ConstantExpression(factor.first)), factor.second}));
   }
   ExpressionPtr sum(new Add(std::move(sum_args)));
   int num_members = CcfGroup::members().size();
 
   for (int i = 0; i < max_level; ++i) {
     double mult = CalculateCombinationReciprocal(num_members - 1, i);
-    ExpressionPtr k(new ConstantExpression(mult));
+    ExpressionPtr level(new ConstantExpression(i + 1));
     ExpressionPtr fraction(new Div({CcfGroup::factors()[i].second, sum}));
-    ExpressionPtr prob(new Mul({k, fraction, CcfGroup::distribution()}));
+    ExpressionPtr prob(
+        new Mul({level, ExpressionPtr(new ConstantExpression(mult)), fraction,
+                 CcfGroup::distribution()}));
     probabilities.emplace_back(i + 1, prob);
   }
   assert(probabilities.size() == max_level);
@@ -288,8 +275,6 @@ void PhiFactorModel::Validate() const {
   double sum = 0;
   double sum_min = 0;
   double sum_max = 0;
-  /// @todo How to assure that the sum will be 1 in sampling.
-  ///       Is it allowed to have a factor sampling for Uncertainty analysis.
   for (const std::pair<int, ExpressionPtr>& factor : CcfGroup::factors()) {
     sum += factor.second->Mean();
     sum_min += factor.second->Min();

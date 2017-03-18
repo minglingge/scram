@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Olzhas Rakhimov
+ * Copyright (C) 2014-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,16 +26,20 @@
 #include <vector>
 
 #include "analysis.h"
-#include "event.h"
 #include "probability_analysis.h"
 #include "settings.h"
 
 namespace scram {
+
+namespace mef {  // Decouple from the implementation dependence.
+class Expression;
+}  // namespace mef
+
 namespace core {
 
 /// Uncertainty analysis and statistics
 /// for top event or gate probabilities
-/// and probability distributions of basic events.
+/// with probability distributions of basic events.
 class UncertaintyAnalysis : public Analysis {
  public:
   /// Uncertainty analysis
@@ -75,13 +79,21 @@ class UncertaintyAnalysis : public Analysis {
   const std::vector<double>& quantiles() const { return quantiles_; }
 
  protected:
-  /// Gathers basic events that have distributions.
+  /// Gathers deviate expressions of variables.
   ///
-  /// @param[in] graph  Boolean graph with the variables.
+  /// @param[in] graph  PDAG with the variables.
   ///
-  /// @returns The gathered uncertain basic events.
-  std::vector<std::pair<int, mef::BasicEvent*>> FilterUncertainEvents(
-      const BooleanGraph* graph) noexcept;
+  /// @returns The gathered deviate expressions with variable indices.
+  std::vector<std::pair<int, mef::Expression&>> GatherDeviateExpressions(
+      const Pdag* graph) noexcept;
+
+  /// Samples uncertain probabilities.
+  ///
+  /// @param[in] deviate_expressions  A collection of deviate expressions.
+  /// @param[in,out] p_vars  Indices to probabilities mapping with values.
+  void SampleExpressions(
+      const std::vector<std::pair<int, mef::Expression&>>& deviate_expressions,
+      Pdag::IndexMap<double>* p_vars) noexcept;
 
  private:
   /// Performs Monte Carlo Simulation
@@ -102,7 +114,7 @@ class UncertaintyAnalysis : public Analysis {
   /// The confidence interval of the distribution.
   std::pair<double, double> confidence_interval_;
   /// The histogram density of the distribution with lower bounds and values.
-  std::vector<std::pair<double, double> > distribution_;
+  std::vector<std::pair<double, double>> distribution_;
   /// The quantiles of the distribution.
   std::vector<double> quantiles_;
 };
@@ -118,11 +130,6 @@ class UncertaintyAnalyzer : public UncertaintyAnalysis {
   /// to calculate the total probability for sampling.
   ///
   /// @param[in] prob_analyzer  Instantiated probability analyzer.
-  ///
-  /// @pre Probability analyzer can work with modified probability values.
-  ///
-  /// @post Probability analyzer's probability values are
-  ///       reset to the original values (event probabilities).
   explicit UncertaintyAnalyzer(ProbabilityAnalyzer<Calculator>* prob_analyzer)
       : UncertaintyAnalysis(prob_analyzer),
         prob_analyzer_(prob_analyzer) {}
@@ -137,33 +144,18 @@ class UncertaintyAnalyzer : public UncertaintyAnalysis {
 
 template <class Calculator>
 std::vector<double> UncertaintyAnalyzer<Calculator>::Sample() noexcept {
-  std::vector<std::pair<int, mef::BasicEvent*>> uncertain_events =
-      UncertaintyAnalysis::FilterUncertainEvents(prob_analyzer_->graph());
-  std::vector<double>& p_vars = prob_analyzer_->p_vars();
+  std::vector<std::pair<int, mef::Expression&>> deviate_expressions =
+      UncertaintyAnalysis::GatherDeviateExpressions(prob_analyzer_->graph());
+  Pdag::IndexMap<double> p_vars = prob_analyzer_->p_vars();  // Private copy!
   std::vector<double> samples;
   samples.reserve(Analysis::settings().num_trials());
-  for (int i = 0; i < Analysis::settings().num_trials(); ++i) {
-    // Reset distributions.
-    for (const auto& event : uncertain_events) event.second->Reset();
 
-    // Sample all basic events with distributions.
-    for (const auto& event : uncertain_events) {
-      double prob = event.second->SampleProbability();
-      if (prob < 0) {  // Adjust if out of range.
-        prob = 0;
-      } else if (prob > 1) {
-        prob = 1;
-      }
-      p_vars[event.first] = prob;
-    }
-    double result = prob_analyzer_->CalculateTotalProbability();
-    assert(result >= 0);
-    if (result > 1) result = 1;
+  for (int i = 0; i < Analysis::settings().num_trials(); ++i) {
+    UncertaintyAnalysis::SampleExpressions(deviate_expressions, &p_vars);
+    double result = prob_analyzer_->CalculateTotalProbability(p_vars);
+    assert(result >= 0 && result <= 1);
     samples.push_back(result);
   }
-  // Reset probabilities.
-  for (const auto& event : uncertain_events)
-    p_vars[event.first] = event.second->p();
 
   return samples;
 }

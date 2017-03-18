@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Olzhas Rakhimov
+ * Copyright (C) 2014-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,11 @@
 
 #include "importance_analysis.h"
 
-#include <algorithm>
-#include <unordered_set>
+#include <cstdlib>
 
+#include "event.h"
 #include "logger.h"
+#include "zbdd.h"
 
 namespace scram {
 namespace core {
@@ -35,105 +36,107 @@ ImportanceAnalysis::ImportanceAnalysis(const ProbabilityAnalysis* prob_analysis)
 void ImportanceAnalysis::Analyze() noexcept {
   CLOCK(imp_time);
   LOG(DEBUG3) << "Calculating importance factors...";
-  std::vector<std::pair<int, const mef::BasicEvent*>> target_events =
-      this->GatherImportantEvents();
   double p_total = this->p_total();
-  for (const auto& event : target_events) {
-    double p_var = event.second->p();
+  const std::vector<const mef::BasicEvent*>& basic_events =
+      this->basic_events();
+  std::vector<int> occurrences = this->occurrences();
+  for (int i = 0; i < basic_events.size() && occurrences[i]; ++i) {
+    const mef::BasicEvent& event = *basic_events[i];
+    double p_var = event.p();
     ImportanceFactors imp;
-    imp.mif = this->CalculateMif(event.first);
+    imp.occurrence = occurrences[i];
+    imp.mif = this->CalculateMif(i);
     imp.cif = p_var * imp.mif / p_total;
     imp.raw = 1 + (1 - p_var) * imp.mif / p_total;
     imp.dif = p_var * imp.raw;
     imp.rrw = p_total / (p_total - p_var * imp.mif);
-    importance_.emplace(event.second->id(), imp);
-    important_events_.emplace_back(event.second, imp);
+    importance_.push_back({event, imp});
   }
   LOG(DEBUG3) << "Calculated importance factors in " << DUR(imp_time);
   Analysis::AddAnalysisTime(DUR(imp_time));
 }
 
-std::vector<std::pair<int, const mef::BasicEvent*>>
-ImportanceAnalysis::GatherImportantEvents(
-    const BooleanGraph* graph,
-    const std::vector<std::vector<int>>& products) noexcept {
-  std::vector<std::pair<int, const mef::BasicEvent*>> important_events;
-  std::unordered_set<int> unique_indices;
-  for (const auto& product : products) {
-    for (int index : product) {
-      int pos_index = std::abs(index);
-      if (unique_indices.insert(pos_index).second == false) continue;
-      important_events.emplace_back(pos_index,
-                                    graph->GetBasicEvent(pos_index));
-    }
+std::vector<int> ImportanceAnalyzerBase::occurrences() noexcept {
+  Pdag::IndexMap<int> result(prob_analyzer_->graph()->basic_events().size());
+  for (const std::vector<int>& product : prob_analyzer_->products()) {
+    for (int index : product)
+      result[std::abs(index)]++;
   }
-  return important_events;
+  return result;
 }
 
 double ImportanceAnalyzer<Bdd>::CalculateMif(int index) noexcept {
-  Bdd::VertexPtr root = bdd_graph_->root().vertex;
-  if (root->terminal()) return 0;
-  bool original_mark = Ite::Ptr(root)->mark();
+  index += Pdag::kVariableStartIndex;
+  const Bdd::VertexPtr& root = bdd_graph_->root().vertex;
+  if (root->terminal())
+    return 0;
+  bool original_mark = Ite::Ref(root).mark();
 
   int order = bdd_graph_->index_to_order().find(index)->second;
-  double mif = ImportanceAnalyzer::CalculateMif(bdd_graph_->root().vertex,
-                                                order,
-                                                !original_mark);
+  double mif = CalculateMif(root, order, !original_mark);
   bdd_graph_->ClearMarks(original_mark);
   return mif;
 }
 
 double ImportanceAnalyzer<Bdd>::CalculateMif(const Bdd::VertexPtr& vertex,
                                              int order, bool mark) noexcept {
-  if (vertex->terminal()) return 0;
-  ItePtr ite = Ite::Ptr(vertex);
-  if (ite->mark() == mark) return ite->factor();
-  ite->mark(mark);
-  if (ite->order() > order) {
-    if (!ite->module()) {
-      ite->factor(0);
+  if (vertex->terminal())
+    return 0;
+  Ite& ite = Ite::Ref(vertex);
+  if (ite.mark() == mark)
+    return ite.factor();
+  ite.mark(mark);
+  if (ite.order() > order) {
+    if (!ite.module()) {
+      ite.factor(0);
     } else {  /// @todo Detect if the variable is in the module.
       // The assumption is
       // that the order of a module is always larger
       // than the order of its variables.
-      double high = ImportanceAnalyzer::RetrieveProbability(ite->high());
-      double low = ImportanceAnalyzer::RetrieveProbability(ite->low());
-      if (ite->complement_edge()) low = 1 - low;
+      double high = RetrieveProbability(ite.high());
+      double low = RetrieveProbability(ite.low());
+      if (ite.complement_edge())
+        low = 1 - low;
       const Bdd::Function& res =
-          bdd_graph_->modules().find(ite->index())->second;
-      double mif = ImportanceAnalyzer::CalculateMif(res.vertex, order, mark);
-      if (res.complement) mif = -mif;
-      ite->factor((high - low) * mif);
+          bdd_graph_->modules().find(ite.index())->second;
+      double mif = CalculateMif(res.vertex, order, mark);
+      if (res.complement)
+        mif = -mif;
+      ite.factor((high - low) * mif);
     }
-  } else if (ite->order() == order) {
-    assert(!ite->module() && "A variable can't be a module.");
-    double high = ImportanceAnalyzer::RetrieveProbability(ite->high());
-    double low = ImportanceAnalyzer::RetrieveProbability(ite->low());
-    if (ite->complement_edge()) low = 1 - low;
-    ite->factor(high - low);
+  } else if (ite.order() == order) {
+    assert(!ite.module() && "A variable can't be a module.");
+    double high = RetrieveProbability(ite.high());
+    double low = RetrieveProbability(ite.low());
+    if (ite.complement_edge())
+      low = 1 - low;
+    ite.factor(high - low);
   } else  {
-    assert(ite->order() < order);
+    assert(ite.order() < order);
     double p_var = 0;
-    if (ite->module()) {
+    if (ite.module()) {
       const Bdd::Function& res =
-          bdd_graph_->modules().find(ite->index())->second;
-      p_var = ImportanceAnalyzer::RetrieveProbability(res.vertex);
-      if (res.complement) p_var = 1 - p_var;
+          bdd_graph_->modules().find(ite.index())->second;
+      p_var = RetrieveProbability(res.vertex);
+      if (res.complement)
+        p_var = 1 - p_var;
     } else {
-      p_var = ImportanceAnalyzerBase::prob_analyzer()->p_vars()[ite->index()];
+      p_var = prob_analyzer()->p_vars()[ite.index()];
     }
-    double high = ImportanceAnalyzer::CalculateMif(ite->high(), order, mark);
-    double low = ImportanceAnalyzer::CalculateMif(ite->low(), order, mark);
-    if (ite->complement_edge()) low = -low;
-    ite->factor(p_var * high + (1 - p_var) * low);
+    double high = CalculateMif(ite.high(), order, mark);
+    double low = CalculateMif(ite.low(), order, mark);
+    if (ite.complement_edge())
+      low = -low;
+    ite.factor(p_var * high + (1 - p_var) * low);
   }
-  return ite->factor();
+  return ite.factor();
 }
 
 double ImportanceAnalyzer<Bdd>::RetrieveProbability(
     const Bdd::VertexPtr& vertex) noexcept {
-  if (vertex->terminal()) return 1;
-  return Ite::Ptr(vertex)->p();
+  if (vertex->terminal())
+    return 1;
+  return Ite::Ref(vertex).p();
 }
 
 }  // namespace core

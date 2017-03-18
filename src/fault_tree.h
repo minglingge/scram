@@ -23,20 +23,21 @@
 
 #include <memory>
 #include <string>
-#include <unordered_map>
 #include <unordered_set>
 #include <vector>
+
+#include <boost/noncopyable.hpp>
 
 #include "ccf_group.h"
 #include "element.h"
 #include "event.h"
-#include "expression.h"
+#include "parameter.h"
 
 namespace scram {
 namespace mef {
 
 /// Component is for logical grouping of events, gates, and other components.
-class Component : public Element, public Role {
+class Component : public Element, public Role, private boost::noncopyable {
  public:
   /// Constructs a component assuming
   /// that it exists within some fault tree.
@@ -55,31 +56,21 @@ class Component : public Element, public Role {
   explicit Component(std::string name, std::string base_path = "",
                      RoleSpecifier role = RoleSpecifier::kPublic);
 
-  Component(const Component&) = delete;
-  Component& operator=(const Component&) = delete;
-
-  virtual ~Component() {}
+  virtual ~Component() = default;
 
   /// @returns The container of component constructs of specific kind
   ///          with construct original names as keys.
   /// @{
-  const std::unordered_map<std::string, GatePtr>& gates() const {
-    return gates_;
-  }
-  const std::unordered_map<std::string, BasicEventPtr>& basic_events() const {
+  const ElementTable<GatePtr>& gates() const { return gates_; }
+  const ElementTable<BasicEventPtr>& basic_events() const {
     return basic_events_;
   }
-  const std::unordered_map<std::string, HouseEventPtr>& house_events() const {
+  const ElementTable<HouseEventPtr>& house_events() const {
     return house_events_;
   }
-  const std::unordered_map<std::string, ParameterPtr>& parameters() const {
-    return parameters_;
-  }
-  const std::unordered_map<std::string, CcfGroupPtr>& ccf_groups() const {
-    return ccf_groups_;
-  }
-  const std::unordered_map<std::string, std::unique_ptr<Component>>&
-  components() const {
+  const ElementTable<ParameterPtr>& parameters() const { return parameters_; }
+  const ElementTable<CcfGroupPtr>& ccf_groups() const { return ccf_groups_; }
+  const ElementTable<std::unique_ptr<Component>>& components() const {
     return components_;
   }
   /// @}
@@ -152,12 +143,12 @@ class Component : public Element, public Role {
 
   /// Container for component constructs with original names as keys.
   /// @{
-  std::unordered_map<std::string, GatePtr> gates_;
-  std::unordered_map<std::string, BasicEventPtr> basic_events_;
-  std::unordered_map<std::string, HouseEventPtr> house_events_;
-  std::unordered_map<std::string, ParameterPtr> parameters_;
-  std::unordered_map<std::string, CcfGroupPtr> ccf_groups_;
-  std::unordered_map<std::string, std::unique_ptr<Component>> components_;
+  ElementTable<GatePtr> gates_;
+  ElementTable<BasicEventPtr> basic_events_;
+  ElementTable<HouseEventPtr> house_events_;
+  ElementTable<ParameterPtr> parameters_;
+  ElementTable<CcfGroupPtr> ccf_groups_;
+  ElementTable<std::unique_ptr<Component>> components_;
   /// @}
 };
 
@@ -183,10 +174,13 @@ class FaultTree : public Component {
   /// if the user does not supply any.
   /// If the structure of the fault tree changes,
   /// this function must be called again to update the top events.
+  ///
+  /// @pre Gate marks are clear.
   void CollectTopEvents();
 
  private:
-  /// Recursively marks descendant gates as "non-top".
+  /// Recursively marks descendant gates
+  /// with an unspecified-but-non-clear mark.
   /// These gates belong to this fault tree only.
   ///
   /// @param[in,out] gate  The ancestor gate.

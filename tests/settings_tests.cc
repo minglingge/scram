@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Olzhas Rakhimov
+ * Copyright (C) 2014-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,6 @@ TEST(SettingsTest, IncorrectSetup) {
   EXPECT_THROW(s.approximation("approx"), InvalidArgument);
   // Incorrect limit order for products.
   EXPECT_THROW(s.limit_order(-1), InvalidArgument);
-  EXPECT_THROW(s.limit_order(33), InvalidArgument);
   // Incorrect cut-off probability.
   EXPECT_THROW(s.cut_off(-1), InvalidArgument);
   EXPECT_THROW(s.cut_off(10), InvalidArgument);
@@ -50,6 +49,14 @@ TEST(SettingsTest, IncorrectSetup) {
   EXPECT_THROW(s.seed(-1), InvalidArgument);
   // Incorrect mission time.
   EXPECT_THROW(s.mission_time(-10), InvalidArgument);
+  // Incorrect time step.
+  EXPECT_THROW(s.time_step(-1), InvalidArgument);
+  // The time step is not set for the SIL calculations.
+  EXPECT_THROW(s.safety_integrity_levels(true), InvalidArgument);
+  // Disable time step while the SIL is requested.
+  EXPECT_NO_THROW(s.time_step(1));
+  EXPECT_NO_THROW(s.safety_integrity_levels(true));
+  EXPECT_THROW(s.time_step(0), InvalidArgument);
 }
 
 TEST(SettingsTest, CorrectSetup) {
@@ -66,6 +73,7 @@ TEST(SettingsTest, CorrectSetup) {
   // Correct limit order for products.
   EXPECT_NO_THROW(s.limit_order(1));
   EXPECT_NO_THROW(s.limit_order(32));
+  EXPECT_NO_THROW(s.limit_order(1e9));
 
   // Correct cut-off probability.
   EXPECT_NO_THROW(s.cut_off(1));
@@ -91,6 +99,15 @@ TEST(SettingsTest, CorrectSetup) {
   EXPECT_NO_THROW(s.mission_time(0));
   EXPECT_NO_THROW(s.mission_time(10));
   EXPECT_NO_THROW(s.mission_time(1e6));
+
+  // Correct time step.
+  EXPECT_NO_THROW(s.time_step(0));
+  EXPECT_NO_THROW(s.time_step(10));
+  EXPECT_NO_THROW(s.time_step(1e6));
+
+  // Correct request for the SIL.
+  EXPECT_NO_THROW(s.safety_integrity_levels(true));
+  EXPECT_NO_THROW(s.safety_integrity_levels(false));
 }
 
 TEST(SettingsTest, SetupForPrimeImplicants) {
@@ -102,7 +119,7 @@ TEST(SettingsTest, SetupForPrimeImplicants) {
   ASSERT_NO_THROW(s.algorithm("bdd"));
   ASSERT_NO_THROW(s.prime_implicants(true));
   // Prime implicants with quantitative approximations.
-  EXPECT_NO_THROW(s.approximation("no"));
+  EXPECT_NO_THROW(s.approximation("none"));
   EXPECT_THROW(s.approximation("rare-event"), InvalidArgument);
   EXPECT_THROW(s.approximation("mcub"), InvalidArgument);
 }

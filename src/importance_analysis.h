@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Olzhas Rakhimov
+ * Copyright (C) 2014-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,21 +22,23 @@
 #ifndef SCRAM_SRC_IMPORTANCE_ANALYSIS_H_
 #define SCRAM_SRC_IMPORTANCE_ANALYSIS_H_
 
-#include <string>
-#include <unordered_map>
-#include <utility>
 #include <vector>
 
 #include "bdd.h"
-#include "event.h"
 #include "probability_analysis.h"
 #include "settings.h"
 
 namespace scram {
+
+namespace mef {  // Decouple from the analysis code header.
+class BasicEvent;
+}  // namespace mef
+
 namespace core {
 
 /// Collection of importance factors for variables.
 struct ImportanceFactors {
+  int occurrence;  ///< The number of products the variable is present in.
   double mif;  ///< Birnbaum marginal importance factor.
   double cif;  ///< Critical importance factor.
   double dif;  ///< Fussel-Vesely diagnosis importance factor.
@@ -44,12 +46,17 @@ struct ImportanceFactors {
   double rrw;  ///< Risk reduction worth factor.
 };
 
+/// Mapping of an event and its importance.
+struct ImportanceRecord {
+  const mef::BasicEvent& event;  ///< The event occurring in products.
+  const ImportanceFactors factors;  ///< The importance factors of the event.
+};
+
+class Zbdd;  // The container of products to be queries for important events.
+
 /// Analysis of importance factors of risk model variables.
 class ImportanceAnalysis : public Analysis {
  public:
-  /// Mapping of an event and its importance.
-  using ImportanceRecord = std::pair<const mef::BasicEvent*, ImportanceFactors>;
-
   /// Importance analysis
   /// on the fault tree represented by
   /// its probability analysis.
@@ -65,60 +72,35 @@ class ImportanceAnalysis : public Analysis {
   /// @pre Analysis is called only once.
   void Analyze() noexcept;
 
-  /// @returns Map with basic events and their importance factors.
-  ///
-  /// @pre The importance analysis is done.
-  const std::unordered_map<std::string, ImportanceFactors>& importance() const {
-    return importance_;
-  }
-
   /// @returns A collection of important events and their importance factors.
   ///
   /// @pre The importance analysis is done.
-  const std::vector<ImportanceRecord>& important_events() const {
-    return important_events_;
+  const std::vector<ImportanceRecord>& importance() const {
+    return importance_;
   }
-
- protected:
-  /// Gathers all events present in products.
-  /// Only this events can have importance factors.
-  ///
-  /// @param[in] graph  Boolean graph with basic event indices and pointers.
-  /// @param[in] products  Products with basic event indices.
-  ///
-  /// @returns A unique collection of important basic events.
-  std::vector<std::pair<int, const mef::BasicEvent*>> GatherImportantEvents(
-      const BooleanGraph* graph,
-      const std::vector<std::vector<int>>& products) noexcept;
 
  private:
   /// @returns Total probability from the probability analysis.
   virtual double p_total() noexcept = 0;
-
-  /// Find all events that are in the products.
-  ///
-  /// @returns Indices and pointers to the basic events.
-  virtual std::vector<std::pair<int, const mef::BasicEvent*>>
-  GatherImportantEvents() noexcept = 0;
+  /// @returns All basic event candidates for importance calculations.
+  virtual const std::vector<const mef::BasicEvent*>&
+  basic_events() noexcept = 0;
+  /// @returns Occurrences of basic events in products.
+  virtual std::vector<int> occurrences() noexcept = 0;
 
   /// Calculates Marginal Importance Factor.
   ///
-  /// @param[in] index  Positive index of an event.
+  /// @param[in] index  The position index of an event in events vector.
   ///
   /// @returns Calculated value for MIF.
   virtual double CalculateMif(int index) noexcept = 0;
 
-  /// Container for basic event importance factors.
-  std::unordered_map<std::string, ImportanceFactors> importance_;
-  /// Container of pointers to important events and their importance factors.
-  std::vector<ImportanceRecord> important_events_;
+  /// Container of important events and their importance factors.
+  std::vector<ImportanceRecord> importance_;
 };
 
 /// Base class for analyzers of importance factors
 /// with the help from probability analyzers.
-///
-/// @tparam Calculator  Quantitative calculator of probability values.
-template <class Calculator>
 class ImportanceAnalyzerBase : public ImportanceAnalysis {
  public:
   /// Constructs importance analyzer from probability analyzer.
@@ -126,38 +108,24 @@ class ImportanceAnalyzerBase : public ImportanceAnalysis {
   /// to calculate the total and conditional probabilities for factors.
   ///
   /// @param[in] prob_analyzer  Instantiated probability analyzer.
-  ///
-  /// @pre Probability analyzer can work with modified probability values.
-  ///
-  /// @post Probability analyzer's probability values are
-  ///       reset to the original values (event probabilities).
-  explicit ImportanceAnalyzerBase(
-      ProbabilityAnalyzer<Calculator>* prob_analyzer)
-      : ImportanceAnalysis(prob_analyzer),
-        prob_analyzer_(prob_analyzer) {}
+  explicit ImportanceAnalyzerBase(ProbabilityAnalyzerBase* prob_analyzer)
+      : ImportanceAnalysis(prob_analyzer), prob_analyzer_(prob_analyzer) {}
 
  protected:
   virtual ~ImportanceAnalyzerBase() = default;
 
   /// @returns A pointer to the helper probability analyzer.
-  ProbabilityAnalyzer<Calculator>* prob_analyzer() { return prob_analyzer_; }
+  ProbabilityAnalyzerBase* prob_analyzer() { return prob_analyzer_; }
 
  private:
-  /// @returns Total probability calculated by probability analyzer.
   double p_total() noexcept override { return prob_analyzer_->p_total(); }
-
-  /// Find all events that are in the products.
-  ///
-  /// @returns Indices and pointers to the basic events.
-  std::vector<std::pair<int, const mef::BasicEvent*>>
-  GatherImportantEvents() noexcept override {
-    return ImportanceAnalysis::GatherImportantEvents(
-        prob_analyzer_->graph(),
-        prob_analyzer_->products());
+  const std::vector<const mef::BasicEvent*>& basic_events() noexcept override {
+    return prob_analyzer_->graph()->basic_events();
   }
+  std::vector<int> occurrences() noexcept override;
 
   /// Calculator of the total probability.
-  ProbabilityAnalyzer<Calculator>* prob_analyzer_;
+  ProbabilityAnalyzerBase* prob_analyzer_;
 };
 
 /// Analyzer of importance factors
@@ -165,38 +133,35 @@ class ImportanceAnalyzerBase : public ImportanceAnalysis {
 ///
 /// @tparam Calculator  Quantitative calculator of probability values.
 template <class Calculator>
-class ImportanceAnalyzer : public ImportanceAnalyzerBase<Calculator> {
+class ImportanceAnalyzer : public ImportanceAnalyzerBase {
  public:
-  using ImportanceAnalyzerBase<Calculator>::ImportanceAnalyzerBase;
+  /// @copydoc ImportanceAnalyzerBase::ImportanceAnalyzerBase
+  explicit ImportanceAnalyzer(ProbabilityAnalyzer<Calculator>* prob_analyzer)
+      : ImportanceAnalyzerBase(prob_analyzer),
+        p_vars_(prob_analyzer->p_vars()) {}
 
  private:
   double CalculateMif(int index) noexcept override;
+  Pdag::IndexMap<double> p_vars_;  ///< A copy of variable probabilities.
 };
 
 template <class Calculator>
 double ImportanceAnalyzer<Calculator>::CalculateMif(int index) noexcept {
-  using Base = ImportanceAnalyzerBase<Calculator>;
-  std::vector<double>& p_vars = Base::prob_analyzer()->p_vars();
-  // Calculate P(top/event)
-  p_vars[index] = 1;
-  double p_e = Base::prob_analyzer()->CalculateTotalProbability();
-  assert(p_e >= 0);
-  if (p_e > 1) p_e = 1;
-
-  // Calculate P(top/Not event)
-  p_vars[index] = 0;
-  double p_not_e = Base::prob_analyzer()->CalculateTotalProbability();
-  assert(p_not_e >= 0);
-  if (p_not_e > 1) p_not_e = 1;
-
-  // Restore the probability.
-  p_vars[index] = Base::prob_analyzer()->graph()->GetBasicEvent(index)->p();
-  return p_e - p_not_e;
+  index += Pdag::kVariableStartIndex;
+  auto p_conditional = [index, this](bool state) {
+    p_vars_[index] = state;
+    return static_cast<ProbabilityAnalyzer<Calculator>*>(prob_analyzer())
+        ->CalculateTotalProbability(p_vars_);
+  };
+  double p_store = p_vars_[index];  // Save the original value for restoring.
+  double mif = p_conditional(true) - p_conditional(false);
+  p_vars_[index] = p_store;  // Restore the probability for next calculation.
+  return mif;
 }
 
 /// Specialization of importance analyzer with Binary Decision Diagrams.
 template <>
-class ImportanceAnalyzer<Bdd> : public ImportanceAnalyzerBase<Bdd> {
+class ImportanceAnalyzer<Bdd> : public ImportanceAnalyzerBase {
  public:
   /// Constructs importance analyzer from probability analyzer.
   /// Probability analyzer facilities are used

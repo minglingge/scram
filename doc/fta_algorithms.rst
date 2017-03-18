@@ -35,7 +35,7 @@ The BDD-based algorithm can use
 various types of the Binary Decision Diagram ([BDD]_, [ZBDD]_)
 for Boolean operations [Bry86]_ [Min93]_ [Rau93]_.
 This is a bottom-up approach that is mature and well tuned for PRA
-and other applications like electronics.
+and other logic applications.
 This method consists of many complex algorithms of the BDD to find MCS [Rau01]_.
 The BDD algorithms tend to be faster than MOCUS and other algorithms;
 however, this algorithm is subject to combinatorial explosion
@@ -76,8 +76,8 @@ complicates failure scenarios
 or may be irrelevant at all
 if the probability of success is close to 1.
 
-Minimal cut sets can be used for non-coherent analysis
-as conservative approximations.
+Minimal cut sets can be used as a conservative, approximate result
+for analysis of non-coherent fault trees.
 In order to eliminate complements of variables,
 it is assumed that a complement of an event always occurs, i.e., constant True or 1,
 unless the complement is in the same path or set as the corresponding event.
@@ -105,7 +105,7 @@ the event is repair (success) relevant.
 If an event is not in a product,
 it is irrelevant.
 
-Given Boolean formula **f(a,b,c)**:
+Given Boolean formula :math:`f(a,b,c)`:
 
     .. math::
 
@@ -118,13 +118,14 @@ Considering the complement is always True, the formula is simplified:
         f(a,b,c) = a \& b \| c
 
 Computation of prime implicants requires computation of the consensus
-when variable **a** is irrelevant:
+when variable :math:`a` is irrelevant:
 
     .. math::
 
         f(a,b,c) = a \& b \| \overline{a} \& c \| b \& c
 
-Minimal cut sets of the formula are ``{ab, c}``. Prime implicants are ``{ab, ~ac, bc}``.
+Minimal cut sets of the formula are :math:`{ab, c}`.
+Prime implicants are :math:`{ab, \overline{a}c, bc}`.
 
 
 ********************
@@ -137,9 +138,9 @@ MOCUS
 This algorithm is similar to the MOCUS algorithm as described in [Rau03]_.
 Steps in the algorithm for minimal cut set generation from a fault tree.
 
-**Rule 1.** Each OR gate generates new rows(sets) in the table(set) of cut sets
+**Rule 1.** Each OR gate generates new rows (sets) in the table (set) of cut sets
 
-**Rule 2.** Each AND gate generates new columns(elements) in the table(set) of cut sets
+**Rule 2.** Each AND gate generates new columns (elements) in the table (set) of cut sets
 
 After finishing or each of the above steps:
 
@@ -175,7 +176,7 @@ is delegated to ZBDD facilities.
 Binary Decision Diagram
 =======================
 
-Binary decision diagrams are constructed from Boolean graphs for analysis.
+Binary decision diagrams are constructed from PDAGs for analysis.
 In order to calculate minimal cut sets or prime implicants,
 BDD is converted into Zero-suppressed binary decision diagrams (ZBDD).
 ZBDD is a data structure that encodes sets in a compact way [Min93]_.
@@ -189,11 +190,28 @@ Zero-Suppressed Binary Decision Diagram
 =======================================
 
 In addition to being a helpful facility for set minimization,
-ZBDDs can work directly with Boolean graphs [Jun09]_.
+ZBDDs can work directly with PDAGs [Jun09]_.
 The major benefit of this approach
 is that products can be kept minimal and truncated upon generation.
 However, the application of Boolean operators on the ZBDD decomposition
 requires extra computations compared to the BDD approach.
+
+
+Product Container
+-----------------
+
+All the FTA algorithms in SCRAM produce ZBDD as a result of analysis
+to encode the sum of products.
+An alternative representation, for example,
+would be an array (of sets, bitsets, arrays, etc.),
+which is a very general data structure
+providing a flexible interface and standard algorithms
+(sort, partition, query, iteration, etc.);
+however, this kind of alternatives is not as space and time efficient as ZBDD.
+Moreover, there's great overhead in converting the resultant ZBDD into some other data structures.
+For these performance reasons,
+other analysis and post-processing facilities utilize or are expected to work with
+the ZBDD representation directly.
 
 
 ********************

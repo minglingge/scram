@@ -2,14 +2,14 @@
   datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
 
   <start>
-    <element name="config">
+    <element name="scram">
       <element name="input-files">
         <oneOrMore>
-          <element name="file"> <data type="string"/> </element>
+          <element name="file"> <data type="anyURI"/> </element>
         </oneOrMore>
       </element>
       <optional>
-        <element name="output-path"> <data type="string"/> </element>
+        <element name="output-path"> <data type="anyURI"/> </element>
       </optional>
       <ref name="options"/>
     </element>
@@ -20,9 +20,11 @@
       <optional>
         <element name="algorithm">
           <attribute name="name">
-            <data type="string">
-              <param name="pattern">mocus|bdd|zbdd</param>
-            </data>
+            <choice>
+              <value>mocus</value>
+              <value>bdd</value>
+              <value>zbdd</value>
+            </choice>
           </attribute>
         </element>
       </optional>
@@ -33,24 +35,19 @@
         <element name="analysis">
           <interleave>
             <optional>
-              <attribute name="probability">
-                <data type="boolean"/>
-              </attribute>
+              <attribute name="probability"> <data type="boolean"/> </attribute>
             </optional>
             <optional>
-              <attribute name="importance">
-                <data type="boolean"/>
-              </attribute>
+              <attribute name="importance"> <data type="boolean"/> </attribute>
             </optional>
             <optional>
-              <attribute name="uncertainty">
-                <data type="boolean"/>
-              </attribute>
+              <attribute name="uncertainty"> <data type="boolean"/> </attribute>
             </optional>
             <optional>
-              <attribute name="ccf">
-                <data type="boolean"/>
-              </attribute>
+              <attribute name="ccf"> <data type="boolean"/> </attribute>
+            </optional>
+            <optional>
+              <attribute name="sil"> <data type="boolean"/> </attribute>
             </optional>
           </interleave>
         </element>
@@ -58,53 +55,47 @@
       <optional>
         <element name="approximation">
           <attribute name="name">
-            <data type="string">
-              <param name="pattern">rare-event|mcub</param>
-            </data>
+            <choice>
+              <value>rare-event</value>
+              <value>mcub</value>
+            </choice>
           </attribute>
         </element>
       </optional>
       <optional>
-        <element name="limits">
-          <interleave>
-            <optional>
-              <element name="product-order">
-                <data type="nonNegativeInteger"/>
-              </element>
-            </optional>
-            <optional>
-              <element name="mission-time">
-                <data type="float"/>
-              </element>
-            </optional>
-            <optional>
-              <element name="cut-off">
-                <data type="float"/>
-              </element>
-            </optional>
-            <optional>
-              <element name="number-of-trials">
-                <data type="nonNegativeInteger"/>
-              </element>
-            </optional>
-            <optional>
-              <element name="number-of-quantiles">
-                <data type="nonNegativeInteger"/>
-              </element>
-            </optional>
-            <optional>
-              <element name="number-of-bins">
-                <data type="nonNegativeInteger"/>
-              </element>
-            </optional>
-            <optional>
-              <element name="seed">
-                <data type="nonNegativeInteger"/>
-              </element>
-            </optional>
-          </interleave>
-        </element>
+        <ref name="limits"/>
       </optional>
+    </element>
+  </define>
+
+  <define name="limits">
+    <element name="limits">
+      <interleave>
+        <optional>
+          <element name="product-order"> <data type="nonNegativeInteger"/> </element>
+        </optional>
+        <optional>
+          <element name="mission-time"> <data type="double"/> </element>
+        </optional>
+        <optional>
+          <element name="time-step"> <data type="double"/> </element>
+        </optional>
+        <optional>
+          <element name="cut-off"> <data type="double"/> </element>
+        </optional>
+        <optional>
+          <element name="number-of-trials"> <data type="nonNegativeInteger"/> </element>
+        </optional>
+        <optional>
+          <element name="number-of-quantiles"> <data type="nonNegativeInteger"/> </element>
+        </optional>
+        <optional>
+          <element name="number-of-bins"> <data type="nonNegativeInteger"/> </element>
+        </optional>
+        <optional>
+          <element name="seed"> <data type="nonNegativeInteger"/> </element>
+        </optional>
+      </interleave>
     </element>
   </define>
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Olzhas Rakhimov
+ * Copyright (C) 2014-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,32 @@
 #ifndef SCRAM_SRC_SETTINGS_H_
 #define SCRAM_SRC_SETTINGS_H_
 
+#include <cstdint>
+
 #include <string>
 
 namespace scram {
 namespace core {
+
+/// Qualitative analysis algorithms.
+enum class Algorithm : std::uint8_t {
+  kBdd = 0,
+  kZbdd,
+  kMocus
+};
+
+/// String representations for algorithms.
+const char* const kAlgorithmToString[] = {"bdd", "zbdd", "mocus"};
+
+/// Quantitative analysis approximations.
+enum class Approximation : std::uint8_t {
+  kNone = 0,
+  kRareEvent,
+  kMcub
+};
+
+/// String representations for approximations.
+const char* const kApproximationToString[] = {"none", "rare-event", "mcub"};
 
 /// Builder for analysis settings.
 /// Analysis facilities are guaranteed not to throw or fail
@@ -37,7 +59,7 @@ namespace core {
 class Settings {
  public:
   /// @returns The Qualitative analysis algorithm.
-  const std::string& algorithm() const { return algorithm_; }
+  Algorithm algorithm() const { return algorithm_; }
 
   /// Sets the algorithm for Qualitative analysis.
   /// Appropriate defaults are given to other settings
@@ -47,12 +69,35 @@ class Settings {
   /// with the Rare-Event approximation by default.
   /// Whereas, BDD based analyses run with exact quantitative analysis.
   ///
-  /// @param[in] algorithm  The name of the algorithm in lower case.
+  /// @param[in] value  The algorithm kind.
+  ///
+  /// @returns Reference to this object.
+  Settings& algorithm(Algorithm value) noexcept;
+
+  /// Provides a convenient wrapper for algorithm setting from a string.
+  ///
+  /// @param[in] value  The string representation of the algorithm.
+  ///
+  /// @throws InvalidArgument  The algorithm is not recognized.
+  ///
+  /// @returns Reference to this object.
+  Settings& algorithm(const std::string& value);
+
+  /// @returns The quantitative analysis approximation.
+  Approximation approximation() const { return approximation_; }
+
+  /// Sets the approximation for quantitative analysis.
+  ///
+  /// @param[in] value  Approximation kind to be applied.
   ///
   /// @returns Reference to this object.
   ///
-  /// @throws InvalidArgument  The algorithm is not recognized.
-  Settings& algorithm(const std::string& algorithm);
+  /// @throws InvalidArgument  The approximation is not recognized
+  ///                          or inappropriate for analysis.
+  /// @{
+  Settings& approximation(Approximation value);
+  Settings& approximation(const std::string& value);
+  /// @}
 
   /// @returns true if prime implicants are to be calculated
   ///               instead of minimal cut sets.
@@ -76,11 +121,11 @@ class Settings {
 
   /// Sets the limit order for products.
   ///
-  /// @param[in] order  A natural number for the limit order.
+  /// @param[in] order  A non-negative number for the limit order.
   ///
   /// @returns Reference to this object.
   ///
-  /// @throws InvalidArgument  The number is less than 0 or too large.
+  /// @throws InvalidArgument  The number is less than 0.
   Settings& limit_order(int order);
 
   /// @returns The minimum required probability for products.
@@ -95,21 +140,6 @@ class Settings {
   ///
   /// @throws InvalidArgument  The probability is not in the [0, 1] range.
   Settings& cut_off(double prob);
-
-  /// @returns "no" if no quantitative approximation is requested.
-  /// @returns "rare-event" for the rare-event approximation.
-  /// @returns "mcub" for the min-cut-upper bound approximation.
-  const std::string& approximation() const { return approximation_; }
-
-  /// Sets the approximation for quantitative analysis.
-  ///
-  /// @param[in] approx  Approximation to be applied.
-  ///
-  /// @returns Reference to this object.
-  ///
-  /// @throws InvalidArgument  The approximation is not recognized
-  ///                          or inappropriate for analysis.
-  Settings& approximation(const std::string& approx);
 
   /// @returns The number of trials for Monte-Carlo simulations.
   int num_trials() const { return num_trials_; }
@@ -167,7 +197,25 @@ class Settings {
   /// @param[in] time  A positive number in hours by default.
   ///
   /// @returns Reference to this object.
+  ///
+  /// @throws InvalidArgument  The time value is negative.
   Settings& mission_time(double time);
+
+  /// @returns The time step in hours for probability analyses.
+  ///          0 if the time step doesn't apply.
+  double time_step() const { return time_step_; }
+
+  /// Sets the time step for probability analyses.
+  /// 0 value signifies that the time step doesn't apply.
+  ///
+  /// @param[in] time  The time in hours to partition the mission time.
+  ///
+  /// @returns Reference to this object.
+  ///
+  /// @throws InvalidArgument  The time value is negative.
+  /// @throws InvalidArgument  The time step is being disabled (value 0)
+  ///                          while the SIL metrics are requested.
+  Settings& time_step(double time);
 
   /// @returns true if probability analysis is requested.
   bool probability_analysis() const { return probability_analysis_; }
@@ -181,10 +229,25 @@ class Settings {
   ///
   /// @returns Reference to this object.
   Settings& probability_analysis(bool flag) {
-    if (!importance_analysis_ && !uncertainty_analysis_)
+    if (!importance_analysis_ && !uncertainty_analysis_ &&
+        !safety_integrity_levels_) {
       probability_analysis_ = flag;
+    }
     return *this;
   }
+
+  /// @returns true if the SIL metrics are requested.
+  bool safety_integrity_levels() const { return safety_integrity_levels_; }
+
+  /// Sets the flag for calculation of the SIL metrics.
+  /// This requires that time-step is set.
+  ///
+  /// @param[in] flag  True or false for turning on or off the analysis.
+  ///
+  /// @returns Reference to this object.
+  ///
+  /// @throws InvalidArgument  The flag is True, but no time-step is set.
+  Settings& safety_integrity_levels(bool flag);
 
   /// @returns true if importance analysis is requested.
   bool importance_analysis() const { return importance_analysis_; }
@@ -199,7 +262,8 @@ class Settings {
   /// @returns Reference to this object.
   Settings& importance_analysis(bool flag) {
     importance_analysis_ = flag;
-    if (importance_analysis_) probability_analysis_ = true;
+    if (importance_analysis_)
+      probability_analysis_ = true;
     return *this;
   }
 
@@ -215,7 +279,8 @@ class Settings {
   /// @returns Reference to this object.
   Settings& uncertainty_analysis(bool flag) {
     uncertainty_analysis_ = flag;
-    if (uncertainty_analysis_) probability_analysis_ = true;
+    if (uncertainty_analysis_)
+      probability_analysis_ = true;
     return *this;
   }
 
@@ -239,19 +304,23 @@ class Settings {
 
  private:
   bool probability_analysis_ = false;  ///< A flag for probability analysis.
+  bool safety_integrity_levels_ = false;  ///< Calculation of the SIL metrics.
   bool importance_analysis_ = false;  ///< A flag for importance analysis.
   bool uncertainty_analysis_ = false;  ///< A flag for uncertainty analysis.
   bool ccf_analysis_ = false;  ///< A flag for common-cause analysis.
-  std::string algorithm_ = "bdd";  ///< Qualitative analysis algorithm.
   bool prime_implicants_ = false;  ///< Calculation of prime implicants.
+  /// Qualitative analysis algorithm.
+  Algorithm algorithm_ = Algorithm::kBdd;
+  /// The approximations for calculations.
+  Approximation approximation_ = Approximation::kNone;
   int limit_order_ = 20;  ///< Limit on the order of products.
-  double mission_time_ = 8760;  ///< System mission time.
-  double cut_off_ = 1e-8;  ///< The cut-off probability for products.
-  std::string approximation_ = "no";  ///< The approximations for calculations.
   int seed_ = 0;  ///< The seed for the pseudo-random number generator.
   int num_trials_ = 1e3;  ///< The number of trials for Monte Carlo simulations.
   int num_quantiles_ = 20;  ///< The number of quantiles for distributions.
   int num_bins_ = 20;  ///< The number of bins for histograms.
+  double mission_time_ = 8760;  ///< System mission time.
+  double time_step_ = 0;  ///< The time step for probability analyses.
+  double cut_off_ = 1e-8;  ///< The cut-off probability for products.
 };
 
 }  // namespace core

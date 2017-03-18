@@ -7,18 +7,16 @@ SCRAM
 .. image:: https://ci.appveyor.com/api/projects/status/d36yu2w3t8hy4ito/branch/develop?svg=true
     :target: https://ci.appveyor.com/project/rakhimov/scram/branch/develop
     :alt: 'Build status'
-.. image:: https://coveralls.io/repos/github/rakhimov/scram/badge.svg?branch=develop
-    :target: https://coveralls.io/github/rakhimov/scram?branch=develop
+.. image:: https://codecov.io/github/rakhimov/scram/coverage.svg?branch=develop
+    :target: https://codecov.io/github/rakhimov/scram?branch=develop
 .. image:: https://scan.coverity.com/projects/2555/badge.svg
     :target: https://scan.coverity.com/projects/2555
 .. image:: https://landscape.io/github/rakhimov/scram/develop/landscape.svg?style=flat
     :target: https://landscape.io/github/rakhimov/scram/develop
     :alt: Code Health
-.. image:: https://codecov.io/github/rakhimov/scram/coverage.svg?branch=develop
-    :target: https://codecov.io/github/rakhimov/scram?branch=develop
-.. image:: https://badge.waffle.io/rakhimov/scram.svg?label=ready&title=Ready
+.. image:: https://badge.waffle.io/rakhimov/scram.svg?label=In%20Progress&title=in%20progress
     :target: https://waffle.io/rakhimov/scram
-    :alt: 'Stories in Ready'
+    :alt: 'Stories in Progress'
 
 |
 
@@ -31,11 +29,11 @@ probability calculations with importance analysis,
 and uncertainty analysis with Monte Carlo simulations.
 This tool can handle non-coherent fault trees, containing NOT logic.
 
-SCRAM input and report files are based on OpenPSA_ Model Exchange Format.
-For the current status of the OpenPSA MEF features in SCRAM,
+SCRAM input and report files are based on the Open-PSA_ `Model Exchange Format`_.
+For the current status of the Open-PSA MEF features in SCRAM,
 please see the `MEF Support`_ documentation.
 
-A complementary GUI front-end is provided
+A complementary GUI front-end is under development
 for visualization and manipulation of risk analysis models and reports.
 
 To explore the performance of SCRAM or research fault trees,
@@ -44,44 +42,34 @@ which can create hard-to-analyze fault trees in a short time.
 
 The documentation_ contains a full description of SCRAM,
 its current capabilities, and future additions.
+The latest stable release is packaged for `quick installation`_ on various platforms.
 
-.. _OpenPSA: http://open-psa.org
-.. _MEF Support: http://scram-pra.org/doc/opsa_support.html
-.. _documentation: http://scram-pra.org
+.. _Open-PSA: http://open-psa.org
+.. _Model Exchange Format: http://open-psa.github.io/mef
+.. _MEF Support: https://scram-pra.org/doc/opsa_support.html
+.. _documentation: https://scram-pra.org
+.. _quick installation: https://scram-pra.org/doc/installation.html
 
 .. contents:: **Table of Contents**
     :depth: 2
 
 
-******************
-Quick Installation
-******************
-
-The fastest and easiest way to install SCRAM is
-to have a Linux distribution with ``apt-get`` as the package manager
-that can install packages from Personal Package Archives.
-For example, `Ubuntu 14.04`_ and later releases are tested to work.
-
-On these machines, run the following commands to get SCRAM from its PPA_.
-
-.. code-block:: bash
-
-    sudo add-apt-repository ppa:rakhimov/scram
-
-    sudo apt-get update
-
-    sudo apt-get install scram
-
-.. _Ubuntu 14.04: http://www.ubuntu.com/download
-.. _PPA: https://launchpad.net/~rakhimov/+archive/ubuntu/scram
-
-If you want to get more tools and run tests under current development,
-follow the building and installing instructions bellow.
-
-
 ***********************
 Building and Installing
 ***********************
+
+Git Submodules
+==============
+
+Some dependencies are provided with git submodules (e.g., Google Test).
+In order to initialize all the submodules,
+this repository must be cloned recursively with ``git clone --recursive``,
+or the following commands must be executed after a normal clone.
+
+.. code-block:: bash
+
+    git submodule update --init --recursive
+
 
 Dependencies
 ============
@@ -89,12 +77,11 @@ Dependencies
 ====================   ==================
 Package                Minimum Version
 ====================   ==================
-`CMake`                2.8.12
-`boost`                1.54
-`libxml2`              2.8.0
-`libxml++`             2.34.1
-`Python`               2.7.3 or 3.3
-`Qt`                   5.2.1
+CMake                  2.8.12
+boost                  1.56
+libxml++               2.38.1
+Python                 2.7.3 or 3.3
+Qt                     5.2.1
 ====================   ==================
 
 
@@ -104,21 +91,9 @@ Optional Dependencies
 ====================   ==================
 Package                Minimum Version
 ====================   ==================
-`TCMalloc`             1.7
+TCMalloc               1.7
+JEMalloc               3.6
 ====================   ==================
-
-
-Python Modules
---------------
-
-====================   ==================
-Package                Tested Version
-====================   ==================
-`nose`                 1.3.1
-`lxml`                 3.3.3
-====================   ==================
-
-.. note:: Python modules are needed for tests only.
 
 
 Compilers
@@ -127,30 +102,14 @@ Compilers
 ====================   ==================
 Package                Minimum Version
 ====================   ==================
-`GCC/G++`              4.8.1
-`Clang/LLVM`           3.3
+GCC/G++                4.9
+Clang/LLVM             3.6
+Intel                  17.0.1
 ====================   ==================
 
-.. note::
-    Earlier versions may or may not work.
-    The listed minimum versions are the ones known to work.
 
-
-Google Test
------------
-
-The testing framework is provided as a git submodule.
-In order to initialize the submodule,
-this repository must be cloned recursively with ``git clone --recursive``,
-or the following commands must be executed after a normal clone.
-
-.. code-block:: bash
-
-    git submodule init && git submodule update
-
-
-Installing Dependencies (Linux and Unix)
-========================================
+Installing Dependencies
+=======================
 
 The following installation instructions and scripts are taken from Cyclus_.
 
@@ -161,10 +120,10 @@ and access to a package manager
 or has some other suitable method of automatically installing libraries.
 
 
-Linux Systems
--------------
+Ubuntu
+------
 
-This process is tested on Ubuntu 14.04 LTS
+This process is tested on Ubuntu 16.04 LTS
 using ``apt-get`` as the package manager.
 
 The command to install a dependency takes the form of:
@@ -176,12 +135,9 @@ The command to install a dependency takes the form of:
 Where ``package`` is replaced by the correct package name.
 The minimal list of required library package names is:
 
-#. make
 #. cmake
 #. libboost-all-dev
-#. libxml2-dev
 #. libxml++2.6-dev
-#. python2.7
 #. qt5-default
 
 and (optionally):
@@ -198,41 +154,47 @@ For example, in order to install ``Boost`` on your system, type:
 
     sudo apt-get install libboost-all-dev
 
+Python and GCC/G++ compilers are assumed to be available on the system.
 If you'd prefer to copy/paste,
-the following line will install all major dependencies and GCC/G++ compiler:
+the following line will install all major dependencies:
 
 .. code-block:: bash
 
-    sudo apt-get install -y cmake make gcc g++ libboost-all-dev libxml2-dev libxml++2.6-dev python2.7 libgoogle-perftools-dev qt5-default
+    sudo apt-get install -y cmake lib{boost-all,xml++2.6,google-perftools}-dev qt5-default
 
 
-Mac Systems
------------
+macOS
+-----
 
 If on a Mac system, a good manager to use is macports_ or homebrew_.
 It is assumed that some dependencies are provided by Xcode.
 The following instructions are tested on OS X 10.9,
 but it should work for later versions as well.
 
-Using macports_, the command to install a dependency takes the form of:
+Using homebrew_, the command to install a dependency takes the form of:
 
 .. code-block:: bash
 
-    sudo port install package
+    brew install package
+
+If the ``package`` is already installed the command will fail,
+instead upgrade the ``package`` if necessary:
+
+.. code-block:: bash
+
+    brew outdated package || brew upgrade package
 
 Where ``package`` is replaced by the correct package name.
 The minimal list of required library package names is:
 
 #. cmake
 #. boost
-#. libxml2
-#. libxmlxx2
-#. python27
-#. qt5-mac
+#. libxml++
+#. qt5
 
 and (optionally):
 
-#. google-perftools
+#. gperftools
 
 compiler:
 
@@ -242,75 +204,23 @@ For example, in order to install ``Boost`` on your system, type:
 
 .. code-block:: bash
 
-    sudo port install boost
+    brew install boost
 
 If you'd prefer to copy/paste,
 the following line will install all major dependencies:
 
 .. code-block:: bash
 
-    sudo port install cmake boost libxml2 libxmlxx2 python27 google-perftools qt5-mac
+    brew install cmake boost libxml++ gperftools qt5
 
 .. _macports: http://www.macports.org/
 .. _homebrew: http://brew.sh/
 
 
-Installing SCRAM (Linux and Unix)
-=================================
-
-A python script is provided to make the installation process easier.
-If there are dependency issues, ``CMake`` output should guide with errors.
-``CMake`` can be used directly without the python script to configure the build.
-
-The default installation directory is ``~/.local``.
-The default linkage is dynamic;
-however, tests are statically linked against GoogleTest.
-
-.. code-block:: bash
-
-    .../scram$ python install.py  --prefix=path/to/installation/directory
-
-The main and test binaries are installed in ``installation/directory/bin``.
-The input files and schema are copied in ``installation/directory/share/scram/``.
-
-The default build type is ``Debug`` with many compiler warnings turned on,
-but it can be overridden by ``--release``, ``--profile``, or ``--build-type``.
-For performance testing and distribution, use ``--release`` or ``-r`` flag:
-
-.. code-block:: bash
-
-    .../scram$ python install.py --prefix=path/to/installation/directory -r
-
-Various other flags are described by the script's help prompt.
-
-.. code-block:: bash
-
-    .../scram$ python install.py -h
-
-Other tools,
-such as the **fault tree generator** and **shorthand-to-XML** converter,
-can be found in the ``scripts`` directory.
-These tools do not need compilation or installation.
-
-
 Windows
-=======
+-------
 
-The easiest option is
-to use a virtual machine (`VirtualBox <https://www.virtualbox.org/>`_)
-with `Ubuntu 14.04`_.
-Follow the `Quick Installation`_ guide for this option
-or building and installation instructions for `Linux Systems`_.
-
-Another option is to use MSYS2_ with Mingw-w64_ or Cygwin_
-to build and install SCRAM on Windows.
-Cygwin_ 64bit has been tested to produce binaries on Windows,
-but it is not being tested on a regular basis.
-The dependencies listed for Linux systems must be installed with Cygwin64.
-
-MSYS2_ with Mingw-w64_, on the other hand,
-is the current target platform for Continuous Integration on Windows.
-It is as friendly and easy as Cygwin.
+MSYS2_/Mingw-w64_ is the recommended platform to work on Windows.
 Assuming MSYS2 is installed on the system,
 the following instructions will install SCRAM dependencies.
 
@@ -327,11 +237,14 @@ Where ``package`` is replaced by the correct package name:
 #. make
 #. cmake
 #. boost
-#. libxml2
 #. libxml++2.6
 #. qt5
 
-If Python has not already been installed on the system,
+and (optionally):
+
+#. jemalloc
+
+If Python has not yet been installed on the system,
 Python installation takes the form of:
 
 .. code-block:: bash
@@ -343,21 +256,55 @@ the following line will install all major dependencies:
 
 .. code-block:: bash
 
-    pacman --noconfirm -S python mingw-w64-x86_64-gcc mingw-w64-x86_64-make mingw-w64-x86_64-cmake mingw-w64-x86_64-boost mingw-w64-x86_64-libxml2 mingw-w64-x86_64-libxml++2.6 mingw-w64-x86_64-qt5
+    pacman --noconfirm -S python mingw-w64-x86_64-{gcc,make,cmake,boost,libxml++2.6,qt5,jemalloc}
 
-The building and installation can be done with the ``install.py`` script
-in the root directory.
-
-.. code-block:: bash
-
-    .../scram$ python install.py --prefix=path/to/installation/directory -r --mingw64
-
-After installation,
-SCRAM must be run inside of the MSYS2 shell.
+SCRAM installation and executables must be run inside of the MSYS2 shell.
 
 .. _MSYS2: https://sourceforge.net/projects/msys2/
 .. _Mingw-w64: http://mingw-w64.sourceforge.net/
-.. _Cygwin: https://www.cygwin.com/
+
+
+Installing SCRAM
+================
+
+A python script is provided to make the build/installation process easier.
+If there are dependency issues, ``CMake`` output should guide with errors.
+``CMake`` can be used directly without the python script to configure the build.
+
+The default installation directory is ``~/.local``.
+The default linkage is dynamic;
+however, tests are statically linked against GoogleTest.
+
+.. code-block:: bash
+
+    .../scram$ python install.py  --prefix=path/to/installation/directory
+
+The main and test binaries are installed in ``installation/directory/bin``.
+The input files and schema are copied in ``installation/directory/share/scram/``.
+
+The default build type is ``Debug`` with many compiler warnings turned on,
+but it can be overridden by ``--release`` or ``--build-type CMAKE_BUILD_TYPE``.
+For performance testing and distribution, use ``--release`` flag:
+
+.. code-block:: bash
+
+    .../scram$ python install.py --prefix=path/to/installation/directory --release
+
+For Mingw-w64_ on Windows, add ``--mingw64`` flag.
+
+.. code-block:: bash
+
+    .../scram$ python install.py --prefix=path/to/installation/directory --release --mingw64
+
+Various other flags are described by the script's help prompt.
+
+.. code-block:: bash
+
+    .../scram$ python install.py --help
+
+Other tools, such as the **fault tree generator**,
+can be found in the ``scripts`` directory.
+These tools do not need compilation or installation.
 
 
 ***********************
@@ -389,7 +336,7 @@ On command line, run help to get more detailed information:
     scram --help
 
 Various other useful tools and helper scripts,
-such as the **fault tree generator** and **shorthand-to-XML** converter,
+such as the **fault tree generator**,
 can be found in the ``scripts`` directory.
 Help prompts and the documentation have more details how to use these tools.
 
@@ -407,7 +354,7 @@ To test the tools in the ``scripts`` directory:
 
 .. code-block:: bash
 
-    nosetests -w scripts/
+    nosetests -w scripts/ test/
 
 To test the command-line call of SCRAM:
 
@@ -440,14 +387,16 @@ It is recommended to build SCRAM
 with assertions preserved
 and sanitizers enabled, for example,
 address sanitizer in GCC and Clang ``-fsanitize=address``.
+
 In order to speed up the fuzz testing,
 SCRAM may be built with optimizations but ``NDEBUG`` undefined.
+Additionally, multiple SCRAM instances can be run at once.
 
-An example command to run SCRAM 1000 times with auto-generated inputs and configurations:
+An example command to run SCRAM 1000 times with 4 parallel instances:
 
 .. code-block:: bash
 
-    fuzz_tester.py -n 1000
+    fuzz_tester.py -n 1000 -j 4
 
 The fuzz tester can be guided with options listed in its help prompt.
 Some options can be combined,
@@ -460,6 +409,7 @@ however, information messages are given to indicate the interpretation.
 
     fuzz_tester.py --help
 
+Fuzzing inputs and configurations are auto-generated.
 The fuzz tester collects run configurations, failures, and logs.
 The auto-generated inputs are preserved for failed runs.
 
@@ -513,3 +463,11 @@ Please follow the instructions in `CONTRIBUTING.md`_.
 
 .. _CONTRIBUTING.md:
     https://github.com/rakhimov/scram/blob/develop/CONTRIBUTING.md
+
+
+.. image:: https://bestpractices.coreinfrastructure.org/projects/356/badge
+    :target: https://bestpractices.coreinfrastructure.org/projects/356
+    :alt: CII Best Practices
+.. image:: https://www.openhub.net/p/scram/widgets/project_thin_badge.gif
+    :target: https://www.openhub.net/p/scram
+    :alt: Open HUB Metrics

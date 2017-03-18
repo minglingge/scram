@@ -21,24 +21,24 @@
 #ifndef SCRAM_SRC_INITIALIZER_H_
 #define SCRAM_SRC_INITIALIZER_H_
 
-#include <map>
 #include <memory>
-#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <utility>
 #include <vector>
 
+#include <boost/noncopyable.hpp>
 #include <libxml++/libxml++.h>
 
 #include "ccf_group.h"
 #include "element.h"
 #include "event.h"
 #include "expression.h"
+#include "expression/constant.h"
 #include "fault_tree.h"
 #include "model.h"
+#include "parameter.h"
 #include "settings.h"
-#include "xml_parser.h"
 
 namespace scram {
 namespace mef {
@@ -49,44 +49,31 @@ namespace mef {
 /// The initialization phase includes
 /// validation and proper setup of the constructs
 /// for future use or analysis.
-class Initializer {
+class Initializer : private boost::noncopyable {
  public:
-  /// Prepares common information to be used by
-  /// the future input file constructs,
-  /// for example, mission time and validation schema.
-  ///
-  /// @param[in] settings  Analysis settings.
-  explicit Initializer(const core::Settings& settings);
-
-  Initializer(const Initializer&) = delete;
-  Initializer& operator=(const Initializer&) = delete;
-
   /// Reads input files with the structure of analysis constructs.
   /// Initializes the analysis model from the given input files.
   /// Puts all events into their appropriate containers in the model.
   ///
-  /// @param[in] xml_files  The formatted XML input files.
+  /// @param[in] xml_files  The MEF XML input files.
+  /// @param[in] settings  Analysis settings.
   ///
   /// @throws DuplicateArgumentError  Input contains duplicate files.
   /// @throws ValidationError  The input contains errors.
   /// @throws IOError  One of the input files is not accessible.
-  void ProcessInputFiles(const std::vector<std::string>& xml_files);
+  Initializer(const std::vector<std::string>& xml_files,
+              core::Settings settings);
 
   /// @returns The model built from the input files.
   std::shared_ptr<Model> model() const { return model_; }
 
  private:
   /// Convenience alias for expression extractor function types.
-  using ExtractorFunction = std::function<ExpressionPtr(const xmlpp::NodeSet&,
-                                                        const std::string&,
-                                                        Initializer*)>;
+  using ExtractorFunction = ExpressionPtr (*)(const xmlpp::NodeSet&,
+                                              const std::string&, Initializer*);
   /// Map of expression names and their extractor functions.
   using ExtractorMap = std::unordered_map<std::string, ExtractorFunction>;
 
-  /// Map of valid units for parameters.
-  static const std::map<std::string, Units> kUnits_;
-  /// String representation of units.
-  static const char* const kUnitToString_[];
   /// Expressions mapped to their extraction functions.
   static const ExtractorMap kExpressionExtractors_;
 
@@ -97,6 +84,19 @@ class Initializer {
   /// and constructs the requested expression T.
   template <class T, int N>
   struct Extractor;
+
+  /// Calls Extractor with an appropriate N to construct the expression.
+  ///
+  /// @tparam T  Type of an expression.
+  ///
+  /// @param[in] args  A vector of XML elements containing the arguments.
+  /// @param[in] base_path  Series of ancestor containers in the path with dots.
+  /// @param[in,out] init  The host Initializer.
+  ///
+  /// @returns A shared pointer to the extracted expression.
+  template <class T>
+  static ExpressionPtr Extract(const xmlpp::NodeSet& args,
+                               const std::string& base_path, Initializer* init);
 
   /// Checks if all input files exist on the system.
   ///
@@ -113,6 +113,15 @@ class Initializer {
   ///
   /// @throws DuplicateArgumentError  There are duplicate input files.
   void CheckDuplicateFiles(const std::vector<std::string>& xml_files);
+
+  /// @copybrief Initializer::Initializer
+  ///
+  /// @param[in] xml_files  The formatted XML input files.
+  ///
+  /// @throws DuplicateArgumentError  Input contains duplicate files.
+  /// @throws ValidationError  The input contains errors.
+  /// @throws IOError  One of the input files is not accessible.
+  void ProcessInputFiles(const std::vector<std::string>& xml_files);
 
   /// Reads one input file with the structure of analysis entities.
   /// Initializes the analysis from the given input file.
@@ -138,7 +147,7 @@ class Initializer {
 
   /// Attaches attributes and a label to the elements of the analysis.
   /// These attributes are not XML attributes
-  /// but OpenPSA format defined arbitrary attributes
+  /// but the Open-PSA format defined arbitrary attributes
   /// and a label that can be attached to many analysis elements.
   ///
   /// @param[in] element_node  XML element.
@@ -354,17 +363,31 @@ class Initializer {
   void DefineCcfFactor(const xmlpp::Element* factor_node, CcfGroup* ccf_group);
 
   /// Validates if the initialization of the analysis is successful.
-  /// This validation process also generates optional warnings.
   ///
+  /// @throws CycleError  Model contains cycles.
   /// @throws ValidationError  The initialization contains mistakes.
+  ///
+  /// @note Cyclic structures need to be broken up by other methods
+  ///       if this error condition may lead resource leaks.
   void ValidateInitialization();
 
   /// Validates expressions and anything
   /// that is dependent on them,
   /// such as parameters and basic events.
   ///
+  /// @throws CycleError  Cyclic parameters are detected.
   /// @throws ValidationError  There are problems detected with expressions.
   void ValidateExpressions();
+
+  /// Breaks all possible cycles in graph structures.
+  /// This function handles cycles
+  /// conservatively and indiscriminately.
+  ///
+  /// It may not be the most optimal approach,
+  /// but this error condition is considered uncommon.
+  ///
+  /// @post The model is unusable (freed).
+  void BreakCycles();
 
   /// Applies the input information to set up for future analysis.
   /// This step is crucial to get
@@ -377,16 +400,12 @@ class Initializer {
 
   std::shared_ptr<Model> model_;  ///< Analysis model with constructs.
   core::Settings settings_;  ///< Settings for analysis.
-  std::shared_ptr<MissionTime> mission_time_;  ///< Mission time expression.
 
-  /// The main schema for validation.
-  static std::stringstream schema_;
-
-  /// Parsers with all documents saved for later access.
-  std::vector<std::unique_ptr<XmlParser>> parsers_;
+  /// Saved parsers to keep XML documents alive.
+  std::vector<std::unique_ptr<xmlpp::DomParser>> parsers_;
 
   /// Map roots of documents to files. This is for error reporting.
-  std::map<const xmlpp::Node*, std::string> doc_to_file_;
+  std::unordered_map<const xmlpp::Node*, std::string> doc_to_file_;
 
   /// Collection of elements that are defined late
   /// because of unordered registration and definition of their dependencies.
@@ -402,7 +421,7 @@ class Initializer {
   } tbd_;  ///< Elements are assumed to be unique.
 
   /// Container for defined expressions for later validation.
-  std::vector<Expression*> expressions_;
+  std::vector<std::pair<Expression*, const xmlpp::Element*>> expressions_;
 };
 
 }  // namespace mef

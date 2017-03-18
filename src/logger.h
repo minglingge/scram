@@ -30,11 +30,11 @@
 #define SCRAM_SRC_LOGGER_H_
 
 #include <cstdint>
-#include <cstdio>
 
 #include <chrono>
 #include <sstream>
-#include <string>
+
+#include <boost/noncopyable.hpp>
 
 namespace scram {
 
@@ -44,7 +44,7 @@ namespace scram {
 /// Starts the timing in nanoseconds.
 ///
 /// @param[out] var  A unique name for time variable in the scope.
-#define CLOCK(var) uint64_t var = TIME_STAMP()
+#define CLOCK(var) std::uint64_t var = TIME_STAMP()
 
 /// Calculates the time duration since the start of the clock in seconds.
 ///
@@ -91,20 +91,10 @@ const int kMaxVerbosity = 7;  ///< The index of the last level.
 ///
 /// @warning Do not place leading spaces, newline, or tabs in messages
 ///          because it will mess up the level-dependent printing.
-class Logger {
+class Logger : private boost::noncopyable {
  public:
-  Logger() {}
-
-  Logger(const Logger&) = delete;
-  Logger& operator=(const Logger&) = delete;
-
   /// Flashes all the logs into the standard error upon destruction.
-  ~Logger() noexcept {
-    os_ << std::endl;
-    // fprintf used for thread safety.
-    std::fprintf(stderr, "%s", os_.str().c_str());
-    std::fflush(stderr);
-  }
+  ~Logger() noexcept;
 
   /// @returns Reference to the cut-off level for reporting.
   static LogLevel report_level() { return report_level_; }
@@ -127,19 +117,16 @@ class Logger {
   /// @param[in] level  The log level for the information.
   ///
   /// @returns Formatted output stringstream with the log level information.
-  std::ostringstream& Get(LogLevel level) {
-    os_ << Logger::kLevelToString_[level] << ": ";
-    os_ << std::string(level < DEBUG1 ? 0 : level - DEBUG1 + 1, '\t');
-    return os_;
-  }
+  std::ostringstream& Get(LogLevel level);
 
  private:
   /// Translates the logging level into a string.
   /// The index is the value of the enum.
   static const char* const kLevelToString_[];
 
-  std::ostringstream os_;  ///< Main stringstream to gather the logs.
   static LogLevel report_level_;  ///< Cut-off log level for reporting.
+
+  std::ostringstream os_;  ///< Main stringstream to gather the logs.
 };
 
 }  // namespace scram

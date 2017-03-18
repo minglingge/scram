@@ -9,32 +9,32 @@ Probability Types
 *****************
 
 Various probability types and distributions are accepted
-as described in the OpenPSA Model Exchange Format [MEF]_,
+as described in the Open-PSA Model Exchange Format [MEF]_,
 for example, constant values, exponential with two or four parameters,
 and uniform, normal, log-normal distributions.
 
 Bellow is a brief description.
 For more information, please take a look at the [MEF]_ format documentation.
 
-**P-model**
+P-model
     The probability of an event occurring
     when the time to failure is unknown or unpredictable.
 
-**Lambda-model or Exponential with Two Parameters**
-    The probability that a primary event will occur within given time (t).
+Lambda-model or Exponential with Two Parameters
+    The probability that a primary event will occur within given time (:math:`t`).
     Appropriate for events within systems
     that are continuously operating and
     have a known probability of failure during a unit time period (:math:`\lambda`).
 
     .. math::
 
-        P = 1-\exp(-\lambda*t)
+        P = 1-e^{-\lambda \cdot t}
 
     For small lambda and time, the approximation is
 
     .. math::
 
-        P \approx \lambda*t
+        P \approx \lambda \cdot t
 
 
 ************************
@@ -73,8 +73,8 @@ The Rare-Event Approximation
 ----------------------------
 
 Given that the probabilities of events are very small value less than 0.1,
-only the first series in the probability equation may be used
-as a conservative approximation;
+only the first series in the Sylvester-Poincaré formula may be used
+as a conservative (upper-bound) approximation;
 that is, the total probability is the sum of all probabilities of minimal cut sets.
 Ideally, this approximation gives good results
 for independent minimal cut sets with very low probabilities.
@@ -113,3 +113,27 @@ The following importance factors are calculated:
 
 The short description and interpretation of the factors
 can be found in :ref:`theory`.
+
+Alongside the importance factors,
+the analysis provides the probabilities of events and their number of occurrences in products.
+
+
+***********************
+Safety Integrity Levels
+***********************
+
+[IEC_61508]_ standard metrics and Safety Integrity Levels [SIL]_
+are approximated with quantitative analysis on fault trees [DR05]_.
+Time fractions spent in every SIL bucket
+for PFD and PFH is reported with a histogram,
+as suggested by [DRS08]_.
+Note that these computations require probability analysis over a period of time.
+
+.. warning::
+    The current implementation for the PFH calculation is simplistic,
+    resulting in potentially less accurate values
+    than the more rigorous approaches suggested in the above papers.
+    The PFH results may become more inaccurate
+    with testable, repairable, and/or non-continuously-operated components.
+    At best, the approximate value is expected to be of the same magnitude as the real value,
+    which puts the approximation into the same Safety Integrity Level.

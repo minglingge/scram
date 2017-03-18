@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Olzhas Rakhimov
+ * Copyright (C) 2015-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,20 +31,14 @@
 #include <vector>
 
 #include <boost/functional/hash.hpp>
+#include <boost/noncopyable.hpp>
 #include <boost/smart_ptr/intrusive_ptr.hpp>
 
-#include "boolean_graph.h"
+#include "pdag.h"
 #include "settings.h"
 
 namespace scram {
 namespace core {
-
-/// Control flags and pointers for communication
-/// between BDD vertex pointers and BDD tables.
-struct ControlBlock {
-  void* vertex;  ///< The manager of the control block.
-  int weak_count;  ///< Pointers in tables.
-};
 
 /// The default management of BDD vertices.
 ///
@@ -52,27 +46,53 @@ struct ControlBlock {
 template <class T>
 using IntrusivePtr = boost::intrusive_ptr<T>;
 
+template <class T>
+class Vertex;  // Manager of its own entry in the unique table.
+
+/// Provides pointer and reference cast wrappers for intrusive Vertex pointers.
+///
+/// @tparam T  The type of the main functional BDD vertex.
+/// @tparam W  The wrapper type to cast to.
+template <class T, class W = T>
+struct IntrusivePtrCast {
+  /// @param[in] vertex  Pointer to a Vertex known to be convertible to W.
+  ///
+  /// @returns The cast reference-counted pointer to the vertex,
+  ///          or the cast reference (without count increment!) to the vertex.
+  ///
+  /// @pre static_cast<W>(Vertex<T>) is successful.
+  ///
+  /// @{
+  static IntrusivePtr<W> Ptr(const IntrusivePtr<Vertex<T>>& vertex) {
+    return boost::static_pointer_cast<W>(vertex);
+  }
+  static W& Ref(const IntrusivePtr<Vertex<T>>& vertex) {
+    return static_cast<W&>(*vertex);
+  }
+  /// @}
+};
+
 /// A weak pointer to store in BDD unique tables.
 /// This weak pointer is unique pointer as well
 /// because vertices should not be easily shared among multiple BDDs.
 ///
 /// @tparam T  The type of the main functional BDD vertex.
 template <class T>
-class WeakIntrusivePtr final {
+class WeakIntrusivePtr final : private boost::noncopyable {
+  friend class Vertex<T>;  // Communicates the destruction of the vertex.
+
  public:
   /// Default constructor is to allow initialization in tables.
-  WeakIntrusivePtr() noexcept : control_block_(nullptr) {}
-
-  WeakIntrusivePtr(const WeakIntrusivePtr&) = delete;
-  WeakIntrusivePtr& operator=(const WeakIntrusivePtr&) = delete;
+  WeakIntrusivePtr() noexcept : vertex_(nullptr) {}
 
   /// Constructs from the shared pointer.
   /// However, there is no weak-to-shared constructor.
   ///
   /// @param[in] ptr  Fully initialized intrusive pointer.
   explicit WeakIntrusivePtr(const IntrusivePtr<T>& ptr) noexcept
-      : control_block_(get_control_block(ptr.get())) {
-    control_block_->weak_count++;
+      : vertex_(ptr.get()) {
+    assert(vertex_->table_ptr_ == nullptr && "Non-unique table pointers.");
+    vertex_->table_ptr_ = this;
   }
 
   /// Copy assignment from shared pointers
@@ -87,34 +107,25 @@ class WeakIntrusivePtr final {
     return *this;
   }
 
-  /// Decrements weak count in the control block.
-  /// If this is the last pointer and vertex is gone,
-  /// the control block is deleted.
+  /// Communicates the pointer destruction to the vertex.
   ~WeakIntrusivePtr() noexcept {
-    if (control_block_) {
-      if (--control_block_->weak_count == 0 &&
-          control_block_->vertex == nullptr)
-        delete control_block_;
-    }
+    if (vertex_)
+      vertex_->table_ptr_ = nullptr;
   }
 
   /// @returns true if the managed vertex is deleted or not initialized.
-  bool expired() const { return !control_block_ || !control_block_->vertex; }
+  bool expired() const { return !vertex_; }
 
   /// @returns The intrusive pointer of the vertex.
-  ///
-  /// @warning Hard failure for uninitialized pointers.
-  IntrusivePtr<T> lock() const {
-    return IntrusivePtr<T>(static_cast<T*>(control_block_->vertex));
-  }
+  ///          nullptr if the vertex is deleted or not initialized.
+  IntrusivePtr<T> lock() const { return IntrusivePtr<T>(vertex_); }
 
   /// @returns The raw pointer to the vertex.
-  ///
-  /// @warning Hard failure for uninitialized pointers.
-  T* get() const { return static_cast<T*>(control_block_->vertex); }
+  ///          nullptr if the vertex is deleted or not initialized.
+  T* get() const { return vertex_; }
 
  private:
-  ControlBlock* control_block_;  ///< To receive information from vertices.
+  T* vertex_;  ///< A communication pointer with the vertex.
 };
 
 template <class T>
@@ -130,13 +141,8 @@ class Terminal;  // Forward declaration for Vertex to manage.
 ///      provided by this class' interface.
 /// @pre Vertices are not shared among separate BDD instances.
 template <class T>
-class Vertex {
-  /// @param[in] ptr  Vertex pointer managed by intrusive pointers.
-  ///
-  /// @returns The control block of intrusive counting for tables.
-  friend ControlBlock* get_control_block(Vertex<T>* ptr) noexcept {
-    return ptr->control_block_;
-  }
+class Vertex : private boost::noncopyable {
+  friend class WeakIntrusivePtr<T>;  // Mutual friendship to manage table entry.
 
   /// Increases the reference count for new intrusive pointers.
   ///
@@ -166,10 +172,7 @@ class Vertex {
   explicit Vertex(int id)
       : id_(id),
         use_count_(0),
-        control_block_(new ControlBlock{this}) {}
-
-  Vertex(const Vertex&) = delete;
-  Vertex& operator=(const Vertex&) = delete;
+        table_ptr_(nullptr) {}
 
   /// @returns Identifier of the BDD graph rooted by this vertex.
   int id() const { return id_; }
@@ -187,20 +190,18 @@ class Vertex {
   }
 
  protected:
-  /// Communicates the destruction via the control block
-  /// if there's anyone left to care.
+  /// Communicates the destruction
+  /// via the pointer to the unique table entry
+  /// if there's any.
   ~Vertex() noexcept {
-    if (control_block_->weak_count == 0) {
-      delete control_block_;
-    } else {
-      control_block_->vertex = nullptr;
-    }
+    if (table_ptr_)
+      table_ptr_->vertex_ = nullptr;
   }
 
  private:
   int id_;  ///< Unique identifier of the BDD graph with this vertex.
   int use_count_;  ///< Reference count for the intrusive pointer.
-  ControlBlock* control_block_;  ///< Communication channel for pointers.
+  WeakIntrusivePtr<T>* table_ptr_;  ///< Entry in the unique table.
 };
 
 /// Representation of terminal vertices in BDD graphs.
@@ -212,7 +213,7 @@ class Vertex {
 ///
 /// @tparam T  The type of the main functional BDD vertex.
 template <class T>
-class Terminal : public Vertex<T> {
+class Terminal : public Vertex<T>, public IntrusivePtrCast<T, Terminal<T>> {
  public:
   /// @param[in] value  True or False (1 or 0) terminal.
   explicit Terminal(bool value) : Vertex<T>(value) {}
@@ -223,15 +224,6 @@ class Terminal : public Vertex<T> {
   ///       Non-terminal if-then-else vertices should never have
   ///       identifications of value 0 or 1.
   bool value() const { return Vertex<T>::id(); }
-
-  /// Recovers a shared pointer to Terminal from a pointer to Vertex.
-  ///
-  /// @param[in] vertex  Pointer to a Vertex known to be a Terminal.
-  ///
-  /// @return Casted pointer to Terminal.
-  static IntrusivePtr<Terminal<T>> Ptr(const IntrusivePtr<Vertex<T>>& vertex) {
-    return boost::static_pointer_cast<Terminal<T>>(vertex);
-  }
 };
 
 /// Representation of non-terminal vertices in BDD graphs.
@@ -240,7 +232,7 @@ class Terminal : public Vertex<T> {
 ///
 /// @tparam T  The type of the main functional BDD vertex.
 template <class T>
-class NonTerminal : public Vertex<T> {
+class NonTerminal : public Vertex<T>, public IntrusivePtrCast<T> {
   using VertexPtr = IntrusivePtr<Vertex<T>>;  ///< Convenient change point.
 
   /// Default logic for getting signature high and low ids.
@@ -319,15 +311,6 @@ class NonTerminal : public Vertex<T> {
  protected:
   ~NonTerminal() = default;
 
-  /// Cuts off this node from its high and low branches.
-  /// This is for destructive operations on the BDD graph.
-  ///
-  /// @pre These branches are not going to be used again.
-  void CutBranches() {
-    high_.reset();
-    low_.reset();
-  }
-
  private:
   VertexPtr high_;  ///< 1 (True/then) branch in the Shannon decomposition.
   VertexPtr low_;  ///< O (False/else) branch in the Shannon decomposition.
@@ -357,7 +340,7 @@ class Ite : public NonTerminal<Ite> {
   }
 
  public:
-  using NonTerminal::NonTerminal;  ///< Constructor with index and order.
+  using NonTerminal::NonTerminal;
 
   /// @returns true if the low edge is complement.
   bool complement_edge() const { return complement_edge_; }
@@ -382,15 +365,6 @@ class Ite : public NonTerminal<Ite> {
   ///
   /// @param[in] value  Calculation results for importance factor.
   void factor(double value) { factor_ = value; }
-
-  /// Recovers a shared pointer to Ite from a pointer to Vertex.
-  ///
-  /// @param[in] vertex  Pointer to a Vertex known to be an Ite.
-  ///
-  /// @return Casted pointer to Ite.
-  static IntrusivePtr<Ite> Ptr(const IntrusivePtr<Vertex<Ite>>& vertex) {
-    return boost::static_pointer_cast<Ite>(vertex);
-  }
 
  private:
   bool complement_edge_ = false;  ///< Flag for complement edge.
@@ -436,7 +410,7 @@ class UniqueTable {
   ///
   /// @param[in] init_capacity  The starting capacity for the table.
   explicit UniqueTable(int init_capacity = 1000)
-      : capacity_(GetPrimeNumber(init_capacity)),
+      : capacity_(core::GetPrimeNumber(init_capacity)),
         size_(0),
         max_load_factor_(0.75),
         table_(capacity_) {}
@@ -446,7 +420,9 @@ class UniqueTable {
 
   /// Erases all entries.
   void clear() {
-    for (Bucket& chain : table_) chain.clear();
+    for (Bucket& chain : table_)
+      chain.clear();
+    size_ = 0;
   }
 
   /// Releases all the memory associated with managing this table with BDD.
@@ -459,9 +435,7 @@ class UniqueTable {
   ///       considering the responsibilities of the BDD.
   ///       The release keeps the data about the table,
   ///       such as its size and capacity.
-  void Release() {
-    Table().swap(table_);
-  }
+  void Release() { table_ = Table(); }
 
   /// Finds an existing BDD vertex or
   /// inserts a default constructed weak pointer for a new vertex.
@@ -480,9 +454,9 @@ class UniqueTable {
   /// @returns Reference to the weak pointer.
   WeakIntrusivePtr<T>& FindOrAdd(int index, int high_id, int low_id) noexcept {
     if (size_ >= (max_load_factor_ * capacity_))
-      UniqueTable::Rehash(UniqueTable::GetNextCapacity(capacity_));
+      Rehash(GetNextCapacity(capacity_));
 
-    int bucket_number = UniqueTable::Hash(index, high_id, low_id) % capacity_;
+    int bucket_number = Hash(index, high_id, low_id) % capacity_;
     Bucket& chain = table_[bucket_number];
     auto it_prev = chain.before_begin();  // Parent.
     for (auto it_cur = chain.begin(), it_end = chain.end(); it_cur != it_end;) {
@@ -523,8 +497,7 @@ class UniqueTable {
         ++new_size;
         T* vertex = it_cur->get();
         int bucket_number =
-            UniqueTable::Hash(vertex->index(), get_high_id(*vertex),
-                              get_low_id(*vertex)) %
+            Hash(vertex->index(), get_high_id(*vertex), get_low_id(*vertex)) %
             new_capacity;
         Bucket& new_chain = new_table[bucket_number];
         new_chain.splice_after(new_chain.before_begin(), chain, it_prev,
@@ -566,7 +539,7 @@ class UniqueTable {
     }
     int growth_factor = std::pow(2, scale_power);
     int new_capacity =  prev_capacity * growth_factor;
-    return GetPrimeNumber(new_capacity);
+    return core::GetPrimeNumber(new_capacity);
   }
 
   int capacity_;  ///< The total number of buckets in the table.
@@ -615,7 +588,7 @@ class CacheTable {
   explicit CacheTable(int init_capacity = 1000)
       : size_(0),
         max_load_factor_(0.75),
-        table_(GetPrimeNumber(init_capacity)) {}
+        table_(core::GetPrimeNumber(init_capacity)) {}
 
   /// @returns The number of entires in the table.
   int size() const { return size_; }
@@ -623,7 +596,8 @@ class CacheTable {
   /// Removes all entries from the table.
   void clear() {
     for (value_type& entry : table_) {
-      if (entry.second) entry.second.reset();
+      if (entry.second)
+        entry.second.reset();
     }
     size_ = 0;
   }
@@ -637,11 +611,12 @@ class CacheTable {
   ///       Using after release of memory is undefined.
   void reserve(int n) {
     if (size_ == 0 && n == 0) {
-      decltype(table_)().swap(table_);
+      table_ = decltype(table_)();
       return;
     }
-    if (n <= size_) return;
-    CacheTable::Rehash(GetPrimeNumber(n / max_load_factor_ + 1));
+    if (n <= size_)
+      return;
+    Rehash(core::GetPrimeNumber(n / max_load_factor_ + 1));
   }
 
   /// Searches for existing entry.
@@ -653,7 +628,8 @@ class CacheTable {
   iterator find(const key_type& key) {
     int index = boost::hash_value(key) % table_.size();
     value_type& entry = table_[index];
-    if (!entry.second || entry.first != key) return table_.end();
+    if (!entry.second || entry.first != key)
+      return table_.end();
     return table_.begin() + index;
   }
 
@@ -672,11 +648,12 @@ class CacheTable {
     assert(value && "Empty computation results!");
 
     if (size_ >= (max_load_factor_ * table_.size()))
-      CacheTable::Rehash(GetPrimeNumber(table_.size() * 2));
+      Rehash(core::GetPrimeNumber(table_.size() * 2));
 
     int index = boost::hash_value(key) % table_.size();
     value_type& entry = table_[index];
-    if (!entry.second) ++size_;
+    if (!entry.second)
+      ++size_;
     entry.first = key;  // Key equality is unlikely for the use case.
     entry.second = value;  // Might be purging another value.
   }
@@ -689,11 +666,13 @@ class CacheTable {
     int new_size = 0;
     std::vector<value_type> new_table(new_capacity);
     for (value_type& entry : table_) {
-      if (!entry.second) continue;
+      if (!entry.second)
+        continue;
       int new_index = boost::hash_value(entry.first) % new_table.size();
       value_type& new_entry = new_table[new_index];
       new_entry.first = entry.first;
-      if (!new_entry.second) ++new_size;
+      if (!new_entry.second)
+        ++new_size;
       new_entry.second.swap(entry.second);
     }
     size_ = new_size;
@@ -707,13 +686,13 @@ class CacheTable {
 
 class Zbdd;  // For analysis purposes.
 
-/// Analysis of Boolean graphs with Binary Decision Diagrams.
+/// Analysis of PDAGs with Binary Decision Diagrams.
 /// This binary decision diagram data structure
 /// represents Reduced Ordered BDD with attributed edges.
 ///
 /// @note The low/else edge is chosen to have the attribute for an ITE vertex.
 ///       There is only one terminal vertex of value 1/True.
-class Bdd {
+class Bdd : private boost::noncopyable {
  public:
   using VertexPtr = IntrusivePtr<Vertex<Ite>>;  ///< BDD vertex base.
   using TerminalPtr = IntrusivePtr<Terminal<Ite>>;  ///< Terminal vertices.
@@ -724,7 +703,7 @@ class Bdd {
     VertexPtr vertex;  ///< The root vertex of the BDD function graph.
 
     /// @returns true if the function is initialized.
-    operator bool() const { return vertex != nullptr; }
+    explicit operator bool() const { return vertex != nullptr; }
 
     /// Clears the function's root vertex pointer.
     void reset() { vertex = nullptr; }
@@ -747,26 +726,21 @@ class Bdd {
     /// @param[in] complement  Interpretation of the BDD vertex.
     ///
     /// @returns The consensus BDD function.
-    static Function Calculate(Bdd* bdd, const ItePtr& ite,
-                              bool complement) noexcept {
+    Function operator()(Bdd* bdd, const ItePtr& ite, bool complement) noexcept {
       return bdd->CalculateConsensus(ite, complement);
     }
   };
 
   /// Constructor with the analysis target.
-  /// Reduced Ordered BDD is produced from a Boolean graph.
+  /// Reduced Ordered BDD is produced from a PDAG.
   ///
-  /// @param[in] fault_tree  Preprocessed, partially normalized,
-  ///                        and indexed fault tree.
+  /// @param[in] graph  Preprocessed and partially normalized PDAG.
   /// @param[in] settings  The analysis settings.
   ///
-  /// @pre The Boolean graph has variable ordering.
+  /// @pre The PDAG has variable ordering.
   ///
   /// @note BDD construction may take considerable time.
-  Bdd(const BooleanGraph* fault_tree, const Settings& settings);
-
-  Bdd(const Bdd&) = delete;
-  Bdd& operator=(const Bdd&) = delete;
+  Bdd(const Pdag* graph, const Settings& settings);
 
   /// To handle incomplete ZBDD type with unique pointers.
   ~Bdd() noexcept;
@@ -774,7 +748,7 @@ class Bdd {
   /// @returns The root function of the ROBDD.
   const Function& root() const { return root_; }
 
-  /// @returns Mapping of Boolean graph modules and BDD graph vertices.
+  /// @returns Mapping of PDAG modules and BDD graph vertices.
   const std::unordered_map<int, Function>& modules() const { return modules_; }
 
   /// @returns Mapping of variable indices to their orders.
@@ -793,16 +767,19 @@ class Bdd {
   ///
   /// @warning If the graph is discontinuously and partially marked,
   ///          this function will not help with the mess.
-  void ClearMarks(bool mark) { Bdd::ClearMarks(root_.vertex, mark); }
+  void ClearMarks(bool mark) { ClearMarks(root_.vertex, mark); }
 
   /// Runs the Qualitative analysis
-  /// with the representation of a Boolean graph as ROBDD.
+  /// with the representation of a PDAG as ROBDD.
   void Analyze() noexcept;
 
   /// @returns Products generated by the analysis.
   ///
   /// @pre Analysis is done.
-  const std::vector<std::vector<int>>& products() const;
+  const Zbdd& products() const {
+    assert(zbdd_ && "Analysis is not done.");
+    return *zbdd_;
+  }
 
  private:
   using IteWeakPtr = WeakIntrusivePtr<Ite>;  ///< Pointer in containers.
@@ -854,7 +831,7 @@ class Bdd {
   ItePtr FindOrAddVertex(const Gate& gate, const VertexPtr& high,
                          const VertexPtr& low, bool complement_edge) noexcept;
 
-  /// Converts all gates in the Boolean graph
+  /// Converts all gates in the PDAG
   /// into function BDD graphs.
   /// Registers processed gates.
   ///
@@ -973,6 +950,17 @@ class Bdd {
   void ClearTables() noexcept {
     and_table_.clear();
     or_table_.clear();
+  }
+
+  /// Freezes the graph.
+  /// Releases all possible memory from memoization and unique tables.
+  ///
+  /// @pre No more graph modifications after the freeze.
+  void Freeze() noexcept {
+    unique_table_.Release();
+    ClearTables();
+    and_table_.reserve(0);
+    or_table_.reserve(0);
   }
 
   const Settings kSettings_;  ///< Analysis settings.

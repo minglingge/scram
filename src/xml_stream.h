@@ -29,7 +29,7 @@ namespace scram {
 
 /// Errors in using XML streaming facilities.
 struct XmlStreamError : public Error {
-  using Error::Error;  ///< Constructor with a message.
+  using Error::Error;
 };
 
 /// Writer of data formed as an XML element to a stream.
@@ -42,6 +42,13 @@ struct XmlStreamError : public Error {
 /// To prevent this from happening,
 /// the parent element is put into an inactive state
 /// while its child element is alive.
+///
+/// @note The stream is designed to prevent mixing XML text and elements
+///       due to the absence of the use case or need.
+///       However, there's no fundamental design or technical issue
+///       restricting the introduction of this feature.
+///       As a workaround, markup elements in the text (e.g., ``<br/>``)
+///       can be fed directly as a raw text.
 ///
 /// @warning The names of elements and contents of XML data
 ///          are NOT fully validated to be proper XML.
@@ -66,16 +73,14 @@ class XmlStreamElement {
   /// @throws XmlStreamError  Invalid setup for the element.
   XmlStreamElement(const char* name, std::ostream& out);
 
-  XmlStreamElement& operator=(const XmlStreamElement&) = delete;
-
-  /// Copy constructor is only declared
+  /// Move constructor is only declared
   /// to make the compiler happy.
   /// The code must rely on the RVO, NRVO, and copy elision
   /// instead of this constructor.
   ///
   /// The constructor is not defined,
   /// so the use of this constructor will produce a linker error.
-  XmlStreamElement(const XmlStreamElement&);
+  XmlStreamElement(XmlStreamElement&&);
 
   /// Puts the closing tag.
   ///
@@ -100,9 +105,13 @@ class XmlStreamElement {
   /// @throws XmlStreamError  Invalid setup for the attribute.
   template <typename T>
   XmlStreamElement& SetAttribute(const char* name, T&& value) {
-    if (!active_) throw XmlStreamError("The element is inactive.");
-    if (!accept_attributes_) throw XmlStreamError("Too late for attributes.");
-    if (*name == '\0') throw XmlStreamError("Attribute name can't be empty.");
+    if (!active_)
+      throw XmlStreamError("The element is inactive.");
+    if (!accept_attributes_)
+      throw XmlStreamError("Too late for attributes.");
+    if (*name == '\0')
+      throw XmlStreamError("Attribute name can't be empty.");
+
     out_ << " " << name << "=\"" << std::forward<T>(value) << "\"";
     return *this;
   }
@@ -119,9 +128,13 @@ class XmlStreamElement {
   /// @throws XmlStreamError  Invalid setup or state for text addition.
   template <typename T>
   void AddText(T&& text) {
-    if (!active_) throw XmlStreamError("The element is inactive.");
-    if (!accept_text_) throw XmlStreamError("Too late to put text.");
-    if (accept_elements_) accept_elements_ = false;
+    if (!active_)
+      throw XmlStreamError("The element is inactive.");
+    if (!accept_text_)
+      throw XmlStreamError("Too late to put text.");
+
+    if (accept_elements_)
+      accept_elements_ = false;
     if (accept_attributes_) {
       accept_attributes_ = false;
       out_ << ">";

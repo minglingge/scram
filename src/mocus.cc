@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Olzhas Rakhimov
+ * Copyright (C) 2014-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,39 +27,30 @@
 
 #include "mocus.h"
 
-#include "ext.h"
 #include "logger.h"
 
 namespace scram {
 namespace core {
 
-Mocus::Mocus(const BooleanGraph* fault_tree, const Settings& settings)
-    : constant_graph_(false),
-      graph_(fault_tree),
+Mocus::Mocus(const Pdag* graph, const Settings& settings)
+    : graph_(graph),
       kSettings_(settings) {
-  const GatePtr& top_gate = fault_tree->root();
-  if (top_gate->IsConstant() || top_gate->type() == kNull) {
-    constant_graph_ = true;
-    zbdd_ = ext::make_unique<Zbdd>(fault_tree, settings);
-    zbdd_->Analyze();
-  }
+  assert(!graph->complement() && "Complements must be propagated.");
 }
 
 void Mocus::Analyze() {
-  BLOG(DEBUG2, constant_graph_) << "Graph is constant. No analysis!";
-  if (constant_graph_) return;
-
   CLOCK(mcs_time);
-  LOG(DEBUG2) << "Start minimal cut set generation.";
-  zbdd_ = Mocus::AnalyzeModule(*graph_->root(), kSettings_);
+  if (graph_->IsTrivial()) {
+    LOG(DEBUG2) << "The PDAG is trivial!";
+    zbdd_ = std::make_unique<Zbdd>(graph_, kSettings_);
+  } else {
+    LOG(DEBUG2) << "Start minimal cut set generation.";
+    zbdd_ = AnalyzeModule(graph_->root(), kSettings_);
+  }
+
   LOG(DEBUG2) << "Delegating cut set extraction to ZBDD.";
   zbdd_->Analyze();
   LOG(DEBUG2) << "Minimal cut sets found in " << DUR(mcs_time);
-}
-
-const std::vector<std::vector<int>>& Mocus::products() const {
-  assert(zbdd_ && "Analysis is not done.");
-  return zbdd_->products();
 }
 
 std::unique_ptr<zbdd::CutSetContainer>
@@ -69,19 +60,20 @@ Mocus::AnalyzeModule(const Gate& gate, const Settings& settings) noexcept {
   LOG(DEBUG3) << "Finding cut sets from module: G" << gate.index();
   LOG(DEBUG4) << "Limit on product order: " << settings.limit_order();
   std::unordered_map<int, const Gate*> gates;
-  auto AddGates = [&gates](const Gate::ArgMap<Gate>& args) {
-    for (const Gate::Arg<Gate>& arg : args)
-      gates.emplace(arg.first, arg.second.get());
+  auto add_gates = [&gates](const auto& args) {
+    for (const Gate::ConstArg<Gate>& arg : args)
+      gates.emplace(arg.first, &arg.second);
   };
-  AddGates(gate.args<Gate>());
-
-  auto container = ext::make_unique<zbdd::CutSetContainer>(
-      kSettings_, gate.index(), graph_->basic_events().size());
+  add_gates(gate.args<Gate>());
+  const int kMaxVariableIndex =
+      Pdag::kVariableStartIndex + graph_->basic_events().size() - 1;
+  auto container = std::make_unique<zbdd::CutSetContainer>(
+      kSettings_, gate.index(), kMaxVariableIndex);
   container->Merge(container->ConvertGate(gate));
   while (int next_gate_index = container->GetNextGate()) {
     LOG(DEBUG5) << "Expanding gate G" << next_gate_index;
     const Gate* next_gate = gates.find(next_gate_index)->second;
-    AddGates(next_gate->args<Gate>());
+    add_gates(next_gate->args<Gate>());
 
     container->Merge(container->ExpandGate(
         container->ConvertGate(*next_gate),
@@ -102,15 +94,15 @@ Mocus::AnalyzeModule(const Gate& gate, const Settings& settings) noexcept {
     assert(limit >= 0 && "Order cut-off is not strict.");
     bool coherent = entry.second.first;
     if (limit == 0 && coherent) {  // Unity is impossible.
-      auto empty_zbdd = ext::make_unique<zbdd::CutSetContainer>(
-          kSettings_, index, graph_->basic_events().size());
+      auto empty_zbdd = std::make_unique<zbdd::CutSetContainer>(
+          kSettings_, index, kMaxVariableIndex);
       container->JoinModule(index, std::move(empty_zbdd));
       continue;
     }
     Settings adjusted(settings);
     adjusted.limit_order(limit);
-    container->JoinModule(
-        index, Mocus::AnalyzeModule(*gates.find(index)->second, adjusted));
+    container->JoinModule(index,
+                          AnalyzeModule(*gates.find(index)->second, adjusted));
   }
   container->EliminateConstantModules();
   container->Minimize();

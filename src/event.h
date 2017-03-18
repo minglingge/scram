@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Olzhas Rakhimov
+ * Copyright (C) 2014-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,13 @@
 #ifndef SCRAM_SRC_EVENT_H_
 #define SCRAM_SRC_EVENT_H_
 
-#include <map>
+#include <cstdint>
+
 #include <memory>
-#include <set>
 #include <string>
 #include <vector>
+
+#include <boost/noncopyable.hpp>
 
 #include "element.h"
 #include "error.h"
@@ -35,7 +37,10 @@ namespace scram {
 namespace mef {
 
 /// Abstract base class for general fault tree events.
-class Event : public Element, public Role, public Id {
+class Event : public Element,
+              public Role,
+              public Id,
+              private boost::noncopyable {
  public:
   /// Constructs a fault tree event with a specific id.
   ///
@@ -47,9 +52,6 @@ class Event : public Element, public Role, public Id {
   /// @throws InvalidArgument  The name or reference paths are malformed.
   explicit Event(std::string name, std::string base_path = "",
                  RoleSpecifier role = RoleSpecifier::kPublic);
-
-  Event(const Event&) = delete;
-  Event& operator=(const Event&) = delete;
 
   virtual ~Event() = 0;  ///< Abstract class.
 
@@ -70,7 +72,7 @@ class Event : public Element, public Role, public Id {
 /// This class represents Base, House, Undeveloped, and other events.
 class PrimaryEvent : public Event {
  public:
-  using Event::Event;  // Construction with unique identification.
+  using Event::Event;
   virtual ~PrimaryEvent() = 0;  ///< Abstract class.
 
   /// @returns A flag indicating if the event's expression is set.
@@ -90,7 +92,7 @@ class PrimaryEvent : public Event {
 /// Representation of a house event in a fault tree.
 class HouseEvent : public PrimaryEvent {
  public:
-  using PrimaryEvent::PrimaryEvent;  // Construction with unique identification.
+  using PrimaryEvent::PrimaryEvent;
 
   /// Sets the state for House event.
   ///
@@ -115,7 +117,7 @@ using GatePtr = std::shared_ptr<Gate>;  ///< Shared gates in models.
 /// Representation of a basic event in a fault tree.
 class BasicEvent : public PrimaryEvent {
  public:
-  using PrimaryEvent::PrimaryEvent;  // Construction with unique identification.
+  using PrimaryEvent::PrimaryEvent;
 
   virtual ~BasicEvent() = default;
 
@@ -123,9 +125,17 @@ class BasicEvent : public PrimaryEvent {
   ///
   /// @param[in] expression  The expression to describe this event.
   void expression(const ExpressionPtr& expression) {
-    assert(!expression_);
+    assert(!expression_ && "The basic event's expression is already set.");
     PrimaryEvent::has_expression(true);
     expression_ = expression;
+  }
+
+  /// @returns The previously set expression for analysis purposes.
+  ///
+  /// @pre The expression has been set.
+  Expression& expression() const {
+    assert(expression_ && "The basic event's expression is not set.");
+    return *expression_;
   }
 
   /// @returns The mean probability of this basic event.
@@ -135,28 +145,9 @@ class BasicEvent : public PrimaryEvent {
   ///
   /// @warning Undefined behavior if the expression is not set.
   double p() const noexcept {
-    assert(expression_);
+    assert(expression_ && "The basic event's expression is not set.");
     return expression_->Mean();
   }
-
-  /// Samples probability value from its probability distribution.
-  ///
-  /// @returns Sampled value.
-  ///
-  /// @note The user of this function should make sure
-  ///       that the returned value is acceptable for calculations.
-  ///
-  /// @warning Undefined behavior if the expression is not set.
-  double SampleProbability() noexcept {
-    assert(expression_);
-    return expression_->Sample();
-  }
-
-  /// Resets the sampling.
-  void Reset() noexcept { expression_->Reset(); }
-
-  /// @returns Indication if this event does not have uncertainty.
-  bool IsConstant() noexcept { return expression_->IsConstant(); }
 
   /// Validates the probability expressions for the primary event.
   ///
@@ -254,10 +245,26 @@ using BasicEventPtr = std::shared_ptr<BasicEvent>;  ///< Shared basic events.
 class Formula;  // To describe a gate's formula.
 using FormulaPtr = std::unique_ptr<Formula>;  ///< Non-shared gate formulas.
 
+class Initializer;  // Needs to handle cycles with gates.
+
 /// A representation of a gate in a fault tree.
-class Gate : public Event {
+class Gate : public Event, public NodeMark {
  public:
-  using Event::Event;  // Construction with unique identification.
+  /// Provides access to cycle-destructive functions.
+  class Cycle {
+    friend class Initializer;  // Only Initializer needs the functionality.
+    /// Breaks connections in a fault tree.
+    ///
+    /// @param[in,out] gate  A gate in a cycle or potentially in a cycle.
+    ///
+    /// @post The fault tree is unusable for analysis.
+    ///       Only destruction is guaranteed to succeed.
+    static void BreakConnections(Gate* gate) {
+      gate->formula_.reset();
+    }
+  };
+
+  using Event::Event;
 
   /// @returns The formula of this gate.
   /// @{
@@ -278,34 +285,42 @@ class Gate : public Event {
   /// @throws ValidationError  Errors in the gate's logic or setup.
   void Validate() const;
 
-  /// @returns The mark of this gate node.
-  /// @returns Empty string for no mark.
-  const std::string& mark() const { return mark_; }
-
-  /// Sets the mark for this gate node.
-  void mark(const std::string& new_mark) { mark_ = new_mark; }
-
  private:
   FormulaPtr formula_;  ///< Boolean formula of this gate.
-  std::string mark_;  ///< The mark for traversal or toposort.
 };
+
+/// Operators for formulas.
+/// The ordering is the same as analysis operators in the PDAG.
+enum Operator : std::uint8_t {
+  kAnd = 0,
+  kOr,
+  kVote,  ///< Combination, K/N, atleast, or Vote gate representation.
+  kXor,  ///< Exclusive OR gate with two inputs only.
+  kNot,  ///< Boolean negation.
+  kNand,  ///< Not AND.
+  kNor,  ///< Not OR.
+  kNull  ///< Single argument pass-through without logic.
+};
+
+/// The number of operators in the enum.
+const int kNumOperators = 8;
+
+/// String representations of the operators.
+/// The ordering is the same as the Operator enum.
+const char* const kOperatorToString[] = {"and", "or",   "atleast", "xor",
+                                         "not", "nand", "nor",     "null"};
 
 /// Boolean formula with operators and arguments.
 /// Formulas are not expected to be shared.
-class Formula {
+class Formula : private boost::noncopyable {
  public:
   /// Constructs a formula.
   ///
   /// @param[in] type  The logical operator for this Boolean formula.
-  explicit Formula(const std::string& type);
-
-  Formula(const Formula&) = delete;
-  Formula& operator=(const Formula&) = delete;
+  explicit Formula(Operator type);
 
   /// @returns The type of this formula.
-  ///
-  /// @throws LogicError  The gate is not yet assigned.
-  const std::string& type() const { return type_; }
+  Operator type() const { return type_; }
 
   /// @returns The vote number if and only if the formula is "atleast".
   ///
@@ -325,9 +340,7 @@ class Formula {
 
   /// @returns The arguments of this formula of specific type.
   /// @{
-  const std::map<std::string, EventPtr>& event_args() const {
-    return event_args_;
-  }
+  const IdTable<Event*>& event_args() const { return event_args_; }
   const std::vector<HouseEventPtr>& house_event_args() const {
     return house_event_args_;
   }
@@ -373,11 +386,6 @@ class Formula {
   void Validate() const;
 
  private:
-  /// Formula types that require two or more arguments.
-  static const std::set<std::string> kTwoOrMore_;
-  /// Formula types that require exactly one argument.
-  static const std::set<std::string> kSingle_;
-
   /// Handles addition of an event to the formula.
   ///
   /// @tparam Ptr  Shared pointer type to the event.
@@ -385,18 +393,19 @@ class Formula {
   /// @param[in] event  Pointer to the event.
   /// @param[in,out] container  The final destination to save the event.
   ///
-  /// @throws DuplicateArgumentError  The argument even tis duplicate.
+  /// @throws DuplicateArgumentError  The argument event is duplicate.
   template <class Ptr>
   void AddArgument(const Ptr& event, std::vector<Ptr>* container) {
-    if (event_args_.emplace(event->id(), event).second == false)
+    if (event_args_.insert(event.get()).second == false)
       throw DuplicateArgumentError("Duplicate argument " + event->name());
     container->emplace_back(event);
-    if (event->orphan()) event->orphan(false);
+    if (event->orphan())
+      event->orphan(false);
   }
 
-  std::string type_;  ///< Logical operator.
+  Operator type_;  ///< Logical operator.
   int vote_number_;  ///< Vote number for "atleast" operator.
-  std::map<std::string, EventPtr> event_args_;  ///< All event arguments.
+  IdTable<Event*> event_args_;  ///< All event arguments.
   std::vector<HouseEventPtr> house_event_args_;  ///< House event arguments.
   std::vector<BasicEventPtr> basic_event_args_;  ///< Basic event arguments.
   std::vector<GatePtr> gate_args_;  ///< Arguments that are gates.

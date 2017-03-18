@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Olzhas Rakhimov
+ * Copyright (C) 2016-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "linear_map.h"
+#include "ext/linear_map.h"
 
 #include <string>
 
@@ -24,10 +24,10 @@
 #include <gtest/gtest.h>
 
 // Explicit instantiations with some common types.
-template class scram::LinearMap<int, int>;
-template class scram::LinearMap<int, double>;
-template class scram::LinearMap<int, std::string>;
-template class scram::LinearMap<std::string, std::string>;
+template class ext::linear_map<int, int>;
+template class ext::linear_map<int, double>;
+template class ext::linear_map<int, std::string>;
+template class ext::linear_map<std::string, std::string>;
 
 namespace {
 // The bare minimum class to be a key type for the linear map.
@@ -40,21 +40,23 @@ class KeyClass {
   std::string b;
 };
 }  // namespace
-template class scram::LinearMap<KeyClass, std::string>;
-
-// Passing another underlying container types.
-template class scram::LinearMap<int, int, boost::container::vector>;
+template class ext::linear_map<KeyClass, std::string>;
 
 // Move erase policy instantiation.
-template class scram::LinearMap<KeyClass, std::string, std::vector,
-                                scram::MoveEraser>;
-template class scram::LinearMap<KeyClass, std::string, boost::container::vector,
-                                scram::MoveEraser>;
+template class ext::linear_map<KeyClass, std::string, ext::MoveEraser>;
+
+#ifndef __INTEL_COMPILER
+// Passing another underlying container types.
+template class ext::linear_map<int, int, ext::DefaultEraser,
+                               boost::container::vector>;
+template class ext::linear_map<KeyClass, std::string, ext::MoveEraser,
+                               boost::container::vector>;
+#endif
 
 namespace scram {
 namespace test {
 
-using IntMap = LinearMap<int, int>;
+using IntMap = ext::linear_map<int, int>;
 
 TEST(LinearMapTest, Constructors) {
   IntMap m_default;
@@ -81,11 +83,6 @@ TEST(LinearMapTest, Constructors) {
   EXPECT_EQ(3, m_move.size());
   EXPECT_FALSE(m_move.empty());
   EXPECT_EQ(m_init_list, m_move);
-
-#ifndef NDEBUG
-  // Move into itself is undefined behavior!
-  EXPECT_DEATH(m_move = std::move(m_move), "");
-#endif
 
   // Assignments.
   IntMap m_assign_copy;
@@ -203,7 +200,7 @@ TEST(LinearMapTest, DefaultErase) {
 }
 
 TEST(LinearMapTest, MoveErase) {
-  using MoveMap = LinearMap<int, int, std::vector, scram::MoveEraser>;
+  using MoveMap = ext::linear_map<int, int, ext::MoveEraser>;
   MoveMap m = {{1, -1}, {2, -2}, {3, -3}};
   m.erase(1);
   MoveMap m_expected = {{3, -3}, {2, -2}};

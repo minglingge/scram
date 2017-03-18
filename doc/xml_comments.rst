@@ -10,7 +10,7 @@ XML Editors
 For better experience and productivity with writing and reading XML files,
 it is recommended to use advanced text editors and tools
 that provide XML specific automation and help,
-i.e. tag auto-completion, folding, schema validation.
+e.g. tag auto-completion, folding, schema validation.
 
 
 Recommended Tools
@@ -21,9 +21,9 @@ Recommended Tools
 - `Emacs <http://www.gnu.org/software/emacs/>`_ with
   `nXML mode <http://www.gnu.org/software/emacs/manual/html_mono/nxml-mode.html>`_
 
-- `Notepad++ <http://notepad-plus-plus.org/>`_ with XML Tools plug-in
+- `Notepad++ <https://notepad-plus-plus.org/>`_ with XML Tools plug-in
 
-- `xmllint <http://xmlsoft.org/xmllint.html>`_ with RelaxNG schema
+- `xmllint <http://xmlsoft.org/xmllint.html>`_ with RELAX NG schema
 
 - `BaseX <http://basex.org>`_
 

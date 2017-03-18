@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Olzhas Rakhimov
+ * Copyright (C) 2014-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  */
 
 /// @file preprocessor.h
-/// A collection of Boolean graph preprocessing algorithms
+/// A collection of PDAG transformation/preprocessing algorithms
 /// that simplify fault trees for analysis.
 
 #ifndef SCRAM_SRC_PREPROCESSOR_H_
@@ -25,48 +25,50 @@
 #include <memory>
 #include <set>
 #include <unordered_map>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
+#include <boost/noncopyable.hpp>
 #include <boost/unordered_map.hpp>
 
-#include "boolean_graph.h"
+#include "pdag.h"
 
 namespace scram {
 namespace core {
 
 /// The class provides main preprocessing operations
-/// over a Boolean graph
+/// over a PDAG
 /// to simplify the fault tree
 /// and to help analysis run more efficiently.
-class Preprocessor {
+class Preprocessor : private boost::noncopyable {
  public:
-  /// Constructs a preprocessor of a Boolean graph
+  /// Constructs a preprocessor of a PDAG
   /// representing a fault tree.
   ///
-  /// @param[in] graph  The Boolean graph to be preprocessed.
+  /// @param[in] graph  The PDAG to be preprocessed.
   ///
   /// @warning There should not be another shared pointer to the root gate
-  ///          outside of the passed Boolean graph.
+  ///          outside of the passed PDAG.
   ///          Upon preprocessing a new root gate may be assigned to the graph,
   ///          and, if there is an extra pointer to the previous top gate
   ///          outside of the graph,
   ///          the destructor will not be called
   ///          as expected by the preprocessing algorithms,
-  ///          which will mess the new structure of the Boolean graph.
-  explicit Preprocessor(BooleanGraph* graph) noexcept;
-
-  Preprocessor(const Preprocessor&) = delete;
-  Preprocessor& operator=(const Preprocessor&) = delete;
+  ///          which will mess the new structure of the PDAG.
+  explicit Preprocessor(Pdag* graph) noexcept;
 
   virtual ~Preprocessor() = default;
+
+  /// Runs the graph preprocessing.
+  void operator()() noexcept { this->Run(); }
+
+ protected:
+  class GateSet;  ///< Container of unique gates by semantics.
 
   /// Runs the default preprocessing
   /// that achieves the graph in a normal form.
   virtual void Run() noexcept = 0;
 
- protected:
   /// The initial phase of preprocessing.
   /// The most basic cleanup algorithms are applied.
   /// The cleanup should benefit all other phases
@@ -121,116 +123,7 @@ class Preprocessor {
   /// alternating AND/OR gate layers.
   void RunPhaseFive() noexcept;
 
-  /// Checks the root gate of the graph for further processing.
-  /// The root gate may become constant
-  /// or one-variable-NULL-gate,
-  /// which signals the special case
-  /// and no need for further processing.
-  ///
-  /// @returns true if no more processing is needed.
-  ///
-  /// @post If no more processing is needed,
-  ///       the graph is fully ready for analysis.
-  ///
-  /// @note This function may swap the root gate of the graph.
-  bool CheckRootGate() noexcept;
-
-  /// Removes argument gates of NULL type,
-  /// which means these arg gates have only one argument.
-  /// That one grand arg is transfered to the parent gate,
-  /// and the original argument gate is removed from the parent gate.
-  ///
-  /// This function is used only once
-  /// to get rid of all NULL type gates
-  /// at the very beginning of preprocessing.
-  ///
-  /// @note This function assumes
-  ///       that the container for NULL gates is empty.
-  ///       In other words, it is assumed
-  ///       no other function was trying to
-  ///       communicate NULL type gates for future processing.
-  /// @note This function is designed to be called only once
-  ///       at the start of preprocessing
-  ///       after cleaning all the constants from the graph.
-  ///
-  /// @warning There still may be only one NULL type gate
-  ///          which is the root of the graph.
-  ///          This must be handled separately.
-  /// @warning NULL gates that are constant are not handled
-  ///          and left for constant propagation functions.
-  void RemoveNullGates() noexcept;
-
-  /// Removes all Boolean constants from the Boolean graph
-  /// according to the Boolean logic of the gates.
-  /// This function is only used
-  /// to get rid of all constants
-  /// registered by the Boolean graph
-  /// at the very beginning of preprocessing.
-  ///
-  /// @note This is one of the first preprocessing steps.
-  ///       Other algorithms are safe to assume
-  ///       that there are no house events in the fault tree.
-  ///       Only possible constant nodes are gates
-  ///       that turn NULL or UNITY sets.
-  ///
-  /// @warning There still may be only one constant state gate
-  ///          which is the root of the graph.
-  ///          This must be handled separately.
-  void RemoveConstants() noexcept;
-
-  /// Propagates a Boolean constant bottom-up.
-  /// This is a helper function for initial cleanup of the Boolean graph.
-  ///
-  /// @param[in,out] constant  The constant to be propagated.
-  ///
-  /// @note This function works together with
-  ///       NULL type and constant gate propagation functions
-  ///       to clean the results of the propagation.
-  void PropagateConstant(const ConstantPtr& constant) noexcept;
-
-  /// Propagates constant gates bottom-up.
-  /// This is a helper function for algorithms
-  /// that may produce and need to remove constant gates.
-  ///
-  /// @param[in,out] gate  The gate that has become constant.
-  ///
-  /// @note This function works together with
-  ///       NULL type gate propagation function
-  ///       to cleanup the structure of the graph.
-  ///
-  /// @warning All parents of the gate will be removed,
-  ///          so the gate itself may get deleted
-  ///          unless it is the top gate.
-  void PropagateConstant(const GatePtr& gate) noexcept;
-
-  /// Propagate NULL type gates bottom-up.
-  /// This is a helper function for algorithms
-  /// that may produce and need to remove NULL type gates.
-  ///
-  /// @param[in,out] gate  The gate that is NULL type.
-  ///
-  /// @note This function works together with
-  ///       constant state gate propagation function
-  ///       to cleanup the structure of the graph.
-  ///
-  /// @warning All parents of the gate will be removed,
-  ///          so the gate itself may get deleted
-  ///          unless it is the top gate.
-  void PropagateNullGate(const GatePtr& gate) noexcept;
-
-  /// Clears all constant gates registered for removal
-  /// by algorithms or other preprocessing functions.
-  ///
-  /// @warning Gate marks will get cleared by this function.
-  void ClearConstGates() noexcept;
-
-  /// Clears all NULL type gates registered for removal
-  /// by algorithms or other preprocessing functions.
-  ///
-  /// @warning Gate marks will get cleared by this function.
-  void ClearNullGates() noexcept;
-
-  /// Normalizes the gates of the whole Boolean graph
+  /// Normalizes the gates of the whole PDAG
   /// into OR, AND gates.
   ///
   /// @param[in] full  A flag to handle complex gates like XOR and K/N,
@@ -312,7 +205,7 @@ class Preprocessor {
   /// according to the De Morgan's law
   /// in order to remove any negative logic from the graph's gates.
   /// The resulting graph will contain only positive gates, OR and AND types.
-  /// After this function, the Boolean graph is in negation normal form.
+  /// After this function, the PDAG is in negation normal form.
   ///
   /// @param[in,out] gate  The starting gate to traverse the graph.
   ///                      This is for recursive purposes.
@@ -332,7 +225,7 @@ class Preprocessor {
       bool keep_modules,
       std::unordered_map<int, GatePtr>* complements) noexcept;
 
-  /// Runs gate coalescence on the whole Boolean graph.
+  /// Runs gate coalescence on the whole PDAG.
   ///
   /// @param[in] common  A flag to also coalesce common/shared gates.
   ///                    These gates may be important for other algorithms.
@@ -377,7 +270,7 @@ class Preprocessor {
   ///       to verify that the new graph does not have multiple definitions.
   bool ProcessMultipleDefinitions() noexcept;
 
-  /// Traverses the Boolean graph to collect multiple definitions of gates.
+  /// Traverses the PDAG to collect multiple definitions of gates.
   ///
   /// @param[in] gate  The gate to traverse the sub-graph.
   /// @param[in,out] multi_def  Detected multiple definitions.
@@ -389,7 +282,7 @@ class Preprocessor {
       std::unordered_map<GatePtr, std::vector<GateWeakPtr>>* multi_def,
       GateSet* unique_gates) noexcept;
 
-  /// Traverses the Boolean graph to detect modules.
+  /// Traverses the PDAG to detect modules.
   /// Modules are independent sub-graphs
   /// without common nodes with the rest of the graph.
   void DetectModules() noexcept;
@@ -479,7 +372,7 @@ class Preprocessor {
       const std::vector<std::pair<int, NodePtr>>& modular_args,
       const std::vector<std::vector<std::pair<int, NodePtr>>>& groups) noexcept;
 
-  /// Gathers all modules in the Boolean graph.
+  /// Gathers all modules in the PDAG.
   ///
   /// @returns Unique modules encountered breadth-first.
   ///
@@ -893,7 +786,7 @@ class Preprocessor {
   /// @warning The common node must be cleaned separately.
   void ClearStateMarks(const GatePtr& gate) noexcept;
 
-  /// The Shannon decomposition for common nodes in the Boolean graph.
+  /// The Shannon decomposition for common nodes in the PDAG.
   /// This procedure is also called "Constant Propagation",
   /// but it is confusing with the actual propagation of
   /// house events and constant gates.
@@ -1034,7 +927,7 @@ class Preprocessor {
   /// @param[in,out] replacement  A gate that will replace the old gate.
   ///
   /// @post The sign of the existing gate as an argument
-  ///       is transfered to the replacement gate.
+  ///       is transferred to the replacement gate.
   ///
   /// @post If any parent becomes constant or NULL type,
   ///       the parent is registered for removal.
@@ -1049,27 +942,38 @@ class Preprocessor {
   /// @pre The caller will later call the appropriate cleanup functions.
   bool RegisterToClear(const GatePtr& gate) noexcept;
 
-  /// Assigns order for Boolean graph variables.
+  /// Assigns order for PDAG variables.
   ///
   /// @pre Old node order marks are allowed to get cleaned.
   ///
   /// @post Node order marks contain the ordering.
   void AssignOrder() noexcept;
 
-  /// Assigns topological ordering to nodes of the Boolean Graph.
+  /// Assigns topological ordering to nodes of the PDAG.
   /// The ordering is assigned to the node order marks.
   /// The nodes are sorted in descending optimization value.
   /// The highest order value belongs to the root.
   ///
-  /// @param[in] root  The root or current parent gate of the graph.
+  /// @param[in,out] root  The root or current parent gate of the graph.
   /// @param[in] order  The current order value.
   ///
   /// @returns The final order value.
   ///
   /// @post The root and descendant node order marks contain the ordering.
-  int TopologicalOrder(const GatePtr& root, int order) noexcept;
+  int TopologicalOrder(Gate* root, int order) noexcept;
 
-  /// Gathers all nodes in the Boolean graph.
+  /// Determines the order of traversal for gate arguments.
+  /// This function does assign the order of nodes.
+  ///
+  /// @tparam T  Type of the arguments.
+  ///
+  /// @param[in] gate  The host gate parent.
+  ///
+  /// @returns An ordered, stable list of arguments.
+  template <class T>
+  std::vector<T*> OrderArguments(Gate* gate) noexcept;
+
+  /// Gathers all nodes in the PDAG.
   ///
   /// @param[out] gates  A set of gates.
   /// @param[out] variables  A set of variables.
@@ -1088,19 +992,8 @@ class Preprocessor {
   void GatherNodes(const GatePtr& gate, std::vector<GatePtr>* gates,
                    std::vector<VariablePtr>* variables) noexcept;
 
-  /// @returns The graph under processing.
-  const BooleanGraph& graph() const { return *graph_; }
-
- private:
-  BooleanGraph* graph_;  ///< The Boolean graph to preprocess.
-  bool constant_graph_;  ///< Graph is constant due to constant events.
-  /// Container for constant gates to be tracked and cleaned by algorithms.
-  /// These constant gates are created
-  /// because of complement or constant descendants.
-  std::vector<GateWeakPtr> const_gates_;
-  /// Container for NULL type gates to be tracked and cleaned by algorithms.
-  /// NULL type gates are created by coherent gates with only one argument.
-  std::vector<GateWeakPtr> null_gates_;
+  /// @todo Eliminate the protected data.
+  Pdag* graph_;  ///< The PDAG to preprocess.
 };
 
 /// Undefined template class for specialization of Preprocessor
@@ -1116,8 +1009,9 @@ class Bdd;
 template <>
 class CustomPreprocessor<Bdd> : public Preprocessor {
  public:
-  using Preprocessor::Preprocessor;  ///< Constructor with a Boolean graph.
+  using Preprocessor::Preprocessor;
 
+ private:
   /// Performs preprocessing for analyses with Binary Decision Diagrams.
   /// This preprocessing assigns the order for variables for BDD construction.
   void Run() noexcept override;
@@ -1129,8 +1023,9 @@ class Zbdd;
 template <>
 class CustomPreprocessor<Zbdd> : public Preprocessor {
  public:
-  using Preprocessor::Preprocessor;  ///< Constructor with a Boolean graph.
+  using Preprocessor::Preprocessor;
 
+ protected:
   /// Performs preprocessing for analyses
   /// with Zero-Suppressed Binary Decision Diagrams.
   /// Complements are propagated to variables.
@@ -1144,19 +1039,17 @@ class Mocus;
 template <>
 class CustomPreprocessor<Mocus> : public CustomPreprocessor<Zbdd> {
  public:
-  /// Constructor with a Boolean graph.
   using CustomPreprocessor<Zbdd>::CustomPreprocessor;
 
+ private:
   /// Performs processing of a fault tree
   /// to simplify the structure to
   /// normalized (OR/AND gates only),
   /// modular (independent sub-trees),
-  /// positive-gate-only (negation normal)
-  /// Boolean graph.
+  /// positive-gate-only (negation normal) PDAG.
   /// The variable ordering is assigned specifically for MOCUS.
   void Run() noexcept override;
 
- private:
   /// Groups and inverts the topological ordering for nodes.
   /// The inversion is done to simplify the work of MOCUS facilities,
   /// which rely on the top-down approach.

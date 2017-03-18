@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Olzhas Rakhimov
+ * Copyright (C) 2014-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,18 +21,40 @@
 #ifndef SCRAM_SRC_PROBABILITY_ANALYSIS_H_
 #define SCRAM_SRC_PROBABILITY_ANALYSIS_H_
 
+#include <utility>
 #include <vector>
 
 #include "analysis.h"
 #include "bdd.h"
-#include "boolean_graph.h"
-#include "event.h"
 #include "fault_tree_analysis.h"
-#include "logger.h"
-#include "settings.h"
+#include "pdag.h"
 
 namespace scram {
+
+namespace mef {
+class MissionTime;
+}
+
 namespace core {
+
+/// Safety Integrity Level metrics.
+///
+/// @note Averages and histograms are with respect to time.
+struct Sil {
+  double pfd_avg = 0;  ///< The average probability of failure on demand (PFD).
+  double pfh_avg = 0;  ///< The average probability of failure hourly (PFH).
+
+  /// The SIL PFD and PFD fractions histogram in reverse order, i.e., 4 to 1.
+  /// The starting boundary is implicitly 0.
+  /// The last boundary is explicit 1.
+  /// The range is half open: (lower-bound, upper-bound].
+  /// @{
+  std::array<std::pair<const double, double>, 6> pfd_fractions{
+      {{1e-5, 0}, {1e-4, 0}, {1e-3, 0}, {1e-2, 0}, {1e-1, 0}, {1, 0}}};
+  std::array<std::pair<const double, double>, 6> pfh_fractions{
+      {{1e-9, 0}, {1e-8, 0}, {1e-7, 0}, {1e-6, 0}, {1e-5, 0}, {1, 0}}};
+  /// @}
+};
 
 /// Main quantitative analysis class.
 class ProbabilityAnalysis : public Analysis {
@@ -41,22 +63,46 @@ class ProbabilityAnalysis : public Analysis {
   /// with the results of qualitative analysis.
   ///
   /// @param[in] fta  Fault tree analysis with results.
+  /// @param[in] mission_time  The mission time expression of the model.
   ///
   /// @pre The underlying fault tree must not have changed in any way
   ///      since the fault tree analysis finished.
-  explicit ProbabilityAnalysis(const FaultTreeAnalysis* fta);
+  ProbabilityAnalysis(const FaultTreeAnalysis* fta,
+                      mef::MissionTime* mission_time);
 
   virtual ~ProbabilityAnalysis() = default;
 
   /// Performs quantitative analysis on the supplied fault tree.
   ///
   /// @pre Analysis is called only once.
+  ///
+  /// @post The mission time expression has its original value.
   void Analyze() noexcept;
 
   /// @returns The total probability calculated by the analysis.
   ///
-  /// @note The user should make sure that the analysis is actually done.
+  /// @pre The analysis is done.
   double p_total() const { return p_total_; }
+
+  /// @returns The probability values over the mission time in time steps.
+  ///          The empty container implies no calculation has been done.
+  ///
+  /// @pre The analysis is done.
+  const std::vector<std::pair<double, double>>& p_time() const {
+    return p_time_;
+  }
+
+  /// @returns The Safety Integrity Level calculation results.
+  ///
+  /// @pre The analysis is done with a request for the SIL.
+  const Sil& sil() const {
+    assert(sil_ && "The SIL is not done!");
+    return *sil_;
+  }
+
+ protected:
+  /// @returns The mission time expression of the model.
+  mef::MissionTime& mission_time() { return *mission_time_; }
 
  private:
   /// Calculates the total probability.
@@ -64,41 +110,42 @@ class ProbabilityAnalysis : public Analysis {
   /// @returns The total probability of the graph or products.
   virtual double CalculateTotalProbability() noexcept = 0;
 
+  /// Calculates the probability evolution through the mission time.
+  ///
+  /// @returns The probabilities at time steps.
+  virtual std::vector<std::pair<double, double>>
+  CalculateProbabilityOverTime() noexcept = 0;
+
+  /// Computes probability metrics related to the SIL.
+  void ComputeSil() noexcept;
+
   double p_total_;  ///< Total probability of the top event.
+  mef::MissionTime* mission_time_;  ///< The mission time expression.
+  std::vector<std::pair<double, double>> p_time_;  ///< {probability, time}.
+  std::unique_ptr<Sil> sil_;  ///< The Safety Integrity Level results.
 };
 
 /// Quantitative calculator of a probability value of a single cut set.
 class CutSetProbabilityCalculator {
  public:
-  using CutSet = std::vector<int>;  ///< Alias for clarity.
-
   /// Calculates a probability of a cut set,
   /// whose members are in AND relationship with each other.
   /// This function assumes independence of each member.
   ///
   /// @param[in] cut_set  A cut set with positive indices of basic events.
-  /// @param[in] p_vars  Probabilities of events mapped to a vector.
+  /// @param[in] p_vars  Probabilities of events mapped by the variable indices.
   ///
   /// @returns The total probability of the cut set.
+  /// @returns 1 for an empty cut set indicating the base set.
   ///
   /// @pre The cut set doesn't contain complements.
   /// @pre Probability values are non-negative.
   /// @pre Indices of events directly map to vector indices.
-  double Calculate(const CutSet& cut_set,
-                   const std::vector<double>& p_vars) noexcept;
-
-  /// Checks the special case of a unity set with probability 1.
-  ///
-  /// @param[in] cut_sets  Collection of ALL cut sets.
-  ///
-  /// @returns true if the Unity set is detected.
-  ///
-  /// @pre The unity set is indicated by a single empty set.
-  /// @pre Provided cut sets are ALL the cut sets under consideration.
-  double CheckUnity(const std::vector<CutSet>& cut_sets) noexcept {
-    return cut_sets.size() == 1 && cut_sets.front().empty();
-  }
+  double Calculate(const std::vector<int>& cut_set,
+                   const Pdag::IndexMap<double>& p_vars) noexcept;
 };
+
+class Zbdd;  // The container of analysis products for computations.
 
 /// Quantitative calculator of probability values
 /// with the Rare-Event approximation.
@@ -108,18 +155,16 @@ class RareEventCalculator : private CutSetProbabilityCalculator {
   /// using the Rare-Event approximation.
   ///
   /// @param[in] cut_sets  A collection of sets of indices of basic events.
-  /// @param[in] p_vars  Probabilities of events mapped to a vector.
+  /// @param[in] p_vars  Probabilities of events mapped by the variable indices.
   ///
   /// @returns The total probability with the rare-event approximation.
   ///
-  /// @pre Absolute indices of events directly map to vector indices.
-  ///
-  /// @post The returned probability value may not be acceptable.
-  ///       That is, it may be out of the acceptable [0, 1] range.
-  ///       The caller of this function must decide
-  ///       what to do in this case.
-  double Calculate(const std::vector<CutSet>& cut_sets,
-                   const std::vector<double>& p_vars) noexcept;
+  /// @post In case the calculated probability exceeds 1,
+  ///       the probability is adjusted to 1.
+  ///       It is very unwise to use the rare-event approximation
+  ///       with large probability values.
+  double Calculate(const Zbdd& cut_sets,
+                   const Pdag::IndexMap<double>& p_vars) noexcept;
 };
 
 /// Quantitative calculator of probability values
@@ -130,63 +175,76 @@ class McubCalculator : private CutSetProbabilityCalculator {
   /// using the minimal cut set upper bound (MCUB) approximation.
   ///
   /// @param[in] cut_sets  A collection of sets of indices of basic events.
-  /// @param[in] p_vars  Probabilities of events mapped to a vector.
+  /// @param[in] p_vars  Probabilities of events mapped by the variable indices.
   ///
   /// @returns The total probability with the MCUB approximation.
-  double Calculate(const std::vector<CutSet>& cut_sets,
-                   const std::vector<double>& p_vars) noexcept;
+  double Calculate(const Zbdd& cut_sets,
+                   const Pdag::IndexMap<double>& p_vars) noexcept;
 };
 
 /// Base class for Probability analyzers.
 class ProbabilityAnalyzerBase : public ProbabilityAnalysis {
  public:
-  using Product = std::vector<int>;  ///< Alias for clarity.
-
   /// Constructs probability analyzer from a fault tree analyzer.
   ///
   /// @tparam Algorithm  Qualitative analysis algorithm.
   ///
-  /// @param[in] fta  Finished fault tree analyzer with results.
+  /// @copydetails ProbabilityAnalysis::ProbabilityAnalysis
   template <class Algorithm>
-  explicit ProbabilityAnalyzerBase(const FaultTreeAnalyzer<Algorithm>* fta);
+  ProbabilityAnalyzerBase(const FaultTreeAnalyzer<Algorithm>* fta,
+                          mef::MissionTime* mission_time)
+      : ProbabilityAnalysis(fta, mission_time),
+        graph_(fta->graph()),
+        products_(fta->algorithm()->products()) {
+    ExtractVariableProbabilities();
+  }
 
-  /// @returns The original Boolean graph from the fault tree analyzer.
-  const BooleanGraph* graph() const { return graph_; }
+  /// @returns The original PDAG from the fault tree analyzer.
+  const Pdag* graph() const { return graph_; }
 
   /// @returns The resulting products of the fault tree analyzer.
-  const std::vector<Product>& products() const { return products_; }
+  const Zbdd& products() const { return products_; }
 
-  /// @returns A modifiable mapping for probability values and indices.
-  ///
-  /// @pre Quantitative analyzers aware of how Probability analyzer works.
-  /// @pre Quantitative analyzers will cleanup after themselves.
-  ///
-  /// @warning This is a hack
-  ///          due to tight coupling of Quantitative analyzers.
-  ///
-  /// @todo Redesign the use and manipulation of variable probabilities.
-  std::vector<double>& p_vars() { return p_vars_; }
+  /// @returns A mapping for probability values with indices.
+  const Pdag::IndexMap<double>& p_vars() const { return p_vars_; }
 
  protected:
-  ~ProbabilityAnalyzerBase() = default;
+  ~ProbabilityAnalyzerBase() override = default;
 
  private:
-  const BooleanGraph* graph_;  ///< Boolean graph from the fault tree analysis.
-  const std::vector<Product>& products_;  ///< A collection of products.
-  std::vector<double> p_vars_;  ///< Variable probabilities.
-};
+  /// Calculates the total probability
+  /// with a different set of probability values
+  /// than the one given upon construction.
+  ///
+  /// @param[in] p_vars  A map of probabilities of the graph variables.
+  ///                    The indices of the variables must map
+  ///                    exactly to the values.
+  ///
+  /// @returns The total probability calculated with the given values.
+  virtual double CalculateTotalProbability(
+      const Pdag::IndexMap<double>& p_vars) noexcept = 0;
 
-template <class Algorithm>
-ProbabilityAnalyzerBase::ProbabilityAnalyzerBase(
-    const FaultTreeAnalyzer<Algorithm>* fta)
-    : ProbabilityAnalysis(fta),
-      graph_(fta->graph()),
-      products_(fta->algorithm()->products()) {
-  p_vars_.push_back(-1);  // Padding.
-  for (const mef::BasicEvent* event : graph_->basic_events()) {
-    p_vars_.push_back(event->p());
+  double CalculateTotalProbability() noexcept final {
+    return this->CalculateTotalProbability(p_vars_);
   }
-}
+
+  std::vector<std::pair<double, double>>
+  CalculateProbabilityOverTime() noexcept final;
+
+  /// Upon construction of the probability analysis,
+  /// stores the variable probabilities in a continuous container
+  /// for retrieval by their indices instead of pointers.
+  ///
+  /// @note This function may seem redundant,
+  ///       for it's super-short and simple to do it inline in the constructor.
+  ///       The main benefit of the out-of-line implementation
+  ///       is compile-time decoupling from the input BasicEvent classes.
+  void ExtractVariableProbabilities();
+
+  const Pdag* graph_;  ///< PDAG from the fault tree analysis.
+  const Zbdd& products_;  ///< A collection of products.
+  Pdag::IndexMap<double> p_vars_;  ///< Variable probabilities.
+};
 
 /// Fault-tree-analysis-aware probability analyzer.
 /// Probability analyzer provides the main engine for probability analysis.
@@ -197,12 +255,9 @@ class ProbabilityAnalyzer : public ProbabilityAnalyzerBase {
  public:
   using ProbabilityAnalyzerBase::ProbabilityAnalyzerBase;
 
-  /// Calculates the total probability.
-  ///
-  /// @returns The total probability of the graph or the sum of products.
-  double CalculateTotalProbability() noexcept override {
-    return calc_.Calculate(ProbabilityAnalyzerBase::products(),
-                           ProbabilityAnalyzerBase::p_vars());
+  double CalculateTotalProbability(
+      const Pdag::IndexMap<double>& p_vars) noexcept final {
+    return calc_.Calculate(ProbabilityAnalyzerBase::products(), p_vars);
   }
 
  private:
@@ -219,67 +274,64 @@ class ProbabilityAnalyzer<Bdd> : public ProbabilityAnalyzerBase {
   ///
   /// @tparam Algorithm  Fault tree analysis algorithm.
   ///
-  /// @param[in] fta  Finished fault tree analyzer with results.
+  /// @copydetails ProbabilityAnalysis::ProbabilityAnalysis
   template <class Algorithm>
-  explicit ProbabilityAnalyzer(const FaultTreeAnalyzer<Algorithm>* fta);
+  ProbabilityAnalyzer(const FaultTreeAnalyzer<Algorithm>* fta,
+                      mef::MissionTime* mission_time)
+      : ProbabilityAnalyzerBase(fta, mission_time),
+        current_mark_(false),
+        owner_(true) {
+    CreateBdd(*fta);
+  }
 
   /// Reuses BDD structures from Fault tree analyzer.
   ///
-  /// @param[in] fta  Finished fault tree analyzer with BDD algorithms.
+  /// @copydetails ProbabilityAnalysis::ProbabilityAnalysis
   ///
   /// @pre BDD is fully formed and used.
   ///
   /// @post FaultTreeAnalyzer is not corrupted
   ///       by use of its BDD internals.
-  explicit ProbabilityAnalyzer(FaultTreeAnalyzer<Bdd>* fta);
+  ProbabilityAnalyzer(FaultTreeAnalyzer<Bdd>* fta,
+                      mef::MissionTime* mission_time);
 
-  /// Deletes the Boolean graph and BDD
+  /// Deletes the PDAG and BDD
   /// only if ProbabilityAnalyzer is the owner of them.
   ~ProbabilityAnalyzer() noexcept;
 
   /// @returns Binary decision diagram used for calculations.
   Bdd* bdd_graph() { return bdd_graph_; }
 
-  /// Calculates the total probability.
-  ///
-  /// @returns The total probability of the graph.
-  double CalculateTotalProbability() noexcept override;
+  double CalculateTotalProbability(
+      const Pdag::IndexMap<double>& p_vars) noexcept final;
 
  private:
   /// Creates a new BDD for use by the analyzer.
   ///
-  /// @param[in] root  The root gate of the fault tree.
+  /// @param[in] fta  The fault tree analysis providing the root gate.
   ///
   /// @pre The function is called in the constructor only once.
-  void CreateBdd(const mef::Gate& root) noexcept;
+  void CreateBdd(const FaultTreeAnalysis& fta) noexcept;
 
   /// Calculates exact probability
   /// of a function graph represented by its root BDD vertex.
   ///
   /// @param[in] vertex  The root vertex of a function graph.
   /// @param[in] mark  A flag to mark traversed vertices.
+  /// @param[in] p_vars  The probabilities of the variables
+  ///                    mapped by their indices.
   ///
   /// @returns Probability value.
   ///
   /// @warning If a vertex is already marked with the input mark,
   ///          it will not be traversed and updated with a probability value.
-  double CalculateProbability(const Bdd::VertexPtr& vertex, bool mark) noexcept;
+  double CalculateProbability(const Bdd::VertexPtr& vertex, bool mark,
+                              const Pdag::IndexMap<double>& p_vars) noexcept;
 
   Bdd* bdd_graph_;  ///< The main BDD graph for analysis.
   bool current_mark_;  ///< To keep track of BDD current mark.
   bool owner_;  ///< Indication that pointers are handles.
 };
-
-template <class Algorithm>
-ProbabilityAnalyzer<Bdd>::ProbabilityAnalyzer(
-    const FaultTreeAnalyzer<Algorithm>* fta)
-    : ProbabilityAnalyzerBase(fta),
-      current_mark_(false),
-      owner_(true) {
-  CLOCK(main_time);
-  ProbabilityAnalyzer::CreateBdd(fta->top_event());
-  Analysis::AddAnalysisTime(DUR(main_time));
-}
 
 }  // namespace core
 }  // namespace scram

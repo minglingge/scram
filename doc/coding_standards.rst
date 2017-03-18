@@ -21,7 +21,7 @@ This project adheres to the following coding styles:
 .. _Google C++ Style Guide (GCSG): https://google.github.io/styleguide/cppguide.html
 .. _Google Python Style Guide (GPSG): https://google.github.io/styleguide/pyguide.html
 .. _PEP 8 -- Style Guide for Python Code (PEP8): https://www.python.org/dev/peps/pep-0008/
-.. _KDE CMake Coding Style: https://techbase.kde.org/Policies/CMake_Coding_Style
+.. _KDE CMake Coding Style: https://community.kde.org/Policies/CMake_Coding_Style
 .. _Qt Coding Style: http://wiki.qt.io/Coding-Conventions
 .. _Qt Creator Coding Rules: https://doc-snapshots.qt.io/qtcreator-extending/coding-style.html
 .. _Google Shell Style Guide: https://google.github.io/styleguide/shell.xml
@@ -31,11 +31,11 @@ Deviations from the GCSG
 ------------------------
 
 - Exceptions are allowed.
-- Prefer streams to ``printf-like`` routines.
 - Name mutator functions without ``set_`` prefix.
 - Multiple *implementation* inheritance is allowed (mostly for mixins).
-- Lambda expressions used as nested functions follow
-  the function naming conventions.
+- One-liner ``if statements`` are not allowed.
+  It interferes with interactive debugging and
+  code coverage analysis tools (may hide uncovered lines).
 
 
 Deviations from the Qt Style
@@ -95,13 +95,8 @@ Deviations from the Qt Style
 Additional Coding Conventions
 -----------------------------
 
-- Use *modern C++* (C++11).
+- Use *modern C++* (C++14).
   Refer to `C++ Core Guidelines`_ for best practices.
-
-- If API, functionality, class, container, or other constructs mimic the STL constructs,
-  prefer the STL conventions and style.
-  For example, an iterator class for a custom container
-  should be named ``iterator`` instead of ``Iterator``.
 
 - Do not use ``inline``
   when defining a function in a class definition.
@@ -119,8 +114,8 @@ Additional Coding Conventions
     .. code-block:: cpp
 
         double checked_div(double x, double y) {
-            if (!y) throw domain_error("");  // Bad. Looks like 'if (no y) then fail'.
-                                             // More explicit (y == 0) is better.
+            if (!y)                      // Bad. Looks like 'if (no y) then fail'.
+                throw domain_error("");  // More explicit (y == 0) is better.
             return x / y;
         }
 
@@ -163,13 +158,20 @@ Core C++ Code
     * ``ClassNamePtr`` for shared, unique, and intrusive pointers
     * ``ClassNameWeakPtr`` for weak pointers
 
-- Function call qualifications in definitions of class member functions:
+- Function call qualification conventions:
 
-    * Explicitly qualify non-virtual member and inherited function calls
-      with the corresponding class names, i.e., ``ClassName::Foo()``.
-    * Qualify virtual functions to be overridden by design as ``this->Foo()``.
-    * Free functions in the same namespace may be unqualified, i.e., ``Foo()``.
-    * Unqualified calls relying on the ADL must state the intent in the documentation.
+    * Unqualified calls customizable by or relying on the ADL
+      must make it explicit in the documentation and comments.
+
+    * In definitions of member functions:
+
+        - Explicitly qualify calls to inherited non-virtual member functions
+          with the corresponding base class names, e.g., ``BaseClassName::Foo()``.
+        - Qualify virtual functions to be overridden by design as ``this->Foo()``.
+        - Qualify a call to a free function with its namespace, e.g., ``scram::Foo()``.
+
+    * In definitions of free functions,
+      calls to other free functions in the enclosing namespace can be unqualified.
 
 - Declare a getter function before a setter function
   for a corresponding member variable.
@@ -178,24 +180,24 @@ Core C++ Code
 
 - Domain-specific ``Probability`` naming rules:
 
-    * If a probability variable is a member variable of a class
+    * If a probability variable is a member variable of a class,
       abbreviate it to ``p_``.
       Its getter/setter functions should have
       corresponding names, i.e., ``p()`` and ``p(double value)``.
-      Append extra description after ``p_``, i.e., ``p_total_``.
+      Append extra description after ``p_``, e.g., ``p_total_`` (a la Semantic Hungarian).
       Avoid abbreviating the name to ``prob``
       or fully spelling it to ``probability``.
 
     * For non-member probability variables:
 
-        + Prefer prefixing with ``p_``
-          if the name has more description to the probability value, i.e., ``p_not_event``.
+        + Prefer prefixing with ``p_`` (a la Semantic Hungarian)
+          if the name has more description to the probability value, e.g., ``p_not_event``.
         + Prefer ``prob`` abbreviation
           for single word names indicating general probability values.
 
     * Prefer spelling ``Probability`` fully for cases not covered above
-      (class/function/namespace/typedef/...), i.e., ``CalculateProbability``.
-      Avoid abbreviating the name, i.e., ``CalculateProb``.
+      (class/function/namespace/typedef/...), e.g., ``CalculateProbability``.
+      Avoid abbreviating the name, e.g., ``CalculateProb``.
 
 - Prefer the terminology and concepts of Boolean algebra and graph theory
   to the terminology and concepts of risk analysis in **analysis code**.
@@ -204,14 +206,14 @@ Core C++ Code
 
     * There is no Boolean operator for the K-out-of-N logic.
       This gate in fault tree analysis has many names
-      (Voting, Combination, atleast, K/N),
+      (Voting, Combination, atleast, K/N, etc.),
       and there doesn't seem to be a consensus among sources and tools.
-      The OpenPSA MEF "atleast" best captures the nature of the gate;
+      The Open-PSA MEF "atleast" best captures the nature of the gate;
       however, the "atleast" is awkward to use in code and API
       (Atleast vs. AtLeast vs. atleast vs. at_least).
       In SCRAM, the "vote" word must be used consistently
       to represent this gate in code and API.
-      The code that deals with the OpenPSA MEF may use the "atleast".
+      The code that deals with the Open-PSA MEF may use the "atleast".
 
 - In performance-critical **analysis code**
   (BDD variable ordering, Boolean formula rewriting/preprocessing, etc.),
@@ -242,10 +244,6 @@ GUI Code
 
 - Prefer normalized signatures in connect statements with ``SIGNAL``/``SLOT`` macros.
 
-- Upon automatic formatting of the source code,
-  beware of ``clang-format`` confusions with ``Q_Object``, ``signals:``, ``slots:``,
-  and other Qt specific macros.
-
 - Prefer Qt Designer UI forms over hand-coded GUI.
 
     * The UI class member must be aggregated as a private pointer member
@@ -266,23 +264,24 @@ C++
 ---
 
 #. Performance profiling with Gprof, Valgrind_, and ``perf``
-#. Code coverage check with Gcov_ and reporting with Coveralls_
+#. Code coverage check with Gcov_ and reporting with Codecov_
 #. Memory management bugs and leaks with Valgrind_
 #. Static code analysis with Coverity_ and CppCheck_
 #. Cyclomatic complexity analysis with Lizard_
 #. Google style conformance check with Cpplint_
 #. Common C++ code problem check with cppclean_
 #. Consistent code formatting with ClangFormat_
+#. Component dependency analysis with cppdep_
 
 .. _Gcov: https://gcc.gnu.org/onlinedocs/gcc/Gcov.html
-.. _Coveralls: https://coveralls.io/github/rakhimov/scram
 .. _Valgrind: http://valgrind.org/
 .. _Coverity: https://scan.coverity.com/projects/2555
 .. _CppCheck: https://github.com/danmar/cppcheck/
 .. _Lizard: https://github.com/terryyin/lizard
-.. _Cpplint: https://github.com/theandrewdavis/cpplint
+.. _Cpplint: https://github.com/cpplint/cpplint
 .. _cppclean: https://github.com/myint/cppclean
 .. _ClangFormat: http://clang.llvm.org/docs/ClangFormat.html
+.. _cppdep: https://pypi.python.org/pypi/cppdep
 
 
 Python
@@ -293,10 +292,10 @@ Python
 #. Code coverage check with coverage_ and reporting with Codecov_
 #. Continuous code quality control on Landscape_ with Prospector_
 
-.. _Pylint: http://www.pylint.org/
+.. _Pylint: https://www.pylint.org/
 .. _PyVmMonitor: http://www.pyvmmonitor.com/
-.. _coverage: http://nedbatchelder.com/code/coverage/
-.. _Codecov: https://codecov.io/github/rakhimov/scram?ref=develop
+.. _coverage: https://coverage.readthedocs.io/en/latest/
+.. _Codecov: https://codecov.io/github/rakhimov/scram
 .. _Landscape: https://landscape.io/
 .. _Prospector: https://github.com/landscapeio/prospector
 
@@ -341,7 +340,7 @@ with auto-generated analysis input files
 to discover bugs, bottlenecks, and assumption failures.
 
 .. _GoogleTest: https://github.com/google/googletest
-.. _Nose: https://nose.readthedocs.org/en/latest/
+.. _Nose: httpss://nose.readthedocs.io/en/latest/
 .. _Travis CI: https://travis-ci.org/rakhimov/scram
 .. _AppVeyor: https://ci.appveyor.com/project/rakhimov/scram
 
@@ -367,18 +366,23 @@ Version control and Versioning
 - `Branching Model`_
 - `Writing Good Commit Messages`_
 - `On Commit Messages`_
+- `Atomic Commit`_
 - `Semantic Versioning`_
 
-.. _Git SCM: http://git-scm.com/
+.. _Git SCM: https://git-scm.com/
 .. _Branching Model: http://nvie.com/posts/a-successful-git-branching-model/
 .. _Writing Good Commit Messages: https://github.com/erlang/otp/wiki/Writing-good-commit-messages
 .. _On Commit Messages: http://who-t.blogspot.com/2009/12/on-commit-messages.html
+.. _Atomic Commit: https://en.wikipedia.org/wiki/Atomic_commit#Atomic_commit_convention
 .. _Semantic Versioning: http://semver.org/
 
 
 *************
 Documentation
 *************
+
+.. image:: http://www.osnews.com/images/comics/wtfm.jpg
+    :align: center
 
 Good documentation of the code and functionality is
 the requirement for maintainability and evolution of the project.
@@ -414,8 +418,8 @@ Conventions in Documentation "Source Text"
 General
 -------
 
-- Prefer :ref:`shorthand_format` for the Boolean formula documentation.
-  This format uses the C-style bitwise logical operators for equations.
+- Prefer the :ref:`Aralia_format` for the Boolean formula documentation.
+  This format uses the C-style bit-wise logical operators for formulas.
 
 
 reST Documentation Style
@@ -424,7 +428,7 @@ reST Documentation Style
 - Semantic Linefeeds
 - Two blank lines between sections with bodies
 - One blank line after a header before its body
-- Title ``#`` overlined and underlined
+- Part ``#`` overlined and underlined
 - Chapter ``*`` overlined and underlined
 - Section underlining and order ``=``, ``-``, ``~``, ``^``, ``+``
 - Point nesting and order ``-``, ``*``, ``+``

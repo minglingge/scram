@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Olzhas Rakhimov
+ * Copyright (C) 2015-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,8 @@
 #include <vector>
 
 #include <boost/functional/hash.hpp>
+#include <boost/iterator/iterator_facade.hpp>
+#include <boost/noncopyable.hpp>
 
 #include "bdd.h"
 
@@ -42,7 +44,7 @@ namespace core {
 /// The order of the complement is higher than the order of the variable.
 class SetNode : public NonTerminal<SetNode> {
  public:
-  using NonTerminal::NonTerminal;  ///< Constructor with index and order.
+  using NonTerminal::NonTerminal;
 
   /// @returns true if the ZBDD is minimized.
   bool minimal() const { return minimal_; }
@@ -62,7 +64,7 @@ class SetNode : public NonTerminal<SetNode> {
   void max_set_order(int order) { max_set_order_ = order; }
 
   /// @returns Whatever count is stored in this node.
-  int64_t count() const { return count_; }
+  std::int64_t count() const { return count_; }
 
   /// Stores numerical value for later retrieval.
   /// This can be a helper functionality
@@ -77,35 +79,12 @@ class SetNode : public NonTerminal<SetNode> {
   ///       In contrast to providing separate fields or using hash tables
   ///       for each technique metric,
   ///       this general-purpose field saves space and time.
-  void count(int64_t number) { count_ = number; }
-
-  /// @returns Products found in the ZBDD represented by this node.
-  const std::vector<std::vector<int>>& products() const { return products_; }
-
-  /// Sets the products belonging to this ZBDD.
-  ///
-  /// @param[in] products  Products calculated from low and high edges.
-  void products(const std::vector<std::vector<int>>& products) {
-    products_ = products;
-  }
-
-  using NonTerminal::CutBranches;  ///< For destructive extraction of products.
-
-  /// Recovers a shared pointer to SetNode from a pointer to Vertex.
-  ///
-  /// @param[in] vertex  Pointer to a Vertex known to be a SetNode.
-  ///
-  /// @return Casted pointer to SetNode.
-  static IntrusivePtr<SetNode> Ptr(
-      const IntrusivePtr<Vertex<SetNode>>& vertex) {
-    return boost::static_pointer_cast<SetNode>(vertex);
-  }
+  void count(std::int64_t number) { count_ = number; }
 
  private:
   bool minimal_ = false;  ///< A flag for minimized collection of sets.
   int max_set_order_ = 0;  ///< The order of the largest set in the ZBDD.
-  std::vector<std::vector<int>> products_;  ///< Products of this node.
-  int64_t count_ = 0;  ///< The number of products, nodes, or anything else.
+  std::int64_t count_ = 0;  ///< The number of products, nodes, or anything.
 };
 
 using SetNodePtr = IntrusivePtr<SetNode>;  ///< Shared ZBDD set nodes.
@@ -149,10 +128,186 @@ template <typename Value>
 using TripletTable = std::unordered_map<Triplet, Value, TripletHash>;
 
 /// Zero-Suppressed Binary Decision Diagrams for set manipulations.
-class Zbdd {
+class Zbdd : private boost::noncopyable {
  public:
   using VertexPtr = IntrusivePtr<Vertex<SetNode>>;  ///< ZBDD vertex base.
   using TerminalPtr = IntrusivePtr<Terminal<SetNode>>;  ///< Terminal vertex.
+
+  /// Iterator over products in a ZBDD container.
+  /// The implementation is complicated with the incorporation of modules.
+  /// A single stack is used by all consecutive and recursive modules.
+  ///
+  /// @pre No constant ZBDD modules resulting in the Base set.
+  class const_iterator
+      : public boost::iterator_facade<const_iterator, const std::vector<int>,
+                                      boost::forward_traversal_tag> {
+    friend class boost::iterator_core_access;
+
+    /// Iterator over sets in the module ZBDD represented by a proxy node.
+    /// Modules within a module (i.e., sub-modules) are recursive,
+    /// while consecutive modules are not.
+    class module_iterator {
+     public:
+      /// Constructs module iterator based on the host ZBDD iterator.
+      ///
+      /// @param[in] node  The proxy node for module.
+      ///                  nullptr for the root ZBDD itself.
+      /// @param[in] zbdd  The module ZBDD.
+      /// @param[in,out] it  The host iterator with product stacks for output.
+      /// @param[in] sentinel  The flag for end iterators.
+      module_iterator(const SetNode* node, const Zbdd& zbdd, const_iterator* it,
+                      bool sentinel = false)
+          : sentinel_(sentinel),
+            start_pos_(it->product_.size()),
+            end_pos_(start_pos_),
+            it_(*it),
+            node_(node),
+            zbdd_(zbdd) {
+        if (!sentinel_) {
+          sentinel_ = !GenerateProduct(zbdd_.root());
+          end_pos_ = it_.product_.size();
+        }
+      }
+
+      /// Only single iterator per module is allowed.
+      module_iterator(module_iterator&&) noexcept = default;
+
+      /// @returns true if a new product has been generated for the host set.
+      explicit operator bool() const { return !sentinel_; }
+
+      /// Generates the next set.
+      void operator++() {
+        if (sentinel_)
+          return;
+        assert(end_pos_ >= start_pos_ && "Corrupted sentinel.");
+        while (start_pos_ != it_.product_.size()) {
+          if (!module_stack_.empty() &&
+              it_.product_.size() == module_stack_.back().end_pos_) {
+            const SetNode* node = module_stack_.back().node_;
+            for (++module_stack_.back(); module_stack_.back();
+                 ++module_stack_.back()) {
+              if (GenerateProduct(node->high()))
+                goto outer_break;
+            }
+            module_stack_.pop_back();
+            if (GenerateProduct(node->low()))
+              break;
+
+          } else if (GenerateProduct(Pop()->low())) {
+            break;
+          }
+        }
+      outer_break:
+        end_pos_ = it_.product_.size();
+        sentinel_ = start_pos_ == end_pos_;
+      }
+
+     private:
+      /// Generates a next product in the ZBDD traversal.
+      ///
+      /// @param[in] vertex  The vertex to start adding into the product.
+      ///
+      /// @returns true if a new product has been generated.
+      ///
+      /// @post If the new product is generated,
+      ///       the product and stack containers are updated accordingly.
+      bool GenerateProduct(const VertexPtr& vertex) noexcept {
+        if (vertex->terminal())
+          return Terminal<SetNode>::Ref(vertex).value();
+        if (it_.product_.size() >= it_.zbdd_.settings().limit_order())
+          return false;
+        const SetNode& node = SetNode::Ref(vertex);
+        if (node.module()) {
+          module_stack_.emplace_back(
+              &node, *zbdd_.modules_.find(node.index())->second, &it_);
+          for (; module_stack_.back(); ++module_stack_.back()) {
+            if (GenerateProduct(node.high()))
+              return true;
+          }
+          assert(it_.product_.size() == module_stack_.back().start_pos_);
+          module_stack_.pop_back();
+          return GenerateProduct(node.low());
+
+        } else {
+          Push(&node);
+          return GenerateProduct(node.high()) || GenerateProduct(Pop()->low());
+        }
+      }
+
+      /// Removes the current leaf node from the product.
+      ///
+      /// @returns The current leaf node in the product.
+      const SetNode* Pop() noexcept {
+        assert(start_pos_ < it_.product_.size() && "Access beyond the range!");
+        const SetNode* leaf = it_.node_stack_.back();
+        it_.node_stack_.pop_back();
+        it_.product_.pop_back();
+        return leaf;
+      }
+
+      /// Updates the current product with a literal.
+      ///
+      /// @param[in] set_node  The current leaf set node to add to the product.
+      void Push(const SetNode* set_node) noexcept {
+        it_.node_stack_.push_back(set_node);
+        it_.product_.push_back(set_node->index());
+      }
+
+      bool sentinel_;  ///< The signal to end the iteration.
+      const int start_pos_;  ///< The initial position on the start.
+      int end_pos_;  ///< The current end position in the product.
+      const_iterator& it_;  ///< The host iterator.
+      const SetNode* node_;  ///< The proxy node representing the module.
+      const Zbdd& zbdd_;  ///< The module ZBDD.
+      /// The stack for consecutive modules' iterators.
+      std::vector<module_iterator> module_stack_;
+    };
+
+   public:
+    /// @param[in] zbdd  The container to iterate over.
+    /// @param[in] sentinel  The flag to turn the iterator into an end sentinel.
+    ///
+    /// @pre The ZBDD container is not modified during the iteration.
+    explicit const_iterator(const Zbdd& zbdd, bool sentinel = false)
+        : sentinel_(sentinel), zbdd_(zbdd), it_(nullptr, zbdd, this, sentinel) {
+      sentinel_ = !it_;
+    }
+
+    /// The copy constructor is only for begin and end iterators.
+    ///
+    /// @param[in] other  Begin or End iterator.
+    const_iterator(const const_iterator& other) noexcept
+        : sentinel_(other.sentinel_),
+          zbdd_(other.zbdd_),
+          it_(nullptr, zbdd_, this, sentinel_) {
+      assert(*this == other && "Copy ctor is only for begin/end iterators.");
+    }
+
+   private:
+    /// Standard forward iterator functionality returning products.
+    /// @{
+    void increment() {
+      assert(!sentinel_ && "Incrementing an end iterator.");
+      ++it_;
+      sentinel_ = !it_;
+    }
+    bool equal(const const_iterator& other) const {
+      assert(!(sentinel_ && !product_.empty()) && "Uncleared products.");
+      return sentinel_ == other.sentinel_ && &zbdd_ == &other.zbdd_ &&
+             product_ == other.product_;
+    }
+    const std::vector<int>& dereference() const {
+      assert(!sentinel_ && "Dereferencing end iterator.");
+      return product_;
+    }
+    /// @}
+
+    bool sentinel_;  ///< The marker for the end of traversal.
+    const Zbdd& zbdd_;  ///< The source container for the products.
+    std::vector<int> product_;  ///< The current product.
+    std::vector<const SetNode*> node_stack_;  ///< The traversal stack.
+    module_iterator it_;  ///< The root module iterator for the whole ZBDD.
+  };
 
   /// Converts Reduced Ordered BDD
   /// into Zero-Suppressed BDD.
@@ -170,38 +325,48 @@ class Zbdd {
   Zbdd(Bdd* bdd, const Settings& settings) noexcept;
 
   /// Constructor with the analysis target.
-  /// ZBDD is directly produced from a Boolean graph.
+  /// ZBDD is directly produced from a PDAG.
   ///
-  /// @param[in] fault_tree  Preprocessed, partially normalized,
-  ///                        and indexed fault tree.
+  /// @param[in] graph  Preprocessed and fully normalized PDAG.
   /// @param[in] settings  The analysis settings.
   ///
-  /// @pre The passed Boolean graph already has variable ordering.
+  /// @pre The passed PDAG already has variable ordering.
   /// @note The construction may take considerable time.
-  Zbdd(const BooleanGraph* fault_tree, const Settings& settings) noexcept;
-
-  Zbdd(const Zbdd&) = delete;
-  Zbdd& operator=(const Zbdd&) = delete;
+  Zbdd(const Pdag* graph, const Settings& settings) noexcept;
 
   virtual ~Zbdd() noexcept = default;
 
   /// Runs the analysis
-  /// with the representation of a Boolean graph as ZBDD.
-  ///
-  /// @warning The analysis will destroy ZBDD.
-  ///
-  /// @post Products are generated with ZBDD analysis.
+  /// with the representation of a PDAG as ZBDD.
   void Analyze() noexcept;
 
   /// @returns Products generated by the analysis.
-  const std::vector<std::vector<int>>& products() const { return products_; }
+  const Zbdd& products() const { return *this; }
+
+  /// @returns Iterators over sets in the ZBDD.
+  /// @{
+  auto begin() const { return const_iterator(*this); }
+  auto end() const { return const_iterator(*this, /*sentinel=*/true); }
+  /// @}
+
+  /// @returns The number of *products* in the ZBDD.
+  ///
+  /// @note This is not cheap.
+  ///       The complexity is O(N) on the number of *sets* in ZBDD.
+  std::size_t size() const { return std::distance(begin(), end()); }
+
+  /// @returns true for ZBDD with no products.
+  bool empty() const { return begin() == end(); }
+
+  /// @returns true if the ZBDD represents a base/unity set.
+  bool base() const { return root_ == kBase_; }
 
  protected:
-  /// Default constructor to initialize member variables.
+  /// The common constructor to initialize member variables.
   ///
   /// @param[in] settings  Settings that control analysis complexity.
   /// @param[in] coherent  A flag for coherent modular functions.
-  /// @param[in] module_index  The of a module if known.
+  /// @param[in] module_index  The index of a module if known.
   explicit Zbdd(const Settings& settings, bool coherent = false,
                 int module_index = 0) noexcept;
 
@@ -225,7 +390,7 @@ class Zbdd {
   void Log() noexcept;
 
   /// Finds or adds a unique SetNode in the ZBDD.
-  /// All vertices in the ZBDD must be created with this functions.
+  /// All vertices in the ZBDD must be created with this function.
   /// Otherwise, the ZBDD may not be reduced,
   /// and vertices will miss crucial meta-information about the ZBDD.
   ///
@@ -359,8 +524,11 @@ class Zbdd {
     prune_results_.clear();
   }
 
+  /// Freezes the graph.
   /// Releases all possible memory from memoization and unique tables.
-  void ReleaseTables() noexcept {
+  ///
+  /// @pre No more graph modifications after the freeze.
+  void Freeze() noexcept {
     unique_table_.Release();
     Zbdd::ClearTables();
     and_table_.reserve(0);
@@ -379,7 +547,7 @@ class Zbdd {
   void JoinModule(int index, std::unique_ptr<Zbdd> container) noexcept {
     assert(!modules_.count(index));
     assert(container->root()->terminal() ||
-           SetNode::Ptr(container->root())->minimal());
+           SetNode::Ref(container->root()).minimal());
     modules_.emplace(index, std::move(container));
   }
 
@@ -392,7 +560,6 @@ class Zbdd {
  private:
   using SetNodeWeakPtr = WeakIntrusivePtr<SetNode>;  ///< Pointer for tables.
   using ComputeTable = TripletTable<VertexPtr>;  ///< General computation table.
-  using Product = std::vector<int>;  ///< For clarity of expected results.
   /// Module entry in the tables with its original gate index.
   using ModuleEntry = std::pair<const int, std::unique_ptr<Zbdd>>;
 
@@ -415,7 +582,7 @@ class Zbdd {
   Zbdd(const Bdd::Function& module, bool coherent, Bdd* bdd,
        const Settings& settings, int module_index = 0) noexcept;
 
-  /// Constructs ZBDD from modular Boolean graphs.
+  /// Constructs ZBDD from modular PDAGs.
   /// This constructor does not handle constant or single variable graphs.
   /// These cases are expected to be handled
   /// after calling this constructor.
@@ -427,7 +594,7 @@ class Zbdd {
   /// @param[in] settings  Analysis settings.
   ///
   /// @post The root vertex pointer is uninitialized
-  ///       if the Boolean graph is constant or single variable.
+  ///       if the PDAG is constant or single variable.
   Zbdd(const Gate& gate, const Settings& settings) noexcept;
 
   /// Finds a replacement for an existing node
@@ -531,9 +698,9 @@ class Zbdd {
                                       Bdd* bdd_graph, int limit_order,
                                       PairTable<VertexPtr>* ites) noexcept;
 
-  /// Transforms a Boolean graph gate into a Zbdd set graph.
+  /// Transforms a PDAG gate into a Zbdd set graph.
   ///
-  /// @param[in] gate  The root gate of the Boolean graph.
+  /// @param[in] gate  The root gate of the PDAG.
   /// @param[in,out] gates  Processed gates with use counts.
   /// @param[out] module_gates  Sub-module gates.
   ///
@@ -614,8 +781,8 @@ class Zbdd {
   /// @param[in] node  A node to be tested.
   ///
   /// @returns true for modules by default.
-  virtual bool IsGate(const SetNodePtr& node) noexcept {
-    return node->module();
+  virtual bool IsGate(const SetNode& node) noexcept {
+    return node.module();
   }
 
   /// Checks if a node have a possibility to represent Unity.
@@ -623,42 +790,7 @@ class Zbdd {
   /// @param[in] node  SetNode to test for possibility of Unity.
   ///
   /// @returns false if the passed node can never be Unity.
-  bool MayBeUnity(const SetNodePtr& node) noexcept;
-
-  /// Encodes the limit order for sub-sets for product generation.
-  /// The encoding lets avoid generation of unnecessary products.
-  ///
-  /// @param[in,out] vertex  The vertex to start the encoding.
-  /// @param[in] limit_order  The limit on the product order.
-  ///
-  /// @pre 'count' fields of nodes are clear.
-  /// @pre All processing is done,
-  ///      such minimization and constant module elimination.
-  /// @pre The encoding is done before the product generation.
-  ///
-  /// @post The limit order is encoded in the node count field.
-  /// @post The encoding is not propagated to sub-modules.
-  void EncodeLimitOrder(const VertexPtr& vertex, int limit_order) noexcept;
-
-  /// Traverses the reduced ZBDD graph to generate products.
-  /// ZBDD is destructively converted into products.
-  ///
-  /// @param[in] vertex  The root node in traversal.
-  ///
-  /// @returns A collection of products
-  ///          generated from the ZBDD subgraph.
-  ///
-  /// @pre The ZBDD node marks are clear.
-  /// @pre The ZBDD is minimized.
-  /// @pre There are no constant modules.
-  /// @pre The internal limit order for generation
-  ///      is encoded in the node counts.
-  ///
-  /// @post The products of modules are incorporated to the result.
-  ///
-  /// @warning Product generation will destroy ZBDD.
-  std::vector<std::vector<int>>
-  GenerateProducts(const VertexPtr& vertex) noexcept;
+  bool MayBeUnity(const SetNode& node) noexcept;
 
   /// Counts the number of SetNodes
   /// excluding the nodes in the modules.
@@ -679,7 +811,7 @@ class Zbdd {
   /// @returns The number of products in ZBDD.
   ///
   /// @pre SetNode marks are clear (false).
-  int64_t CountProducts(const VertexPtr& vertex, bool modules) noexcept;
+  std::int64_t CountProducts(const VertexPtr& vertex, bool modules) noexcept;
 
   /// Cleans up non-terminal vertex marks
   /// by setting them to "false".
@@ -738,7 +870,6 @@ class Zbdd {
 
   std::map<int, std::unique_ptr<Zbdd>> modules_;  ///< Module graphs.
   int set_id_;  ///< Identification assignment for new set graphs.
-  std::vector<Product> products_;  ///< Generated products.
 };
 
 namespace zbdd {
@@ -763,7 +894,7 @@ class CutSetContainer : public Zbdd {
   CutSetContainer(const Settings& settings, int module_index,
                   int gate_index_bound) noexcept;
 
-  /// Converts a Boolean graph gate into intermediate cut sets.
+  /// Converts a PDAG gate into intermediate cut sets.
   ///
   /// @param[in] gate  The target AND/OR gate with arguments.
   ///
@@ -777,9 +908,10 @@ class CutSetContainer : public Zbdd {
   ///
   /// @pre Variable ordering puts the gate to the top (root).
   int GetNextGate() noexcept {
-    if (Zbdd::root()->terminal()) return 0;
-    SetNodePtr node = SetNode::Ptr(Zbdd::root());
-    return CutSetContainer::IsGate(node) && !node->module() ? node->index() : 0;
+    if (Zbdd::root()->terminal())
+      return 0;
+    SetNode& node = SetNode::Ref(Zbdd::root());
+    return CutSetContainer::IsGate(node) && !node.module() ? node.index() : 0;
   }
 
   /// Extracts (removes!) intermediate cut sets
@@ -859,9 +991,9 @@ class CutSetContainer : public Zbdd {
   /// @returns true if the index of the node belongs to a gate.
   ///
   /// @pre There are no complements of gates.
-  /// @pre Gate indexation has a lower bound.
-  bool IsGate(const SetNodePtr& node) noexcept override {
-    return node->index() > gate_index_bound_;
+  /// @pre Gate indices have a lower bound.
+  bool IsGate(const SetNode& node) noexcept override {
+    return node.index() > gate_index_bound_;
   }
 
   int gate_index_bound_;  ///< The exclusive lower bound for the gate indices.

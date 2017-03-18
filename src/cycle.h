@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Olzhas Rakhimov
+ * Copyright (C) 2014-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,15 +21,17 @@
 #ifndef SCRAM_SRC_CYCLE_H_
 #define SCRAM_SRC_CYCLE_H_
 
-#include <cassert>
-
 #include <string>
 #include <vector>
 
+#include <boost/range/adaptor/filtered.hpp>
+#include <boost/range/adaptor/transformed.hpp>
+
 #include "event.h"
-#include "expression.h"
+#include "parameter.h"
 
 namespace scram {
+namespace mef {
 namespace cycle {
 
 /// Determines the connectors between nodes.
@@ -39,10 +41,10 @@ namespace cycle {
 /// @returns The connector belonging to the node.
 ///
 /// @{
-inline const mef::Formula* GetConnector(const mef::GatePtr& node) {
+inline const Formula* GetConnector(const GatePtr& node) {
   return &node->formula();
 }
-inline mef::Expression* GetConnector(mef::Parameter* node) { return node; }
+inline Expression* GetConnector(Parameter* node) { return node; }
 /// @}
 
 /// Retrieves nodes from a connector.
@@ -52,21 +54,18 @@ inline mef::Expression* GetConnector(mef::Parameter* node) { return node; }
 /// @returns  The iterable collection of nodes on the other end of connection.
 ///
 /// @{
-inline
-const std::vector<mef::GatePtr>& GetNodes(const mef::FormulaPtr& connector) {
+inline const std::vector<GatePtr>& GetNodes(const FormulaPtr& connector) {
   return connector->gate_args();
 }
-inline
-const std::vector<mef::GatePtr>& GetNodes(const mef::Formula* connector) {
+inline const std::vector<GatePtr>& GetNodes(const Formula* connector) {
   return connector->gate_args();
 }
-inline std::vector<mef::Parameter*> GetNodes(mef::Expression* connector) {
-  std::vector<mef::Parameter*> nodes;
-  for (const mef::ExpressionPtr& arg : connector->args()) {
-    mef::Parameter* ptr = dynamic_cast<mef::Parameter*>(arg.get());
-    if (ptr) nodes.push_back(ptr);
-  }
-  return nodes;
+inline auto GetNodes(Expression* connector) {
+  return connector->args() |
+         boost::adaptors::transformed([](const ExpressionPtr& arg) {
+           return dynamic_cast<Parameter*>(arg.get());
+         }) |
+         boost::adaptors::filtered([](auto* ptr) { return ptr != nullptr; });
 }
 /// @}
 
@@ -77,21 +76,20 @@ inline std::vector<mef::Parameter*> GetNodes(mef::Expression* connector) {
 /// @returns  The iterable collection of connectors.
 ///
 /// @{
-inline const std::vector<mef::FormulaPtr>&
-GetConnectors(const mef::FormulaPtr& connector) {
+inline
+const std::vector<FormulaPtr>& GetConnectors(const FormulaPtr& connector) {
   return connector->formula_args();
 }
-inline const std::vector<mef::FormulaPtr>&
-GetConnectors(const mef::Formula* connector) {
+inline const std::vector<FormulaPtr>& GetConnectors(const Formula* connector) {
   return connector->formula_args();
 }
-inline std::vector<mef::Expression*> GetConnectors(mef::Expression* connector) {
-  std::vector<mef::Expression*> connectors;
-  for (const mef::ExpressionPtr& arg : connector->args()) {
-    if (dynamic_cast<mef::Parameter*>(arg.get()) == nullptr)
-      connectors.push_back(arg.get());
-  }
-  return connectors;
+inline auto GetConnectors(Expression* connector) {
+  return connector->args() |
+         boost::adaptors::filtered([](const ExpressionPtr& arg) {
+           return dynamic_cast<Parameter*>(arg.get()) == nullptr;
+         }) |
+         boost::adaptors::transformed(
+             [](const ExpressionPtr& arg) { return arg.get(); });
 }
 /// @}
 
@@ -114,21 +112,23 @@ bool ContinueConnector(const Ptr& connector, std::vector<std::string>* cycle);
 ///                    This is for printing errors and efficiency.
 ///
 /// @returns True if a cycle is found.
+///
+/// @post All traversed nodes are marked with non-clear marks.
 template <class Ptr>
 bool DetectCycle(const Ptr& node, std::vector<std::string>* cycle) {
-  if (node->mark().empty()) {
-    node->mark("temporary");
+  if (!node->mark()) {
+    node->mark(NodeMark::kTemporary);
     if (ContinueConnector(GetConnector(node), cycle)) {
       cycle->push_back(node->name());
       return true;
     }
-    node->mark("permanent");
-  } else if (node->mark() == "temporary") {
+    node->mark(NodeMark::kPermanent);
+  } else if (node->mark() == NodeMark::kTemporary) {
     cycle->push_back(node->name());
     return true;
   }
-  assert(node->mark() == "permanent");
-  return false;  // This also covers permanently marked gates.
+  assert(node->mark() == NodeMark::kPermanent);
+  return false;
 }
 
 /// Helper function to check for cyclic references through connectors.
@@ -146,10 +146,12 @@ bool DetectCycle(const Ptr& node, std::vector<std::string>* cycle) {
 template <class Ptr>
 bool ContinueConnector(const Ptr& connector, std::vector<std::string>* cycle) {
   for (const auto& node : GetNodes(connector)) {
-    if (DetectCycle(node, cycle)) return true;
+    if (DetectCycle(node, cycle))
+      return true;
   }
   for (const auto& link : GetConnectors(connector)) {
-    if (ContinueConnector(link, cycle)) return true;
+    if (ContinueConnector(link, cycle))
+      return true;
   }
   return false;
 }
@@ -163,6 +165,7 @@ bool ContinueConnector(const Ptr& connector, std::vector<std::string>* cycle) {
 std::string PrintCycle(const std::vector<std::string>& cycle);
 
 }  // namespace cycle
+}  // namespace mef
 }  // namespace scram
 
 #endif  // SCRAM_SRC_CYCLE_H_

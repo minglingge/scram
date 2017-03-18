@@ -6,7 +6,7 @@ DEBUG2: 		Applying CCF models...
 INFO: Running analysis: r1
 DEBUG2: 		Preprocessing...
 DEBUG2: 		Preprocessing Phase I...
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 84
 DEBUG4: 				# of modules: 0
 DEBUG4: 				# of gates with negative indices: 0
@@ -18,7 +18,7 @@ DEBUG4: 				Total # of variables: 61
 DEBUG4: 				# of variables with negative indices: 0
 DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG2: 		Preprocessing Phase II...
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 84
 DEBUG4: 				# of modules: 0
 DEBUG4: 				# of gates with negative indices: 0
@@ -32,22 +32,16 @@ DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG3: 			Detecting multiple definitions...
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
-DEBUG4: 				Found original module: G1000000
+DEBUG4: 				Found original module: G63
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Coalescing gates...
 DEBUG3: 			Gate coalescence is done!
 DEBUG3: 			Merging common arguments...
 DEBUG4: 				Merging common arguments for AND gates...
-DEBUG5: 					Clearing node counts...
-DEBUG5: 					Node counts are clear!
 DEBUG4: 				Working with 1 modules...
 DEBUG4: 				Finished merging for AND gates!
 DEBUG4: 				Merging common arguments for OR gates...
-DEBUG5: 					Clearing node counts...
-DEBUG5: 					Node counts are clear!
 DEBUG4: 				Working with 1 modules...
 DEBUG4: 				Merging 2 collection...
 DEBUG4: 				Transforming 2 table groups...
@@ -83,55 +77,35 @@ DEBUG5: 					Got NULL gates to clear!
 DEBUG3: 			Distributivity detection is done!
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Boolean optimization...
-DEBUG5: 					Clearing OptiValues...
-DEBUG5: 					Node OptiValues are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG4: 				Node 1000032: 2 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 95: 2 redundant parent(s) and 2 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
-DEBUG4: 				Node 1000034: 2 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 97: 2 redundant parent(s) and 2 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
-DEBUG4: 				Node 1000036: 2 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 99: 2 redundant parent(s) and 2 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
-DEBUG4: 				Node 1000038: 2 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 101: 2 redundant parent(s) and 2 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
-DEBUG4: 				Node 1000018: 2 redundant parent(s) and 3 failure destination(s)
-DEBUG4: 				Node 1000024: 2 redundant parent(s) and 3 failure destination(s)
-DEBUG4: 				Node 1000053: 2 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 81: 2 redundant parent(s) and 3 failure destination(s)
+DEBUG4: 				Node 87: 2 redundant parent(s) and 3 failure destination(s)
+DEBUG4: 				Node 116: 2 redundant parent(s) and 4 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
-DEBUG4: 				Node 1000070: 2 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 133: 2 redundant parent(s) and 4 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
 DEBUG3: 			Decomposition of common nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Coalescing gates...
 DEBUG3: 			Gate coalescence is done!
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 77
 DEBUG4: 				# of modules: 1
 DEBUG4: 				# of gates with negative indices: 0
@@ -143,7 +117,7 @@ DEBUG4: 				Total # of variables: 61
 DEBUG4: 				# of variables with negative indices: 0
 DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG2: 		Preprocessing Phase III...
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 77
 DEBUG4: 				# of modules: 1
 DEBUG4: 				# of gates with negative indices: 0
@@ -155,12 +129,8 @@ DEBUG4: 				Total # of variables: 61
 DEBUG4: 				# of variables with negative indices: 0
 DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG3: 			Full normalization of gates...
-DEBUG5: 					Clearing node order marks...
-DEBUG5: 					Node order marks are clear!
-DEBUG5: 					Clearing node order marks...
-DEBUG5: 					Node order marks are clear!
 DEBUG3: 			Finished the full normalization of gates!
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 131
 DEBUG4: 				# of modules: 1
 DEBUG4: 				# of gates with negative indices: 0
@@ -173,21 +143,15 @@ DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG3: 			Detecting multiple definitions...
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Coalescing gates...
 DEBUG3: 			Gate coalescence is done!
 DEBUG3: 			Merging common arguments...
 DEBUG4: 				Merging common arguments for AND gates...
-DEBUG5: 					Clearing node counts...
-DEBUG5: 					Node counts are clear!
 DEBUG4: 				Working with 1 modules...
 DEBUG4: 				Finished merging for AND gates!
 DEBUG4: 				Merging common arguments for OR gates...
-DEBUG5: 					Clearing node counts...
-DEBUG5: 					Node counts are clear!
 DEBUG4: 				Working with 1 modules...
 DEBUG4: 				Merging 6 collection...
 DEBUG4: 				Transforming 4 table groups...
@@ -255,64 +219,44 @@ DEBUG5: 					Considering 2 candidates...
 DEBUG3: 			Distributivity detection is done!
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Boolean optimization...
-DEBUG5: 					Clearing OptiValues...
-DEBUG5: 					Node OptiValues are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG4: 				Node 1000036: 1 redundant parent(s) and 2 failure destination(s)
-DEBUG4: 				Node 1000038: 1 redundant parent(s) and 2 failure destination(s)
-DEBUG4: 				Node 1000032: 1 redundant parent(s) and 8 failure destination(s)
-DEBUG4: 				Node 1000034: 1 redundant parent(s) and 8 failure destination(s)
-DEBUG4: 				Node 1000053: 2 redundant parent(s) and 4 failure destination(s)
+DEBUG4: 				Node 99: 1 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 101: 1 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 95: 1 redundant parent(s) and 8 failure destination(s)
+DEBUG4: 				Node 97: 1 redundant parent(s) and 8 failure destination(s)
+DEBUG4: 				Node 116: 2 redundant parent(s) and 4 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
-DEBUG4: 				Node 1000070: 2 redundant parent(s) and 5 failure destination(s)
+DEBUG4: 				Node 133: 2 redundant parent(s) and 5 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
 DEBUG3: 			Decomposition of common nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
-DEBUG5: 					Reached decomposition sub-parent G1000042
-DEBUG5: 					Reached decomposition sub-parent G1000068
-DEBUG5: 					Reached decomposition sub-parent G1000047
-DEBUG5: 					Reached decomposition sub-parent G1000060
-DEBUG5: 					Reached decomposition sub-parent G1000033
-DEBUG5: 					Reached decomposition sub-parent G1000065
-DEBUG5: 					Reached decomposition sub-parent G1000041
-DEBUG5: 					Reached decomposition sub-parent G1000046
-DEBUG5: 					Reached decomposition sub-parent G1000059
-DEBUG5: 					Reached decomposition sub-parent G1000064
-DEBUG5: 					Reached decomposition sub-parent G1000051
-DEBUG5: 					Reached decomposition sub-parent G1000031
-DEBUG5: 					Reached decomposition sub-parent G1000068
-DEBUG5: 					Reached decomposition sub-parent G1000074
-DEBUG5: 					Reached decomposition sub-parent G1000051
+DEBUG5: 					Reached decomposition sub-parent G105
+DEBUG5: 					Reached decomposition sub-parent G131
+DEBUG5: 					Reached decomposition sub-parent G110
+DEBUG5: 					Reached decomposition sub-parent G123
+DEBUG5: 					Reached decomposition sub-parent G96
+DEBUG5: 					Reached decomposition sub-parent G128
+DEBUG5: 					Reached decomposition sub-parent G104
+DEBUG5: 					Reached decomposition sub-parent G109
+DEBUG5: 					Reached decomposition sub-parent G122
+DEBUG5: 					Reached decomposition sub-parent G127
+DEBUG5: 					Reached decomposition sub-parent G114
+DEBUG5: 					Reached decomposition sub-parent G94
+DEBUG5: 					Reached decomposition sub-parent G131
+DEBUG5: 					Reached decomposition sub-parent G137
+DEBUG5: 					Reached decomposition sub-parent G114
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Coalescing gates...
 DEBUG3: 			Gate coalescence is done!
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 124
 DEBUG4: 				# of modules: 1
 DEBUG4: 				# of gates with negative indices: 0
@@ -323,7 +267,7 @@ DEBUG4: 				Total # of variables: 61
 DEBUG4: 				# of variables with negative indices: 0
 DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG2: 		Preprocessing Phase V...
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 124
 DEBUG4: 				# of modules: 1
 DEBUG4: 				# of gates with negative indices: 0
@@ -334,21 +278,21 @@ DEBUG4: 				Total # of variables: 61
 DEBUG4: 				# of variables with negative indices: 0
 DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG3: 			Coalescing gates...
-DEBUG5: 					Handling duplicate argument for G1000096
-DEBUG5: 					Handling duplicate argument for G1000096
-DEBUG5: 					Handling duplicate argument for G1000102
-DEBUG5: 					Handling duplicate argument for G1000102
-DEBUG5: 					Handling duplicate argument for G1000126
-DEBUG5: 					Handling duplicate argument for G1000126
-DEBUG5: 					Handling duplicate argument for G1000132
-DEBUG5: 					Handling duplicate argument for G1000132
-DEBUG5: 					Handling duplicate argument for G1000138
-DEBUG5: 					Handling duplicate argument for G1000138
-DEBUG5: 					Handling duplicate argument for G1000138
-DEBUG5: 					Handling duplicate argument for G1000144
-DEBUG5: 					Handling duplicate argument for G1000144
+DEBUG5: 					Handling duplicate argument for G159
+DEBUG5: 					Handling duplicate argument for G159
+DEBUG5: 					Handling duplicate argument for G165
+DEBUG5: 					Handling duplicate argument for G165
+DEBUG5: 					Handling duplicate argument for G189
+DEBUG5: 					Handling duplicate argument for G189
+DEBUG5: 					Handling duplicate argument for G195
+DEBUG5: 					Handling duplicate argument for G195
+DEBUG5: 					Handling duplicate argument for G201
+DEBUG5: 					Handling duplicate argument for G201
+DEBUG5: 					Handling duplicate argument for G201
+DEBUG5: 					Handling duplicate argument for G207
+DEBUG5: 					Handling duplicate argument for G207
 DEBUG3: 			Gate coalescence is done!
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 123
 DEBUG4: 				# of modules: 1
 DEBUG4: 				# of gates with negative indices: 0
@@ -361,21 +305,15 @@ DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG3: 			Detecting multiple definitions...
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Coalescing gates...
 DEBUG3: 			Gate coalescence is done!
 DEBUG3: 			Merging common arguments...
 DEBUG4: 				Merging common arguments for AND gates...
-DEBUG5: 					Clearing node counts...
-DEBUG5: 					Node counts are clear!
 DEBUG4: 				Working with 1 modules...
 DEBUG4: 				Finished merging for AND gates!
 DEBUG4: 				Merging common arguments for OR gates...
-DEBUG5: 					Clearing node counts...
-DEBUG5: 					Node counts are clear!
 DEBUG4: 				Working with 1 modules...
 DEBUG4: 				Merging 5 collection...
 DEBUG4: 				Transforming 5 table groups...
@@ -445,64 +383,44 @@ DEBUG5: 					Considering 2 candidates...
 DEBUG3: 			Distributivity detection is done!
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Boolean optimization...
-DEBUG5: 					Clearing OptiValues...
-DEBUG5: 					Node OptiValues are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG4: 				Node 1000036: 1 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 99: 1 redundant parent(s) and 2 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
-DEBUG4: 				Node 1000038: 1 redundant parent(s) and 2 failure destination(s)
-DEBUG4: 				Node 1000032: 1 redundant parent(s) and 8 failure destination(s)
+DEBUG4: 				Node 101: 1 redundant parent(s) and 2 failure destination(s)
+DEBUG4: 				Node 95: 1 redundant parent(s) and 8 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
-DEBUG4: 				Node 1000034: 1 redundant parent(s) and 8 failure destination(s)
-DEBUG4: 				Node 1000070: 2 redundant parent(s) and 5 failure destination(s)
+DEBUG4: 				Node 97: 1 redundant parent(s) and 8 failure destination(s)
+DEBUG4: 				Node 133: 2 redundant parent(s) and 5 failure destination(s)
 DEBUG5: 					Got NULL gates to clear!
 DEBUG3: 			Decomposition of common nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
-DEBUG5: 					Clearing gate descendant marks...
-DEBUG5: 					Descendant marks are clear!
-DEBUG5: 					Reached decomposition sub-parent G1000042
-DEBUG5: 					Reached decomposition sub-parent G1000068
-DEBUG5: 					Reached decomposition sub-parent G1000047
-DEBUG5: 					Reached decomposition sub-parent G1000060
-DEBUG5: 					Reached decomposition sub-parent G1000033
-DEBUG5: 					Reached decomposition sub-parent G1000065
-DEBUG5: 					Reached decomposition sub-parent G1000041
-DEBUG5: 					Reached decomposition sub-parent G1000046
-DEBUG5: 					Reached decomposition sub-parent G1000059
-DEBUG5: 					Reached decomposition sub-parent G1000064
-DEBUG5: 					Reached decomposition sub-parent G1000051
-DEBUG5: 					Reached decomposition sub-parent G1000031
-DEBUG5: 					Reached decomposition sub-parent G1000068
-DEBUG5: 					Reached decomposition sub-parent G1000074
-DEBUG5: 					Reached decomposition sub-parent G1000051
+DEBUG5: 					Reached decomposition sub-parent G105
+DEBUG5: 					Reached decomposition sub-parent G131
+DEBUG5: 					Reached decomposition sub-parent G110
+DEBUG5: 					Reached decomposition sub-parent G123
+DEBUG5: 					Reached decomposition sub-parent G96
+DEBUG5: 					Reached decomposition sub-parent G128
+DEBUG5: 					Reached decomposition sub-parent G104
+DEBUG5: 					Reached decomposition sub-parent G109
+DEBUG5: 					Reached decomposition sub-parent G122
+DEBUG5: 					Reached decomposition sub-parent G127
+DEBUG5: 					Reached decomposition sub-parent G114
+DEBUG5: 					Reached decomposition sub-parent G94
+DEBUG5: 					Reached decomposition sub-parent G131
+DEBUG5: 					Reached decomposition sub-parent G137
+DEBUG5: 					Reached decomposition sub-parent G114
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
 DEBUG3: 			Coalescing gates...
 DEBUG3: 			Gate coalescence is done!
 DEBUG3: 			Detecting modules...
 DEBUG4: 				Assigning timings to nodes...
-DEBUG5: 					Clearing node visit times...
-DEBUG5: 					Node visit times are clear!
 DEBUG4: 				Timings are assigned to nodes.
 DEBUG3: 			Finished module detection!
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 124
 DEBUG4: 				# of modules: 1
 DEBUG4: 				# of gates with negative indices: 0
@@ -513,21 +431,21 @@ DEBUG4: 				Total # of variables: 61
 DEBUG4: 				# of variables with negative indices: 0
 DEBUG4: 				# of variables with positive and negative indices: 0
 DEBUG3: 			Coalescing gates...
-DEBUG5: 					Handling duplicate argument for G1000096
-DEBUG5: 					Handling duplicate argument for G1000096
-DEBUG5: 					Handling duplicate argument for G1000102
-DEBUG5: 					Handling duplicate argument for G1000102
-DEBUG5: 					Handling duplicate argument for G1000126
-DEBUG5: 					Handling duplicate argument for G1000126
-DEBUG5: 					Handling duplicate argument for G1000132
-DEBUG5: 					Handling duplicate argument for G1000132
-DEBUG5: 					Handling duplicate argument for G1000138
-DEBUG5: 					Handling duplicate argument for G1000138
-DEBUG5: 					Handling duplicate argument for G1000138
-DEBUG5: 					Handling duplicate argument for G1000144
-DEBUG5: 					Handling duplicate argument for G1000144
+DEBUG5: 					Handling duplicate argument for G159
+DEBUG5: 					Handling duplicate argument for G159
+DEBUG5: 					Handling duplicate argument for G165
+DEBUG5: 					Handling duplicate argument for G165
+DEBUG5: 					Handling duplicate argument for G189
+DEBUG5: 					Handling duplicate argument for G189
+DEBUG5: 					Handling duplicate argument for G195
+DEBUG5: 					Handling duplicate argument for G195
+DEBUG5: 					Handling duplicate argument for G201
+DEBUG5: 					Handling duplicate argument for G201
+DEBUG5: 					Handling duplicate argument for G201
+DEBUG5: 					Handling duplicate argument for G207
+DEBUG5: 					Handling duplicate argument for G207
 DEBUG3: 			Gate coalescence is done!
-DEBUG4: 				Boolean graph with root G1000000
+DEBUG4: 				PDAG with root G63
 DEBUG4: 				Total # of gates: 123
 DEBUG4: 				# of modules: 1
 DEBUG4: 				# of gates with negative indices: 0
@@ -537,22 +455,18 @@ DEBUG5: 					OR gates: 72
 DEBUG4: 				Total # of variables: 61
 DEBUG4: 				# of variables with negative indices: 0
 DEBUG4: 				# of variables with positive and negative indices: 0
-DEBUG5: 					Clearing node order marks...
-DEBUG5: 					Node order marks are clear!
 DEBUG2: 		Launching the algorithm...
-DEBUG3: 			Converting module to ZBDD: G1000000
+DEBUG3: 			Converting module to ZBDD: G63
 DEBUG4: 				Limit on product order: 20
 DEBUG4: 				Minimizing ZBDD...
-DEBUG4: 				# of ZBDD nodes created: 97124
-DEBUG4: 				# of entries in unique table: 58497
+DEBUG4: 				# of ZBDD nodes created: 47702
+DEBUG4: 				# of entries in unique table: 25481
 DEBUG4: 				# of entries in AND table: 0
 DEBUG4: 				# of entries in OR table: 0
 DEBUG4: 				# of entries in subsume table: 0
 DEBUG4: 				# of entries in minimal table: 0
-DEBUG4: 				# of SetNodes in ZBDD: 4266
+DEBUG4: 				# of SetNodes in ZBDD: 3653
 DEBUG4: 				# of products: 46188
-DEBUG3: 			Getting products from minimized ZBDD: G1000000
-DEBUG4: 				# of generated products: 46188
 DEBUG2: 		# of products: 46188
 INFO: Finished analysis: r1
 DEBUG1: 	Reporting analysis results...

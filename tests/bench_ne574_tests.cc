@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Olzhas Rakhimov
+ * Copyright (C) 2014-2017 Olzhas Rakhimov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,8 +29,8 @@ TEST_P(RiskAnalysisTest, ne574) {
   std::string tree_input = "./share/scram/input/ne574/ne574.xml";
   settings.probability_analysis(true);
   ASSERT_NO_THROW(ProcessInputFile(tree_input));
-  ASSERT_NO_THROW(ran->Analyze());
-  if (settings.approximation() == "rare-event") {
+  ASSERT_NO_THROW(analysis->Analyze());
+  if (settings.approximation() == Approximation::kRareEvent) {
     EXPECT_DOUBLE_EQ(1, p_total());
   } else {
     EXPECT_NEAR(0.662208, p_total(), 1e-6);

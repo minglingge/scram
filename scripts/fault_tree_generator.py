@@ -17,8 +17,8 @@
 
 """Generates a fault tree of various complexities.
 
-The generated fault tree can be put into an XML file with the OpenPSA MEF
-or a shorthand format file.
+The generated fault tree can be put into an XML file with the Open-PSA MEF
+or the Aralia format file.
 The resulting fault tree is topologically sorted.
 
 This script helps create complex fault trees in a short time
@@ -40,7 +40,7 @@ all the other factors set by the user are
 guaranteed to be preserved and used as they are.
 """
 
-from __future__ import print_function, division
+from __future__ import print_function, division, absolute_import
 
 from collections import deque
 import random
@@ -578,6 +578,9 @@ def init_gates(gates_queue, common_basic, common_gate, fault_tree):
     max_tries = len(common_gate)  # the number of maximum tries
     num_tries = 0  # the number of tries to get a common gate
 
+    # pylint: disable=too-many-nested-blocks
+    # This code is both hot and coupled for performance reasons.
+    # There may be a better solution than the current approach.
     while gate.num_arguments() < num_arguments:
         s_percent = random.random()  # sample percentage of gates
         s_common = random.random()  # sample the reuse frequency
@@ -885,14 +888,14 @@ def manage_cmd_args(argv=None):
                         default=0, metavar="int")
     parser.add_argument("-o", "--out", type=str, default="fault_tree.xml",
                         metavar="path", help="a file to write the fault tree")
-    parser.add_argument("--shorthand", action="store_true",
-                        help="apply the shorthand format to the output")
+    parser.add_argument("--aralia", action="store_true",
+                        help="apply the Aralia format to the output")
     parser.add_argument("--nest", type=int, default=0, metavar="int",
                         help="nestedness of Boolean formulae in the XML output")
     args = parser.parse_args(argv)
     if args.nest < 0:
         raise ap.ArgumentTypeError("The nesting factor cannot be negative")
-    if args.shorthand:
+    if args.aralia:
         if args.out == "fault_tree.xml":
             args.out = "fault_tree.txt"
     return args
@@ -940,8 +943,8 @@ def main(argv=None):
     factors = setup_factors(args)
     fault_tree = generate_fault_tree(args.ft_name, args.root, factors)
     with open(args.out, "w") as tree_file:
-        if args.shorthand:
-            tree_file.write(fault_tree.to_shorthand())
+        if args.aralia:
+            tree_file.write(fault_tree.to_aralia())
         else:
             write_info(fault_tree, tree_file, args.seed)
             write_summary(fault_tree, tree_file)

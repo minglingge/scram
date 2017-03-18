@@ -18,6 +18,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QAction>
+#include <QApplication>
+#include <QGraphicsScene>
+
+#include "event.h"
+
 namespace scram {
 namespace gui {
 
@@ -26,6 +32,14 @@ MainWindow::MainWindow(QWidget *parent)
       ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    auto *aboutQtAction = new QAction(tr("About &Qt"), this);
+    aboutQtAction->setStatusTip(tr("About the Qt toolkit"));
+    connect(aboutQtAction, &QAction::triggered, qApp, &QApplication::aboutQt);
+    ui->menuHelp->addAction(aboutQtAction);
+
+    auto *scene = new QGraphicsScene;
+    ui->diagrams->setScene(scene);
 }
 
 MainWindow::~MainWindow() { delete ui; }

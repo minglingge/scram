@@ -1,0 +1,11 @@
+<map id="scram::mef::Initializer::Extractor&lt; T,&#45;1 &gt;::operator()" name="scram::mef::Initializer::Extractor&lt; T,&#45;1 &gt;::operator()">
+<area shape="rect" id="node2" href="$classscram_1_1mef_1_1CcfGroup.xhtml#abfe90a5a022a07a5c111f0bba585d269" title="Adds a CCF factor for the specified model. " alt="" coords="266,5,418,47"/>
+<area shape="rect" id="node4" href="$classscram_1_1mef_1_1CcfGroup.xhtml#a8321bf4372a0575c88b7162716469d15" title="Adds a basic event into this CCF group. " alt="" coords="266,71,418,112"/>
+<area shape="rect" id="node5" href="$classscram_1_1mef_1_1Role.xhtml#ab91a51488ee8c4ed054de1e8450c8a59" title="scram::mef::Role::base_path" alt="" coords="247,137,437,163"/>
+<area shape="rect" id="node6" href="$xml_8h.xhtml#a0c5491388e25d1f1badb26b56ef302e7" title="Returns Normalized (trimmed) string value of an XML element attribute. " alt="" coords="257,211,427,238"/>
+<area shape="rect" id="node7" href="$xml_8h.xhtml#a0f074705681d730dcd5fb6035e91f30f" title="Returns XML line number message. " alt="" coords="287,286,397,313"/>
+<area shape="rect" id="node8" href="$classscram_1_1Error.xhtml#a35818dcc7c8dde101d4fd117adf47bc3" title="scram::Error::msg" alt="" coords="279,337,405,363"/>
+<area shape="rect" id="node9" href="$classscram_1_1mef_1_1Role.xhtml#aa1843c29411c29b27d79414d34525bbc" title="scram::mef::Role::role" alt="" coords="266,387,418,414"/>
+<area shape="rect" id="node10" href="$xml_8h.xhtml#ab908f9834f69be3009ee07445b51a673" title="Helper function to statically cast to XML element. " alt="" coords="273,462,411,489"/>
+<area shape="rect" id="node3" href="$classscram_1_1mef_1_1Element.xhtml#adb401e2ca84aa98cb60797bec2500a81" title="scram::mef::Element\l::name" alt="" coords="485,39,629,80"/>
+</map>

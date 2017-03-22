@@ -1,0 +1,9 @@
+<map id="mocus.h" name="mocus.h">
+<area shape="rect" id="node5" href="$pdag_8h.xhtml" title="Classes and facilities to represent fault trees as PDAGs with event and gate indices instead of ID na..." alt="" coords="628,251,689,278"/>
+<area shape="rect" id="node20" href="$settings_8h.xhtml" title="Builder for settings. " alt="" coords="1753,251,1831,278"/>
+<area shape="rect" id="node22" href="$zbdd_8h.xhtml" title="Zero&#45;Suppressed Binary Decision Diagram facilities. " alt="" coords="845,80,907,107"/>
+<area shape="rect" id="node14" href="$find__iterator_8h.xhtml" title="Convenience iterator adaptor to wrap find calls and results. " alt="" coords="1157,341,1280,367"/>
+<area shape="rect" id="node15" href="$index__map_8h.xhtml" title="Non&#45;zero based Index&#45;&gt;Value map adapter on sequential containers. " alt="" coords="281,341,399,367"/>
+<area shape="rect" id="node16" href="$linear__map_8h.xhtml" title="Implementation of a vector&#45;based map for a small number of entries. " alt="" coords="963,341,1082,367"/>
+<area shape="rect" id="node27" href="$bdd_8h.xhtml" title="Fault tree analysis with the Binary Decision Diagram algorithms. " alt="" coords="1127,162,1182,189"/>
+</map>

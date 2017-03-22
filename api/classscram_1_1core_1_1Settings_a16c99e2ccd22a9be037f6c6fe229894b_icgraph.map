@@ -1,0 +1,6 @@
+<map id="scram::core::Settings::importance_analysis" name="scram::core::Settings::importance_analysis">
+<area shape="rect" id="node2" href="$classscram_1_1Config.xhtml#ab0d7940fbb627fab9867821e133eab5d" title="A constructor with configurations for analysis. " alt="" coords="235,5,386,32"/>
+<area shape="rect" id="node3" href="$classscram_1_1Reporter.xhtml#a6a6327c0fc2d0e8ab6ec24a145ae1abe" title="Reports the results of risk analysis on a model. " alt="" coords="229,56,392,83"/>
+<area shape="rect" id="node5" href="$reporter_8cc.xhtml#ad6460094a94fb73e56c2a4a5efc598ed" title="Describes all performed analyses deduced from settings. " alt="" coords="203,107,419,149"/>
+<area shape="rect" id="node4" href="$classscram_1_1Reporter.xhtml#acf35ee03ce2ffc48aed92a578842b9d6" title="A convenience function to generate the report into a file. " alt="" coords="467,56,629,83"/>
+</map>

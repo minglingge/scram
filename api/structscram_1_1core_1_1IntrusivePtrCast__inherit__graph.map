@@ -1,0 +1,12 @@
+<map id="scram::core::IntrusivePtrCast&lt; T, W &gt;" name="scram::core::IntrusivePtrCast&lt; T, W &gt;">
+<area shape="rect" id="node2" href="$structscram_1_1core_1_1IntrusivePtrCast.xhtml" title="{scram::core::IntrusivePtr\lCast\&lt; Ite \&gt;\n||+ Ptr()\l+ Ref()\l* Ptr()\l* Ref()\l}" alt="" coords="5,364,172,500"/>
+<area shape="rect" id="node5" href="$structscram_1_1core_1_1IntrusivePtrCast.xhtml" title="{scram::core::IntrusivePtr\lCast\&lt; T \&gt;\n||+ Ptr()\l+ Ref()\l* Ptr()\l* Ref()\l}" alt="" coords="144,204,311,340"/>
+<area shape="rect" id="node9" href="$structscram_1_1core_1_1IntrusivePtrCast.xhtml" title="{scram::core::IntrusivePtr\lCast\&lt; SetNode \&gt;\n||+ Ptr()\l+ Ref()\l* Ptr()\l* Ref()\l}" alt="" coords="271,364,437,500"/>
+<area shape="rect" id="node10" href="$structscram_1_1core_1_1IntrusivePtrCast.xhtml" title="{scram::core::IntrusivePtr\lCast\&lt; T, Terminal\&lt; T \&gt; \&gt;\n||+ Ptr()\l+ Ref()\l* Ptr()\l* Ref()\l}" alt="" coords="399,204,571,340"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1NonTerminal.xhtml" title="{scram::core::NonTerminal\l\&lt; Ite \&gt;\n||+ NonTerminal()\l+ index()\l+ order()\l+ module()\l+ module()\l+ coherent()\l+ coherent()\l+ high()\l+ low()\l+ mark()\l+ mark()\l# ~NonTerminal()\l* get_high_id\l* get_low_id\l}" alt="" coords="34,855,207,1137"/>
+<area shape="rect" id="node4" href="$classscram_1_1core_1_1Ite.xhtml" title="Representation of non&#45;terminal if&#45;then&#45;else vertices in BDD graphs. " alt="" coords="47,1187,195,1337"/>
+<area shape="rect" id="node6" href="$classscram_1_1core_1_1NonTerminal.xhtml" title="Representation of non&#45;terminal vertices in BDD graphs. " alt="" coords="121,524,326,792"/>
+<area shape="rect" id="node7" href="$classscram_1_1core_1_1NonTerminal.xhtml" title="{scram::core::NonTerminal\l\&lt; SetNode \&gt;\n||+ NonTerminal()\l+ index()\l+ order()\l+ module()\l+ module()\l+ coherent()\l+ coherent()\l+ high()\l+ low()\l+ mark()\l+ mark()\l# ~NonTerminal()\l* get_high_id\l* get_low_id\l}" alt="" coords="254,855,427,1137"/>
+<area shape="rect" id="node8" href="$classscram_1_1core_1_1SetNode.xhtml" title="Representation of non&#45;terminal nodes in ZBDD. " alt="" coords="265,1187,416,1337"/>
+<area shape="rect" id="node11" href="$classscram_1_1core_1_1Terminal.xhtml" title="Representation of terminal vertices in BDD graphs. " alt="" coords="401,612,582,704"/>
+</map>

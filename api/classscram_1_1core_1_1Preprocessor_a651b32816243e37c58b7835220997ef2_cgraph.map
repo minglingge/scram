@@ -1,0 +1,18 @@
+<map id="scram::core::Preprocessor::MergeCommonArgs" name="scram::core::Preprocessor::MergeCommonArgs">
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1Pdag.xhtml#aa883d0e58b9faab69186bec03574c633" title="Clears marks from graph nodes. " alt="" coords="477,30,615,72"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1Preprocessor.xhtml#aba011f495cdec8449a315c17fe67a8c0" title="Filters merge candidates and their shared arguments to detect opportunities for simplifications like ..." alt="" coords="229,48,405,89"/>
+<area shape="rect" id="node4" href="$classscram_1_1core_1_1Preprocessor.xhtml#aef197badfb47bb3c604fd93d6260e635" title="Gathers common arguments of the gates in the group of a specific operator. " alt="" coords="229,113,405,154"/>
+<area shape="rect" id="node5" href="$classscram_1_1core_1_1Preprocessor.xhtml#af4dae5abf76e5da8b8c9f4371550b7dc" title="Gathers all modules in the PDAG. " alt="" coords="229,178,405,220"/>
+<area shape="rect" id="node8" href="$classscram_1_1core_1_1Pdag.xhtml#ae9407efbb00e5f28aecb40db2ab7925b" title="scram::core::Pdag::root" alt="" coords="467,243,625,270"/>
+<area shape="rect" id="node9" href="$classscram_1_1core_1_1Preprocessor.xhtml#adabd895d60a8ee0950f75da9a98fa155" title="Groups candidates with common arguments. " alt="" coords="229,296,405,337"/>
+<area shape="rect" id="node10" href="$classscram_1_1core_1_1Preprocessor.xhtml#a4f35278c0542722dc42cc74358522a64" title="Groups common args for merging. " alt="" coords="229,361,405,402"/>
+<area shape="rect" id="node13" href="$classscram_1_1core_1_1Preprocessor.xhtml#af9b5fba2247a02afe6cf480a405b6ca0" title="Finds intersections of common arguments of gates. " alt="" coords="229,426,405,468"/>
+<area shape="rect" id="node14" href="$classscram_1_1core_1_1Preprocessor.xhtml#a13778626bd9ce007e01b7bbd8d11e850" title="Marks common arguments of gates with a specific operator. " alt="" coords="229,492,405,533"/>
+<area shape="rect" id="node15" href="$classscram_1_1core_1_1Pdag.xhtml#a1ec495a3595a7d088f1889f46eeb725d" title="Removes gates of Null logic with a single argument (maybe constant). " alt="" coords="249,557,386,598"/>
+<area shape="rect" id="node17" href="$classscram_1_1core_1_1Preprocessor.xhtml#acf534fb9d9510d712a78cb5d27572ec1" title="Transforms common arguments of gates into new gates. " alt="" coords="229,622,405,664"/>
+<area shape="rect" id="node6" href="$classscram_1_1core_1_1Gate.xhtml#aa793eeaa12244c5b39a0d80e5b1518ae" title="scram::core::Gate::args" alt="" coords="466,138,626,164"/>
+<area shape="rect" id="node7" href="$classscram_1_1core_1_1Gate.xhtml#ab0e18a9481c5e712cbb0b0ff27ba72a5" title="Marks are used for linear traversal of graphs. " alt="" coords="464,188,628,215"/>
+<area shape="rect" id="node11" href="$classscram_1_1core_1_1Preprocessor.xhtml#a3c51e098f0ff45be068f68296323f45f" title="Finds an optimal way of grouping options. " alt="" coords="458,361,634,402"/>
+<area shape="rect" id="node12" href="$classscram_1_1core_1_1Preprocessor.xhtml#adbaee2a993e0538280dc437d0a3b849f" title="Finds the starting option for group formation. " alt="" coords="687,361,863,402"/>
+<area shape="rect" id="node16" href="$pdag_8h.xhtml#aa00922ee92d35a300d86442f8b9ad331" title="Traverses and visits gates and nodes in the graph. " alt="" coords="453,564,639,591"/>
+</map>

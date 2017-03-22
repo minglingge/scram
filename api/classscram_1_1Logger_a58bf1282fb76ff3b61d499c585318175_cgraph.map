@@ -1,0 +1,4 @@
+<map id="scram::Logger::report_level" name="scram::Logger::report_level">
+<area shape="rect" id="node2" href="$classscram_1_1Logger.xhtml#a4758c14402d2dbc180f98edaf94effcb" title="Returns a string stream by reference that is flushed to stderr by the Logger class destructor..." alt="" coords="227,5,361,32"/>
+<area shape="rect" id="node3" href="$classscram_1_1Logger.xhtml#aebef6b78425a64649abea7dfe7b7d0bc" title="Sets the reporting level cut&#45;off from an integer. " alt="" coords="200,56,388,83"/>
+</map>

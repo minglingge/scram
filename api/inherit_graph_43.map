@@ -1,0 +1,91 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classscram_1_1mef_1_1Element.xhtml" title="Mixin class that represents any element of analysis that can have extra descriptions, such as attributes and a label. " alt="" coords="5,309,149,336"/>
+<area shape="rect" id="node2" href="$classscram_1_1mef_1_1Component.xhtml" title="Component is for logical grouping of events, gates, and other components. " alt="" coords="225,309,388,336"/>
+<area shape="rect" id="node4" href="$classscram_1_1mef_1_1EventTree.xhtml" title="Event Tree representation with MEF constructs. " alt="" coords="229,360,385,387"/>
+<area shape="rect" id="node5" href="$classscram_1_1mef_1_1Id.xhtml" title="Mixin class for assigning unique identifiers to elements. " alt="" coords="253,107,360,133"/>
+<area shape="rect" id="node17" href="$classscram_1_1mef_1_1Model.xhtml" title="This class represents a risk analysis model. " alt="" coords="241,411,372,437"/>
+<area shape="rect" id="node18" href="$classscram_1_1mef_1_1Sequence.xhtml" title="Representation of sequences in event trees. " alt="" coords="229,157,384,184"/>
+<area shape="rect" id="node3" href="$classscram_1_1mef_1_1FaultTree.xhtml" title="Fault tree representation as a container of gates, basic and house events, and other information..." alt="" coords="503,360,654,387"/>
+<area shape="rect" id="node6" href="$classscram_1_1mef_1_1CcfGroup.xhtml" title="Abstract base class for all common cause failure models. " alt="" coords="503,107,655,133"/>
+<area shape="rect" id="node11" href="$classscram_1_1mef_1_1Event.xhtml" title="Abstract base class for general fault tree events. " alt="" coords="513,259,644,285"/>
+<area shape="rect" id="node16" href="$classscram_1_1mef_1_1Parameter.xhtml" title="This class provides a representation of a variable in basic event description. " alt="" coords="501,309,657,336"/>
+<area shape="rect" id="node7" href="$classscram_1_1mef_1_1AlphaFactorModel.xhtml" title="Alpha factor model characterizes failure of exactly k members of the group due to common cause..." alt="" coords="763,107,965,133"/>
+<area shape="rect" id="node8" href="$classscram_1_1mef_1_1BetaFactorModel.xhtml" title="Common cause failure model that assumes, if common cause failure occurs, then all components or membe..." alt="" coords="767,157,961,184"/>
+<area shape="rect" id="node9" href="$classscram_1_1mef_1_1MglModel.xhtml" title="Multiple Greek Letters model characterizes failure of sub&#45;groups of the group due to common cause..." alt="" coords="788,5,940,32"/>
+<area shape="rect" id="node10" href="$classscram_1_1mef_1_1PhiFactorModel.xhtml" title="Phi factor model is a simplification, where fractions of k&#45;member group failure is given directly..." alt="" coords="771,56,957,83"/>
+<area shape="rect" id="node12" href="$classscram_1_1mef_1_1BasicEvent.xhtml" title="Representation of a basic event in a fault tree. " alt="" coords="783,259,945,285"/>
+<area shape="rect" id="node14" href="$classscram_1_1mef_1_1Gate.xhtml" title="A representation of a gate in a fault tree. " alt="" coords="802,208,926,235"/>
+<area shape="rect" id="node15" href="$classscram_1_1mef_1_1HouseEvent.xhtml" title="Representation of a house event in a fault tree. " alt="" coords="780,309,948,336"/>
+<area shape="rect" id="node13" href="$classscram_1_1mef_1_1CcfEvent.xhtml" title="A basic event that represents a multiple failure of a group of events due to a common cause..." alt="" coords="1067,259,1217,285"/>
+<area shape="rect" id="node20" href="$classscram_1_1core_1_1Gate.xhtml" title="An indexed gate for use in a PDAG. " alt="" coords="801,1519,927,1545"/>
+<area shape="rect" id="node21" href="$structscram_1_1core_1_1IntrusivePtrCast.xhtml" title="scram::core::IntrusivePtr\lCast\&lt; Ite \&gt;" alt="" coords="223,898,390,939"/>
+<area shape="rect" id="node22" href="$classscram_1_1core_1_1NonTerminal.xhtml" title="scram::core::NonTerminal\l\&lt; Ite \&gt;" alt="" coords="492,594,665,635"/>
+<area shape="rect" id="node23" href="$classscram_1_1core_1_1Ite.xhtml" title="Representation of non&#45;terminal if&#45;then&#45;else vertices in BDD graphs. " alt="" coords="807,559,921,585"/>
+<area shape="rect" id="node24" href="$structscram_1_1core_1_1IntrusivePtrCast.xhtml" title="scram::core::IntrusivePtr\lCast\&lt; SetNode \&gt;" alt="" coords="223,1146,390,1187"/>
+<area shape="rect" id="node25" href="$classscram_1_1core_1_1NonTerminal.xhtml" title="scram::core::NonTerminal\l\&lt; SetNode \&gt;" alt="" coords="492,1117,665,1158"/>
+<area shape="rect" id="node26" href="$classscram_1_1core_1_1SetNode.xhtml" title="Representation of non&#45;terminal nodes in ZBDD. " alt="" coords="789,1120,939,1147"/>
+<area shape="rect" id="node27" href="$structscram_1_1core_1_1IntrusivePtrCast.xhtml" title="scram::core::IntrusivePtr\lCast\&lt; T \&gt;" alt="" coords="223,1387,390,1429"/>
+<area shape="rect" id="node28" href="$classscram_1_1core_1_1NonTerminal.xhtml" title="Representation of non&#45;terminal vertices in BDD graphs. " alt="" coords="476,1519,681,1545"/>
+<area shape="rect" id="node29" href="$structscram_1_1core_1_1IntrusivePtrCast.xhtml" title="scram::core::IntrusivePtr\lCast\&lt; T, Terminal\&lt; T \&gt; \&gt;" alt="" coords="221,1505,393,1546"/>
+<area shape="rect" id="node30" href="$classscram_1_1core_1_1Terminal.xhtml" title="Representation of terminal vertices in BDD graphs. " alt="" coords="488,1569,669,1596"/>
+<area shape="rect" id="node31" href="$classscram_1_1mef_1_1NodeMark.xhtml" title="Mixin class for providing marks for graph nodes. " alt="" coords="229,259,385,285"/>
+<area shape="rect" id="node33" href="$classscram_1_1core_1_1Analysis.xhtml" title="Base abstract class for all analysis with settings. " alt="" coords="232,1223,381,1249"/>
+<area shape="rect" id="node47" href="$classscram_1_1core_1_1Bdd.xhtml" title="Analysis of PDAGs with Binary Decision Diagrams. " alt="" coords="245,1273,368,1300"/>
+<area shape="rect" id="node48" href="$classscram_1_1core_1_1Mocus.xhtml" title="This class analyzes normalized, preprocessed, and indexed fault trees to generate minimal cut sets wi..." alt="" coords="237,1324,376,1351"/>
+<area shape="rect" id="node49" href="$classscram_1_1core_1_1NodeParentManager.xhtml" title="A manager of information about parents. " alt="" coords="197,1621,416,1648"/>
+<area shape="rect" id="node53" href="$classscram_1_1core_1_1Pdag.xhtml" title="PDAG is a propositional directed acyclic graph. " alt="" coords="242,1571,371,1597"/>
+<area shape="rect" id="node54" href="$classscram_1_1core_1_1Preprocessor.xhtml" title="The class provides main preprocessing operations over a PDAG to simplify the fault tree and to help a..." alt="" coords="219,1676,395,1703"/>
+<area shape="rect" id="node58" href="$classscram_1_1core_1_1Vertex.xhtml" title="Representation of a vertex in BDD graphs. " alt="" coords="222,1453,391,1480"/>
+<area shape="rect" id="node59" href="$classscram_1_1core_1_1WeakIntrusivePtr.xhtml" title="A weak pointer to store in BDD unique tables. " alt="" coords="215,1727,398,1769"/>
+<area shape="rect" id="node60" href="$classscram_1_1core_1_1Zbdd.xhtml" title="Zero&#45;Suppressed Binary Decision Diagrams for set manipulations. " alt="" coords="243,664,371,691"/>
+<area shape="rect" id="node62" href="$classscram_1_1Logger.xhtml" title="This is a general purpose logger; however, its main usage is asserted to be for debugging. " alt="" coords="254,512,359,539"/>
+<area shape="rect" id="node63" href="$classscram_1_1mef_1_1Expression.xhtml" title="Abstract base class for all sorts of expressions to describe events. " alt="" coords="226,964,387,991"/>
+<area shape="rect" id="node83" href="$classscram_1_1mef_1_1Formula.xhtml" title="Boolean formula with operators and arguments. " alt="" coords="235,563,378,589"/>
+<area shape="rect" id="node84" href="$classscram_1_1mef_1_1Initializer.xhtml" title="This class operates on input files to initialize analysis constructs like models, fault trees..." alt="" coords="233,613,381,640"/>
+<area shape="rect" id="node85" href="$classscram_1_1mef_1_1Instruction.xhtml" title="Instructions and rules for event tree paths. " alt="" coords="228,781,385,808"/>
+<area shape="rect" id="node87" href="$classscram_1_1core_1_1Vertex.xhtml" title="scram::core::Vertex\l\&lt; Ite \&gt;" alt="" coords="238,833,375,874"/>
+<area shape="rect" id="node88" href="$classscram_1_1core_1_1Vertex.xhtml" title="scram::core::Vertex\l\&lt; SetNode \&gt;" alt="" coords="238,1015,375,1057"/>
+<area shape="rect" id="node89" href="$classscram_1_1core_1_1WeakIntrusivePtr.xhtml" title="scram::core::WeakIntrusive\lPtr\&lt; Ite \&gt;" alt="" coords="215,1081,398,1122"/>
+<area shape="rect" id="node90" href="$classscram_1_1core_1_1WeakIntrusivePtr.xhtml" title="scram::core::WeakIntrusive\lPtr\&lt; SetNode \&gt;" alt="" coords="215,715,398,757"/>
+<area shape="rect" id="node34" href="$classscram_1_1core_1_1FaultTreeAnalysis.xhtml" title="Fault tree analysis functionality. " alt="" coords="477,1183,681,1209"/>
+<area shape="rect" id="node36" href="$classscram_1_1core_1_1ImportanceAnalysis.xhtml" title="Analysis of importance factors of risk model variables. " alt="" coords="471,1233,686,1260"/>
+<area shape="rect" id="node40" href="$classscram_1_1core_1_1ProbabilityAnalysis.xhtml" title="Main quantitative analysis class. " alt="" coords="499,1285,659,1326"/>
+<area shape="rect" id="node44" href="$classscram_1_1core_1_1RiskAnalysis.xhtml" title="Main system that performs analyses. " alt="" coords="491,1401,667,1428"/>
+<area shape="rect" id="node45" href="$classscram_1_1core_1_1UncertaintyAnalysis.xhtml" title="Uncertainty analysis and statistics for top event or gate probabilities with probability distribution..." alt="" coords="495,1453,662,1494"/>
+<area shape="rect" id="node35" href="$classscram_1_1core_1_1FaultTreeAnalyzer.xhtml" title="Fault tree analysis facility with specific algorithms. " alt="" coords="761,1171,967,1213"/>
+<area shape="rect" id="node37" href="$classscram_1_1core_1_1ImportanceAnalyzerBase.xhtml" title="Base class for analyzers of importance factors with the help from probability analyzers. " alt="" coords="741,1237,987,1264"/>
+<area shape="rect" id="node38" href="$classscram_1_1core_1_1ImportanceAnalyzer.xhtml" title="Analyzer of importance factors with the help from probability analyzers. " alt="" coords="1035,1230,1249,1271"/>
+<area shape="rect" id="node39" href="$classscram_1_1core_1_1ImportanceAnalyzer_3_01Bdd_01_4.xhtml" title="Specialization of importance analyzer with Binary Decision Diagrams. " alt="" coords="1035,1165,1249,1206"/>
+<area shape="rect" id="node41" href="$classscram_1_1core_1_1ProbabilityAnalyzerBase.xhtml" title="Base class for Probability analyzers. " alt="" coords="784,1295,944,1337"/>
+<area shape="rect" id="node42" href="$classscram_1_1core_1_1ProbabilityAnalyzer.xhtml" title="Fault&#45;tree&#45;analysis&#45;aware probability analyzer. " alt="" coords="1062,1361,1222,1402"/>
+<area shape="rect" id="node43" href="$classscram_1_1core_1_1ProbabilityAnalyzer_3_01Bdd_01_4.xhtml" title="Specialization of probability analyzer with Binary Decision Diagrams. " alt="" coords="1062,1295,1222,1337"/>
+<area shape="rect" id="node46" href="$classscram_1_1core_1_1UncertaintyAnalyzer.xhtml" title="Uncertainty analysis facility. " alt="" coords="781,1453,947,1494"/>
+<area shape="rect" id="node50" href="$classscram_1_1core_1_1Node.xhtml" title="An abstract base class that represents a node in a PDAG. " alt="" coords="513,1620,644,1647"/>
+<area shape="rect" id="node51" href="$classscram_1_1core_1_1Constant.xhtml" title="Representation of a node that is a Boolean constant TRUE. " alt="" coords="788,1620,940,1647"/>
+<area shape="rect" id="node52" href="$classscram_1_1core_1_1Variable.xhtml" title="Boolean variables in a Boolean formula or graph. " alt="" coords="791,1569,937,1596"/>
+<area shape="rect" id="node55" href="$classscram_1_1core_1_1CustomPreprocessor_3_01Bdd_01_4.xhtml" title="Specialization of preprocessing for BDD based analyses. " alt="" coords="467,1737,690,1778"/>
+<area shape="rect" id="node56" href="$classscram_1_1core_1_1CustomPreprocessor_3_01Zbdd_01_4.xhtml" title="Specialization of preprocessing for ZBDD based analyses. " alt="" coords="467,1671,690,1713"/>
+<area shape="rect" id="node57" href="$classscram_1_1core_1_1CustomPreprocessor_3_01Mocus_01_4.xhtml" title="Specialization of preprocessing for MOCUS based analyses. " alt="" coords="753,1671,975,1713"/>
+<area shape="rect" id="node61" href="$classscram_1_1core_1_1zbdd_1_1CutSetContainer.xhtml" title="Storage for generated cut sets in MOCUS. " alt="" coords="511,477,646,518"/>
+<area shape="rect" id="node64" href="$classscram_1_1mef_1_1BinaryExpression.xhtml" title="Base class for expressions that require 2 or more arguments. " alt="" coords="479,913,678,940"/>
+<area shape="rect" id="node69" href="$classscram_1_1mef_1_1ConstantExpression.xhtml" title="Indicates a constant value. " alt="" coords="471,964,686,991"/>
+<area shape="rect" id="node70" href="$classscram_1_1mef_1_1ExponentialExpression.xhtml" title="Negative exponential distribution with hourly failure rate and time. " alt="" coords="464,1015,693,1041"/>
+<area shape="rect" id="node71" href="$classscram_1_1mef_1_1GlmExpression.xhtml" title="Exponential with probability of failure on demand, hourly failure rate, hourly repairing rate..." alt="" coords="486,1065,671,1092"/>
+<area shape="rect" id="node72" href="$classscram_1_1mef_1_1MissionTime.xhtml" title="The special parameter for system mission time. " alt="" coords="493,660,664,687"/>
+<area shape="rect" id="node73" href="$classscram_1_1mef_1_1Neg.xhtml" title="This class for negation of numerical value or another expression. " alt="" coords="519,711,639,737"/>
+<area shape="rect" id="node74" href="$classscram_1_1mef_1_1PeriodicTest.xhtml" title="Periodic test with 3 phases: deploy, test, functioning. " alt="" coords="494,761,663,788"/>
+<area shape="rect" id="node75" href="$classscram_1_1mef_1_1RandomDeviate.xhtml" title="Abstract base class for all deviate expressions. " alt="" coords="483,812,674,839"/>
+<area shape="rect" id="node82" href="$classscram_1_1mef_1_1WeibullExpression.xhtml" title="Weibull distribution with scale, shape, time shift, and time. " alt="" coords="477,863,681,889"/>
+<area shape="rect" id="node65" href="$classscram_1_1mef_1_1Add.xhtml" title="This expression adds all the given expressions&#39; values. " alt="" coords="805,1065,923,1092"/>
+<area shape="rect" id="node66" href="$classscram_1_1mef_1_1Div.xhtml" title="This expression performs division operation. " alt="" coords="806,913,922,940"/>
+<area shape="rect" id="node67" href="$classscram_1_1mef_1_1Mul.xhtml" title="This expression performs multiplication operation. " alt="" coords="805,964,923,991"/>
+<area shape="rect" id="node68" href="$classscram_1_1mef_1_1Sub.xhtml" title="This expression performs subtraction operation. " alt="" coords="805,1015,923,1041"/>
+<area shape="rect" id="node76" href="$classscram_1_1mef_1_1BetaDeviate.xhtml" title="Beta distribution. " alt="" coords="780,711,948,737"/>
+<area shape="rect" id="node77" href="$classscram_1_1mef_1_1GammaDeviate.xhtml" title="Gamma distribution. " alt="" coords="771,761,957,788"/>
+<area shape="rect" id="node78" href="$classscram_1_1mef_1_1Histogram.xhtml" title="Histogram distribution. " alt="" coords="786,812,942,839"/>
+<area shape="rect" id="node79" href="$classscram_1_1mef_1_1LogNormalDeviate.xhtml" title="Log&#45;normal distribution. " alt="" coords="762,863,966,889"/>
+<area shape="rect" id="node80" href="$classscram_1_1mef_1_1NormalDeviate.xhtml" title="Normal distribution. " alt="" coords="773,609,955,636"/>
+<area shape="rect" id="node81" href="$classscram_1_1mef_1_1UniformDeviate.xhtml" title="Uniform distribution. " alt="" coords="771,660,957,687"/>
+<area shape="rect" id="node86" href="$classscram_1_1mef_1_1CollectExpression.xhtml" title="The operation of collecting expressions for event tree sequences. " alt="" coords="477,543,680,569"/>
+<area shape="rect" id="node91" href="$classscram_1_1mef_1_1Role.xhtml" title="Mixin class that manages private or public roles for elements as needed. " alt="" coords="16,183,139,209"/>
+</map>

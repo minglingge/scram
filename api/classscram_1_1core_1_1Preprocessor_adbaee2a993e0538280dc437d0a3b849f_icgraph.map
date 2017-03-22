@@ -1,0 +1,8 @@
+<map id="scram::core::Preprocessor::FindBaseOption" name="scram::core::Preprocessor::FindBaseOption">
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1Preprocessor.xhtml#a3c51e098f0ff45be068f68296323f45f" title="Finds an optimal way of grouping options. " alt="" coords="229,39,405,80"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1Preprocessor.xhtml#a4f35278c0542722dc42cc74358522a64" title="Groups common args for merging. " alt="" coords="453,5,629,47"/>
+<area shape="rect" id="node5" href="$classscram_1_1core_1_1Preprocessor.xhtml#a51340a3bcfa9785e430bab27ee08bbbf" title="Groups distributive gate arguments for future factorization. " alt="" coords="453,71,629,112"/>
+<area shape="rect" id="node4" href="$classscram_1_1core_1_1Preprocessor.xhtml#a651b32816243e37c58b7835220997ef2" title="Merges common arguments for a specific group of gates. " alt="" coords="677,5,853,47"/>
+<area shape="rect" id="node6" href="$classscram_1_1core_1_1Preprocessor.xhtml#a4b29173b8f6d18031d7a8cacbac15ce1" title="Manipulates gates with distributive arguments. " alt="" coords="677,71,853,112"/>
+<area shape="rect" id="node7" href="$classscram_1_1core_1_1Preprocessor.xhtml#a79fe8e90f0e8fbc20a76610aaf09fe6e" title="Detects and manipulates AND and OR gate distributivity. " alt="" coords="901,71,1077,112"/>
+</map>

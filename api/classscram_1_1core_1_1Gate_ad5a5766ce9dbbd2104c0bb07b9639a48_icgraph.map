@@ -1,0 +1,6 @@
+<map id="scram::core::Gate::type" name="scram::core::Gate::type">
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1Bdd.xhtml#ab9548d4c5f9afaa96dc24e17e2a01a57" title="Runs the Qualitative analysis with the representation of a PDAG as ROBDD. " alt="" coords="213,5,391,32"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1Zbdd.xhtml#ac90d12f0c653c679d22109124fa6344c" title="Find or adds a ZBDD SetNode vertex using information from gates. " alt="" coords="234,57,370,98"/>
+<area shape="rect" id="node4" href="$classscram_1_1core_1_1Preprocessor_1_1GateSet.xhtml#ae00239084858979e096032c4cf2f05b9" title="Inserts a gate into the set if it is semantically unique. " alt="" coords="214,122,390,163"/>
+<area shape="rect" id="node5" href="$classscram_1_1core_1_1Zbdd.xhtml#af92e04ed908364e0177ce444d7b72712" title="The common constructor to initialize member variables. " alt="" coords="219,188,385,215"/>
+</map>

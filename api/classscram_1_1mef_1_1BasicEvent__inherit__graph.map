@@ -1,0 +1,7 @@
+<map id="scram::mef::BasicEvent" name="scram::mef::BasicEvent">
+<area shape="rect" id="node7" href="$classscram_1_1mef_1_1CcfEvent.xhtml" title="A basic event that represents a multiple failure of a group of events due to a common cause..." alt="" coords="143,785,294,907"/>
+<area shape="rect" id="node2" href="$classscram_1_1mef_1_1Event.xhtml" title="Abstract base class for general fault tree events. " alt="" coords="153,388,284,495"/>
+<area shape="rect" id="node3" href="$classscram_1_1mef_1_1Id.xhtml" title="Mixin class for assigning unique identifiers to elements. " alt="" coords="103,233,209,340"/>
+<area shape="rect" id="node4" href="$classscram_1_1mef_1_1Element.xhtml" title="Mixin class that represents any element of analysis that can have extra descriptions, such as attributes and a label. " alt="" coords="5,5,149,185"/>
+<area shape="rect" id="node5" href="$classscram_1_1mef_1_1Role.xhtml" title="Mixin class that manages private or public roles for elements as needed. " alt="" coords="173,35,296,156"/>
+</map>

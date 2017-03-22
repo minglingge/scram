@@ -1,0 +1,8 @@
+<map id="scram::core::Preprocessor::HandleDistributiveArgs" name="scram::core::Preprocessor::HandleDistributiveArgs">
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1Preprocessor.xhtml#a29d3775965ee487d000591739fdbaa4b" title="Detects relationships between the gate and its distributive arguments to remove unnecessary candidate..." alt="" coords="233,5,409,47"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1Preprocessor.xhtml#af9b5fba2247a02afe6cf480a405b6ca0" title="Finds intersections of common arguments of gates. " alt="" coords="233,71,409,112"/>
+<area shape="rect" id="node4" href="$classscram_1_1core_1_1Preprocessor.xhtml#a51340a3bcfa9785e430bab27ee08bbbf" title="Groups distributive gate arguments for future factorization. " alt="" coords="233,136,409,177"/>
+<area shape="rect" id="node7" href="$classscram_1_1core_1_1Preprocessor.xhtml#a2557ab80c04d7f91372992edfbedd93a" title="Transforms distributive of arguments gates into a new subgraph. " alt="" coords="229,201,412,243"/>
+<area shape="rect" id="node5" href="$classscram_1_1core_1_1Preprocessor.xhtml#a3c51e098f0ff45be068f68296323f45f" title="Finds an optimal way of grouping options. " alt="" coords="460,136,636,177"/>
+<area shape="rect" id="node6" href="$classscram_1_1core_1_1Preprocessor.xhtml#adbaee2a993e0538280dc437d0a3b849f" title="Finds the starting option for group formation. " alt="" coords="684,136,860,177"/>
+</map>

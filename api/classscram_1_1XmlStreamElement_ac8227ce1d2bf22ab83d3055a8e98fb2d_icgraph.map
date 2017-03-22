@@ -1,0 +1,8 @@
+<map id="scram::XmlStreamElement::AddChild" name="scram::XmlStreamElement::AddChild">
+<area shape="rect" id="node2" href="$classscram_1_1Reporter.xhtml#a6a6327c0fc2d0e8ab6ec24a145ae1abe" title="Reports the results of risk analysis on a model. " alt="" coords="259,5,421,32"/>
+<area shape="rect" id="node4" href="$reporter_8cc.xhtml#a460bfadbe33cffa6f9a8a149c93893e5" title="Describes the fault tree analysis and techniques. " alt="" coords="232,57,448,98"/>
+<area shape="rect" id="node5" href="$reporter_8cc.xhtml#a04a0fc48f27649e05bafe389d05c7d97" title="Describes the probability analysis and techniques. " alt="" coords="232,122,448,163"/>
+<area shape="rect" id="node6" href="$reporter_8cc.xhtml#ad6460094a94fb73e56c2a4a5efc598ed" title="Describes all performed analyses deduced from settings. " alt="" coords="232,187,448,229"/>
+<area shape="rect" id="node7" href="$reporter_8cc.xhtml#ae12d3bcaf8c4c099d2d5c84a67286424" title="Describes the uncertainty analysis and techniques. " alt="" coords="232,253,448,294"/>
+<area shape="rect" id="node3" href="$classscram_1_1Reporter.xhtml#acf35ee03ce2ffc48aed92a578842b9d6" title="A convenience function to generate the report into a file. " alt="" coords="496,5,659,32"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="ccf_group.h" name="ccf_group.h">
+<area shape="rect" id="node8" href="$element_8h.xhtml" title="Helper classes, structs, and properties common to all other classes. " alt="" coords="435,229,513,256"/>
+<area shape="rect" id="node13" href="$event_8h.xhtml" title="Contains event classes for fault trees. " alt="" coords="555,80,620,107"/>
+<area shape="rect" id="node16" href="$expression_8h.xhtml" title="Provides the base class for all expressions and units for expression values. " alt="" coords="639,155,735,181"/>
+<area shape="rect" id="node14" href="$error_8h.xhtml" title="Exceptions for SCRAM. " alt="" coords="331,155,390,181"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="scram::mef::Add" name="scram::mef::Add">
+<area shape="rect" id="node2" href="$classscram_1_1mef_1_1BinaryExpression.xhtml" title="Base class for expressions that require 2 or more arguments. " alt="" coords="5,403,204,480"/>
+<area shape="rect" id="node3" href="$classscram_1_1mef_1_1Expression.xhtml" title="Abstract base class for all sorts of expressions to describe events. " alt="" coords="24,131,185,355"/>
+</map>

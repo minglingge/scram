@@ -1,0 +1,1231 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+<meta name="robots" content="noindex, nofollow"/>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fault_tree_generator &mdash; SCRAM 0.12.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/s_blue.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="SCRAM 0.12.0 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/>
+ 
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61330377-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> SCRAM
+          
+
+          
+            
+            <img src="../_static/scram_blue.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.12
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../doc/installation.html">Installation Instructions</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../doc/design_description.html">Design Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/coding_standards.html">Coding Style and Quality Assurance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/todo.html">TODO List for the SCRAM Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/bugs.html">Bugs and Issues</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Analysis</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../doc/description.html">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/fault_tree_analysis.html">Fault Tree Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/fta_preprocessing.html">FTA: Preprocessing Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/fta_algorithms.html">FTA: Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/probability_analysis.html">Probability Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/uncertainty_analysis.html">Uncertainty Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/common_cause_analysis.html">Common Cause Failure</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Format</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../doc/input_file.html">Input Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/config_file.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/report_file.html">Report Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/opsa_support.html">The Open-PSA Model Exchange Format</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../doc/fault_tree_generator.html">Fault Tree Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/gui.html">GUI Front-End</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellanea</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../doc/theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/citation.html">Citation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/xml_comments.html">XML File Helper Tools</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SCRAM</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>fault_tree_generator</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for fault_tree_generator</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2014-2016 Olzhas Rakhimov</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation; either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;Generates a fault tree of various complexities.</span>
+
+<span class="sd">The generated fault tree can be put into an XML file with the Open-PSA MEF</span>
+<span class="sd">or the Aralia format file.</span>
+<span class="sd">The resulting fault tree is topologically sorted.</span>
+
+<span class="sd">This script helps create complex fault trees in a short time</span>
+<span class="sd">to test other analysis tools,</span>
+<span class="sd">for example, input dependent performance analysis.</span>
+
+<span class="sd">The time complexity is approximately:</span>
+
+<span class="sd">    O(N) + O((N/Ratio)^2*exp(-NumArgs/Ratio)) + O(CommonG*exp(CommonB))</span>
+
+<span class="sd">Where N is the number of basic events,</span>
+<span class="sd">and Ratio is N / num_gate.</span>
+
+<span class="sd">Note that generating a fault tree</span>
+<span class="sd">with both the number of basic events and the number of gates contstrained</span>
+<span class="sd">may change other factors that are set by the user.</span>
+<span class="sd">However, if the number of gates are not set (constrained) by the user,</span>
+<span class="sd">all the other factors set by the user are</span>
+<span class="sd">guaranteed to be preserved and used as they are.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">absolute_import</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span> <span class="k">as</span> <span class="nn">ap</span>
+
+<span class="kn">from</span> <span class="nn">fault_tree</span> <span class="k">import</span> <span class="n">BasicEvent</span><span class="p">,</span> <span class="n">HouseEvent</span><span class="p">,</span> <span class="n">Gate</span><span class="p">,</span> <span class="n">CcfGroup</span><span class="p">,</span> <span class="n">FaultTree</span>
+
+
+<div class="viewcode-block" id="FactorError"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.FactorError">[docs]</a><span class="k">class</span> <span class="nc">FactorError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Errors in configuring factors for the fault tree generation.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Factors"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.Factors">[docs]</a><span class="k">class</span> <span class="nc">Factors</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-many-instance-attributes</span>
+    <span class="sd">&quot;&quot;&quot;Collection of factors that determine the complexity of the fault tree.</span>
+
+<span class="sd">    This collection must be setup and updated</span>
+<span class="sd">    before the fault tree generation processes.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        num_args: The average number of arguments for gates.</span>
+<span class="sd">        num_basic: The number of basic events.</span>
+<span class="sd">        num_house: The number of house events.</span>
+<span class="sd">        num_ccf: The number of ccf groups.</span>
+<span class="sd">        common_b: The percentage of common basic events per gate.</span>
+<span class="sd">        common_g: The percentage of common gates per gate.</span>
+<span class="sd">        parents_b: The average number of parents for common basic events.</span>
+<span class="sd">        parents_g: The average number of parents for common gates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Constant configurations</span>
+    <span class="n">__OPERATORS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;and&quot;</span><span class="p">,</span> <span class="s2">&quot;or&quot;</span><span class="p">,</span> <span class="s2">&quot;atleast&quot;</span><span class="p">,</span> <span class="s2">&quot;not&quot;</span><span class="p">,</span> <span class="s2">&quot;xor&quot;</span><span class="p">]</span>  <span class="c1"># the order matters</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Partial constructor.&quot;&quot;&quot;</span>
+        <span class="c1"># Probabilistic factors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_prob</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_prob</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># Configurable graph factors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_basic</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_house</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_ccf</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_b</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_g</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_args</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parents_b</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parents_g</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__weights_g</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># should not be set directly</span>
+
+        <span class="c1"># Calculated factors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__norm_weights</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># normalized weights</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cum_dist</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># CDF from the weights of the gate types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__max_args</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the upper bound for the number of arguments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ratio</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># basic events to gates ratio per gate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__percent_basic</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># % of basic events in gate arguments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__percent_gate</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># % of gates in gate arguments</span>
+
+        <span class="c1"># Special case with the constrained number of gates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__num_gate</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># If set, all other factors get affected.</span>
+
+<div class="viewcode-block" id="Factors.set_min_max_prob"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.Factors.set_min_max_prob">[docs]</a>    <span class="k">def</span> <span class="nf">set_min_max_prob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_value</span><span class="p">,</span> <span class="n">max_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the probability boundaries for basic events.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            min_value: The lower inclusive boundary.</span>
+<span class="sd">            max_value: The upper inclusive boundary.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            FactorError: Invalid values or setup.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">min_value</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">min_value</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;Min probability must be in [0, 1] range.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">max_value</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">max_value</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;Max probability must be in [0, 1] range.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">min_value</span> <span class="o">&gt;</span> <span class="n">max_value</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;Min probability &gt; Max probability.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_prob</span> <span class="o">=</span> <span class="n">min_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_prob</span> <span class="o">=</span> <span class="n">max_value</span></div>
+
+<div class="viewcode-block" id="Factors.set_common_event_factors"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.Factors.set_common_event_factors">[docs]</a>    <span class="k">def</span> <span class="nf">set_common_event_factors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">common_b</span><span class="p">,</span> <span class="n">common_g</span><span class="p">,</span> <span class="n">parents_b</span><span class="p">,</span>
+                                 <span class="n">parents_g</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the factors for the number of common events.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            common_b: The percentage of common basic events per gate.</span>
+<span class="sd">            common_g: The percentage of common gates per gate.</span>
+<span class="sd">            parents_b: The average number of parents for common basic events.</span>
+<span class="sd">            parents_g: The average number of parents for common gates.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            FactorError: Invalid values or setup.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">max_common</span> <span class="o">=</span> <span class="mf">0.9</span>  <span class="c1"># a practical limit (not a formal constraint)</span>
+        <span class="k">if</span> <span class="n">common_b</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">common_b</span> <span class="o">&gt;</span> <span class="n">max_common</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;common_b not in (0, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">max_common</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;].&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">common_g</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">common_g</span> <span class="o">&gt;</span> <span class="n">max_common</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;common_g not in (0, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">max_common</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;].&quot;</span><span class="p">)</span>
+        <span class="n">max_parent</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># also a practical limit</span>
+        <span class="k">if</span> <span class="n">parents_b</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">parents_b</span> <span class="o">&gt;</span> <span class="n">max_parent</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;parents_b not in [2, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">max_parent</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;].&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parents_g</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">parents_g</span> <span class="o">&gt;</span> <span class="n">max_parent</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;parents_g not in [2, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">max_parent</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;].&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_b</span> <span class="o">=</span> <span class="n">common_b</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_g</span> <span class="o">=</span> <span class="n">common_g</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parents_b</span> <span class="o">=</span> <span class="n">parents_b</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parents_g</span> <span class="o">=</span> <span class="n">parents_g</span></div>
+
+<div class="viewcode-block" id="Factors.set_num_factors"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.Factors.set_num_factors">[docs]</a>    <span class="k">def</span> <span class="nf">set_num_factors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_args</span><span class="p">,</span> <span class="n">num_basic</span><span class="p">,</span> <span class="n">num_house</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_ccf</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the size factors.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            num_args: The average number of arguments for gates.</span>
+<span class="sd">            num_basic: The number of basic events.</span>
+<span class="sd">            num_house: The number of house events.</span>
+<span class="sd">            num_ccf: The number of ccf groups.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            FactorError: Invalid values or setup.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">num_args</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;avg. # of gate arguments can&#39;t be less than 2.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">num_basic</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;# of basic events must be more than 0.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">num_house</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;# of house events can&#39;t be negative.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">num_ccf</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;# of CCF groups can&#39;t be negative.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">num_house</span> <span class="o">&gt;=</span> <span class="n">num_basic</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;Too many house events.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">num_ccf</span> <span class="o">&gt;</span> <span class="n">num_basic</span> <span class="o">/</span> <span class="n">num_args</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;Too many CCF groups.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_args</span> <span class="o">=</span> <span class="n">num_args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_basic</span> <span class="o">=</span> <span class="n">num_basic</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_house</span> <span class="o">=</span> <span class="n">num_house</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_ccf</span> <span class="o">=</span> <span class="n">num_ccf</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__calculate_max_args</span><span class="p">(</span><span class="n">num_args</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates the maximum number of arguments for sampling.</span>
+
+<span class="sd">        The result may have a fractional part</span>
+<span class="sd">        that must be adjusted in sampling accordingly.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            num_args: The average number of arguments for gates.</span>
+<span class="sd">            weights: Normalized weights for gate types.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The upper bound for sampling in symmetric distributions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Min numbers for AND, OR, K/N, NOT, XOR types.</span>
+        <span class="n">min_args</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="c1"># Note that max and min numbers are the same for NOT and XOR.</span>
+        <span class="n">const_args</span> <span class="o">=</span> <span class="n">min_args</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+        <span class="n">const_weights</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+        <span class="n">const_contrib</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">const_args</span><span class="p">,</span> <span class="n">const_weights</span><span class="p">)]</span>
+        <span class="c1"># AND, OR, K/N gate types can have the varying number of args.</span>
+        <span class="n">var_args</span> <span class="o">=</span> <span class="n">min_args</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">var_weights</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">var_contrib</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">var_args</span><span class="p">,</span> <span class="n">var_weights</span><span class="p">)]</span>
+
+        <span class="c1"># AND, OR, K/N gate types can have the varying number of arguments.</span>
+        <span class="c1"># Since the distribution is symmetric, the average is (max + min) / 2.</span>
+        <span class="k">return</span> <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">num_args</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">var_contrib</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">const_contrib</span><span class="p">))</span> <span class="o">/</span>
+                <span class="nb">sum</span><span class="p">(</span><span class="n">var_weights</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Factors.calculate"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.Factors.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates any derived factors from the setup.</span>
+
+<span class="sd">        This function must be called after all public factors are initialized.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__max_args</span> <span class="o">=</span> <span class="n">Factors</span><span class="o">.</span><span class="n">__calculate_max_args</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_args</span><span class="p">,</span>
+                                                       <span class="bp">self</span><span class="o">.</span><span class="n">__norm_weights</span><span class="p">)</span>
+        <span class="n">g_factor</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_g</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_g</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">parents_g</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ratio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_args</span> <span class="o">*</span> <span class="n">g_factor</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__percent_basic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ratio</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ratio</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__percent_gate</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ratio</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Factors.get_gate_weights"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.Factors.get_gate_weights">[docs]</a>    <span class="k">def</span> <span class="nf">get_gate_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Provides weights for gate types.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Expected to return weights from the arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">__weights_g</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__weights_g</span></div>
+
+<div class="viewcode-block" id="Factors.set_gate_weights"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.Factors.set_gate_weights">[docs]</a>    <span class="k">def</span> <span class="nf">set_gate_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Updates gate type weights.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            weights: Weights of gate types.</span>
+<span class="sd">                The weights must have the same order as in OPERATORS list.</span>
+<span class="sd">                If weights for some operators are missing,</span>
+<span class="sd">                they are assumed to be 0.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            FactorError: Invalid weight values or setup.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">weights</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;No weights are provided&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">weights</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;Weights cannot be negative&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">Factors</span><span class="o">.</span><span class="n">__OPERATORS</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;Too many weights are provided&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;At least one non-zero weight is needed&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">[:</span><span class="mi">3</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;Cannot work with only XOR or NOT gates&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__weights_g</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[:]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Factors</span><span class="o">.</span><span class="n">__OPERATORS</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__weights_g</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># padding for missing weights</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__norm_weights</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__weights_g</span><span class="p">)</span>
+                               <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__weights_g</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cum_dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__norm_weights</span><span class="p">[:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cum_dist</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cum_dist</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__cum_dist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cum_dist</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Factors.get_random_operator"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.Factors.get_random_operator">[docs]</a>    <span class="k">def</span> <span class="nf">get_random_operator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Samples the gate operator.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A randomly chosen gate operator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">r_num</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+        <span class="n">bin_num</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cum_dist</span><span class="p">[</span><span class="n">bin_num</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_num</span><span class="p">:</span>
+            <span class="n">bin_num</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">Factors</span><span class="o">.</span><span class="n">__OPERATORS</span><span class="p">[</span><span class="n">bin_num</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Factors.get_num_args"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.Factors.get_num_args">[docs]</a>    <span class="k">def</span> <span class="nf">get_num_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gate</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Randomly selects the number of arguments for the given gate type.</span>
+
+<span class="sd">        This function has a side effect.</span>
+<span class="sd">        It sets k_num for the K/N type of gates</span>
+<span class="sd">        depending on the number of arguments.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            gate: The parent gate for arguments.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Random number of arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">gate</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;not&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">gate</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;xor&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">2</span>
+
+        <span class="n">max_args</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__max_args</span><span class="p">)</span>
+        <span class="c1"># Dealing with the fractional part.</span>
+        <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__max_args</span> <span class="o">-</span> <span class="n">max_args</span><span class="p">):</span>
+            <span class="n">max_args</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">gate</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;atleast&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">max_args</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">max_args</span> <span class="o">=</span> <span class="mi">3</span>
+            <span class="n">num_args</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_args</span><span class="p">)</span>
+            <span class="n">gate</span><span class="o">.</span><span class="n">k_num</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_args</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">num_args</span>
+
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_args</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Factors.get_percent_gate"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.Factors.get_percent_gate">[docs]</a>    <span class="k">def</span> <span class="nf">get_percent_gate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the percentage of gates that should be in arguments.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__percent_gate</span></div>
+
+<div class="viewcode-block" id="Factors.get_num_gate"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.Factors.get_num_gate">[docs]</a>    <span class="k">def</span> <span class="nf">get_num_gate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Approximates the number of gates in the resulting fault tree.</span>
+
+<span class="sd">        This is an estimate of the number of gates</span>
+<span class="sd">        needed to initialize the fault tree</span>
+<span class="sd">        with the given number of basic events</span>
+<span class="sd">        and fault tree properties.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The number of gates needed for the given basic events.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Special case of constrained gates</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num_gate</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num_gate</span>
+        <span class="n">b_factor</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_b</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_b</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">parents_b</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_basic</span> <span class="o">/</span>
+                   <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__percent_basic</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_args</span> <span class="o">*</span> <span class="n">b_factor</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Factors.get_num_common_basic"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.Factors.get_num_common_basic">[docs]</a>    <span class="k">def</span> <span class="nf">get_num_common_basic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_gate</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Estimates the number of common basic events.</span>
+
+<span class="sd">        These common basic events must be chosen</span>
+<span class="sd">        from the total number of basic events</span>
+<span class="sd">        in order to ensure the correct average number of parents.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            num_gate: The total number of gates in the future fault tree</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The estimated number of common basic events.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">common_b</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__percent_basic</span> <span class="o">*</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">num_args</span> <span class="o">*</span> <span class="n">num_gate</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">parents_b</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Factors.get_num_common_gate"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.Factors.get_num_common_gate">[docs]</a>    <span class="k">def</span> <span class="nf">get_num_common_gate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_gate</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Estimates the number of common gates.</span>
+
+<span class="sd">        These common gates must be chosen</span>
+<span class="sd">        from the total number of gates</span>
+<span class="sd">        in order to ensure the correct average number of parents.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            num_gate: The total number of gates in the future fault tree</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The estimated number of common gates.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">common_g</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__percent_gate</span> <span class="o">*</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">num_args</span> <span class="o">*</span> <span class="n">num_gate</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">parents_g</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Factors.constrain_num_gate"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.Factors.constrain_num_gate">[docs]</a>    <span class="k">def</span> <span class="nf">constrain_num_gate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_gate</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constrains the number of gates.</span>
+
+<span class="sd">        The number of parents and the ratios for common nodes are manipulated.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            num_gate: The total number of gates in the future fault tree</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">num_gate</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;# of gates can&#39;t be less than 1.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">num_gate</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_args</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_basic</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FactorError</span><span class="p">(</span><span class="s2">&quot;Not enough gates and avg. # of args &quot;</span>
+                              <span class="s2">&quot;to achieve the # of basic events&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__num_gate</span> <span class="o">=</span> <span class="n">num_gate</span>
+        <span class="c1"># Calculate the ratios</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num_gate</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_basic</span>
+        <span class="n">common</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">common_g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_b</span><span class="p">)</span>
+        <span class="n">min_common</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_args</span> <span class="o">/</span> <span class="n">alpha</span>
+        <span class="k">if</span> <span class="n">common</span> <span class="o">&lt;</span> <span class="n">min_common</span><span class="p">:</span>
+            <span class="n">common</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">min_common</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">common</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">min_common</span><span class="p">:</span>  <span class="c1"># Really hope it does not happen</span>
+            <span class="n">common</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">min_common</span>
+        <span class="k">assert</span> <span class="n">common</span> <span class="o">&lt;</span> <span class="mi">1</span>  <span class="c1"># Very brittle configuration here</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_g</span> <span class="o">=</span> <span class="n">common</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_b</span> <span class="o">=</span> <span class="n">common</span>
+        <span class="n">parents</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">min_common</span> <span class="o">/</span> <span class="n">common</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">parents</span> <span class="o">&gt;</span> <span class="mi">2</span>  <span class="c1"># This is brittle as well</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parents_g</span> <span class="o">=</span> <span class="n">parents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parents_b</span> <span class="o">=</span> <span class="n">parents</span></div></div>
+
+
+<div class="viewcode-block" id="GeneratorFaultTree"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.GeneratorFaultTree">[docs]</a><span class="k">class</span> <span class="nc">GeneratorFaultTree</span><span class="p">(</span><span class="n">FaultTree</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Specialization of a fault tree for generation purposes.</span>
+
+<span class="sd">    The construction of fault tree members are handled through this object.</span>
+<span class="sd">    It is assumed that no removal is going to happen after construction.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        factors: The fault tree generation factors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">factors</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initializes an empty fault tree.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name: The name of the system described by the fault tree container.</span>
+<span class="sd">            factors: Fully configured generation factors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GeneratorFaultTree</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">factors</span> <span class="o">=</span> <span class="n">factors</span>
+
+<div class="viewcode-block" id="GeneratorFaultTree.construct_top_gate"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.GeneratorFaultTree.construct_top_gate">[docs]</a>    <span class="k">def</span> <span class="nf">construct_top_gate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs and assigns a new gate suitable for being a root.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            root_name: Unique name for the root gate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_gate</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_gates</span>
+        <span class="n">operator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">get_random_operator</span><span class="p">()</span>
+        <span class="k">while</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;xor&quot;</span> <span class="ow">or</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;not&quot;</span><span class="p">:</span>
+            <span class="n">operator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">get_random_operator</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_gate</span> <span class="o">=</span> <span class="n">Gate</span><span class="p">(</span><span class="n">root_name</span><span class="p">,</span> <span class="n">operator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">top_gate</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GeneratorFaultTree.construct_gate"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.GeneratorFaultTree.construct_gate">[docs]</a>    <span class="k">def</span> <span class="nf">construct_gate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs a new gate.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A fully initialized gate with random attributes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gate</span> <span class="o">=</span> <span class="n">Gate</span><span class="p">(</span><span class="s2">&quot;G&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gates</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">get_random_operator</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gate</span></div>
+
+<div class="viewcode-block" id="GeneratorFaultTree.construct_basic_event"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.GeneratorFaultTree.construct_basic_event">[docs]</a>    <span class="k">def</span> <span class="nf">construct_basic_event</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs a basic event with a unique identifier.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A fully initialized basic event with a random probability.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">basic_event</span> <span class="o">=</span> <span class="n">BasicEvent</span><span class="p">(</span><span class="s2">&quot;B&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_events</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+                                 <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">min_prob</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">max_prob</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">basic_events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basic_event</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">basic_event</span></div>
+
+<div class="viewcode-block" id="GeneratorFaultTree.construct_house_event"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.GeneratorFaultTree.construct_house_event">[docs]</a>    <span class="k">def</span> <span class="nf">construct_house_event</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs a house event with a unique identifier.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A fully initialized house event with a random state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">house_event</span> <span class="o">=</span> <span class="n">HouseEvent</span><span class="p">(</span><span class="s2">&quot;H&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">house_events</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+                                 <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">house_events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">house_event</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">house_event</span></div>
+
+<div class="viewcode-block" id="GeneratorFaultTree.construct_ccf_group"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.GeneratorFaultTree.construct_ccf_group">[docs]</a>    <span class="k">def</span> <span class="nf">construct_ccf_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">members</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs a unique CCF group with factors.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            members: A list of member basic events.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A fully initialized CCF group with random factors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">members</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>
+        <span class="n">ccf_group</span> <span class="o">=</span> <span class="n">CcfGroup</span><span class="p">(</span><span class="s2">&quot;CCF&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ccf_groups</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ccf_groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ccf_group</span><span class="p">)</span>
+        <span class="n">ccf_group</span><span class="o">.</span><span class="n">members</span> <span class="o">=</span> <span class="n">members</span>
+        <span class="n">ccf_group</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">min_prob</span><span class="p">,</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">max_prob</span><span class="p">)</span>
+        <span class="n">ccf_group</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;MGL&quot;</span>
+        <span class="n">levels</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">members</span><span class="p">))</span>
+        <span class="n">ccf_group</span><span class="o">.</span><span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">levels</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">ccf_group</span></div></div>
+
+
+<div class="viewcode-block" id="candidate_gates"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.candidate_gates">[docs]</a><span class="k">def</span> <span class="nf">candidate_gates</span><span class="p">(</span><span class="n">common_gate</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Lazy generator of candidates for common gates.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        common_gate: A list of common gates.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">        A next gate candidate from common gates container.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">orphans</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">common_gate</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">parents</span><span class="p">]</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">orphans</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">orphans</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">i</span>
+
+    <span class="n">single_parent</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">common_gate</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">parents</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">single_parent</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">single_parent</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">i</span>
+
+    <span class="n">multi_parent</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">common_gate</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">parents</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">multi_parent</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">multi_parent</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">i</span></div>
+
+
+<div class="viewcode-block" id="correct_for_exhaustion"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.correct_for_exhaustion">[docs]</a><span class="k">def</span> <span class="nf">correct_for_exhaustion</span><span class="p">(</span><span class="n">gates_queue</span><span class="p">,</span> <span class="n">common_gate</span><span class="p">,</span> <span class="n">fault_tree</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Corrects the generation for queue exhaustion.</span>
+
+<span class="sd">    Corner case when not enough new basic events initialized,</span>
+<span class="sd">    but there are no more intermediate gates to use</span>
+<span class="sd">    due to a big ratio or just random accident.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        gates_queue: A deque of gates to be initialized.</span>
+<span class="sd">        common_gate: A list of common gates.</span>
+<span class="sd">        fault_tree: The fault tree container of all events and constructs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">gates_queue</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">basic_events</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">num_basic</span><span class="p">:</span>
+        <span class="c1"># Initialize one more gate</span>
+        <span class="c1"># by randomly choosing places in the fault tree.</span>
+        <span class="n">random_gate</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span><span class="p">)</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">random_gate</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;not&quot;</span> <span class="ow">or</span>
+               <span class="n">random_gate</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;xor&quot;</span> <span class="ow">or</span>
+               <span class="n">random_gate</span> <span class="ow">in</span> <span class="n">common_gate</span><span class="p">):</span>
+            <span class="n">random_gate</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span><span class="p">)</span>
+        <span class="n">new_gate</span> <span class="o">=</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">construct_gate</span><span class="p">()</span>
+        <span class="n">random_gate</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="n">new_gate</span><span class="p">)</span>
+        <span class="n">gates_queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_gate</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="choose_basic_event"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.choose_basic_event">[docs]</a><span class="k">def</span> <span class="nf">choose_basic_event</span><span class="p">(</span><span class="n">s_common</span><span class="p">,</span> <span class="n">common_basic</span><span class="p">,</span> <span class="n">fault_tree</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates a new basic event or uses a common one for gate arguments.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        s_common: Sampled factor to choose common basic events.</span>
+<span class="sd">        common_basic: A list of common basic events to choose from.</span>
+<span class="sd">        fault_tree: The fault tree container of all events and constructs.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Basic event argument for a gate.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">s_common</span> <span class="o">&lt;</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">common_b</span> <span class="ow">and</span> <span class="n">common_basic</span><span class="p">:</span>
+        <span class="n">orphans</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">common_basic</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">parents</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">orphans</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">orphans</span><span class="p">)</span>
+
+        <span class="n">single_parent</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">common_basic</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">parents</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">single_parent</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">single_parent</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">common_basic</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">construct_basic_event</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="init_gates"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.init_gates">[docs]</a><span class="k">def</span> <span class="nf">init_gates</span><span class="p">(</span><span class="n">gates_queue</span><span class="p">,</span> <span class="n">common_basic</span><span class="p">,</span> <span class="n">common_gate</span><span class="p">,</span> <span class="n">fault_tree</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initializes gates and other basic events.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        gates_queue: A deque of gates to be initialized.</span>
+<span class="sd">        common_basic: A list of common basic events.</span>
+<span class="sd">        common_gate: A list of common gates.</span>
+<span class="sd">        fault_tree: The fault tree container of all events and constructs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get an intermediate gate to initialize breadth-first</span>
+    <span class="n">gate</span> <span class="o">=</span> <span class="n">gates_queue</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+
+    <span class="n">num_arguments</span> <span class="o">=</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">get_num_args</span><span class="p">(</span><span class="n">gate</span><span class="p">)</span>
+
+    <span class="n">ancestors</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># needed for cycle prevention</span>
+    <span class="n">max_tries</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">common_gate</span><span class="p">)</span>  <span class="c1"># the number of maximum tries</span>
+    <span class="n">num_tries</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># the number of tries to get a common gate</span>
+
+    <span class="c1"># pylint: disable=too-many-nested-blocks</span>
+    <span class="c1"># This code is both hot and coupled for performance reasons.</span>
+    <span class="c1"># There may be a better solution than the current approach.</span>
+    <span class="k">while</span> <span class="n">gate</span><span class="o">.</span><span class="n">num_arguments</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">num_arguments</span><span class="p">:</span>
+        <span class="n">s_percent</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>  <span class="c1"># sample percentage of gates</span>
+        <span class="n">s_common</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>  <span class="c1"># sample the reuse frequency</span>
+
+        <span class="c1"># Case when the number of basic events is already satisfied</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">basic_events</span><span class="p">)</span> <span class="o">==</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">num_basic</span><span class="p">:</span>
+            <span class="n">s_common</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># use only common nodes</span>
+
+        <span class="k">if</span> <span class="n">s_percent</span> <span class="o">&lt;</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">get_percent_gate</span><span class="p">():</span>
+            <span class="c1"># Create a new gate or use a common one</span>
+            <span class="k">if</span> <span class="n">s_common</span> <span class="o">&lt;</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">common_g</span> <span class="ow">and</span> <span class="n">num_tries</span> <span class="o">&lt;</span> <span class="n">max_tries</span><span class="p">:</span>
+                <span class="c1"># Lazy evaluation of ancestors</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">ancestors</span><span class="p">:</span>
+                    <span class="n">ancestors</span> <span class="o">=</span> <span class="n">gate</span><span class="o">.</span><span class="n">get_ancestors</span><span class="p">()</span>
+
+                <span class="k">for</span> <span class="n">random_gate</span> <span class="ow">in</span> <span class="n">candidate_gates</span><span class="p">(</span><span class="n">common_gate</span><span class="p">):</span>
+                    <span class="n">num_tries</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">num_tries</span> <span class="o">&gt;=</span> <span class="n">max_tries</span><span class="p">:</span>
+                        <span class="k">break</span>
+                    <span class="k">if</span> <span class="n">random_gate</span> <span class="ow">in</span> <span class="n">gate</span><span class="o">.</span><span class="n">g_arguments</span> <span class="ow">or</span> <span class="n">random_gate</span> <span class="ow">is</span> <span class="n">gate</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">random_gate</span><span class="o">.</span><span class="n">g_arguments</span> <span class="ow">or</span>
+                            <span class="n">random_gate</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ancestors</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">random_gate</span><span class="o">.</span><span class="n">parents</span><span class="p">:</span>
+                            <span class="n">gates_queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random_gate</span><span class="p">)</span>
+                        <span class="n">gate</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="n">random_gate</span><span class="p">)</span>
+                        <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_gate</span> <span class="o">=</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">construct_gate</span><span class="p">()</span>
+                <span class="n">gate</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="n">new_gate</span><span class="p">)</span>
+                <span class="n">gates_queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_gate</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gate</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="n">choose_basic_event</span><span class="p">(</span><span class="n">s_common</span><span class="p">,</span> <span class="n">common_basic</span><span class="p">,</span>
+                                                 <span class="n">fault_tree</span><span class="p">))</span>
+
+    <span class="n">correct_for_exhaustion</span><span class="p">(</span><span class="n">gates_queue</span><span class="p">,</span> <span class="n">common_gate</span><span class="p">,</span> <span class="n">fault_tree</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="distribute_house_events"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.distribute_house_events">[docs]</a><span class="k">def</span> <span class="nf">distribute_house_events</span><span class="p">(</span><span class="n">fault_tree</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Distributes house events to already initialized gates.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        fault_tree: The fault tree container of all events and constructs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">house_events</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">num_house</span><span class="p">:</span>
+        <span class="n">target_gate</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">target_gate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">top_gate</span> <span class="ow">and</span>
+                <span class="n">target_gate</span><span class="o">.</span><span class="n">operator</span> <span class="o">!=</span> <span class="s2">&quot;xor&quot;</span> <span class="ow">and</span>
+                <span class="n">target_gate</span><span class="o">.</span><span class="n">operator</span> <span class="o">!=</span> <span class="s2">&quot;not&quot;</span><span class="p">):</span>
+            <span class="n">target_gate</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">construct_house_event</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="generate_ccf_groups"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.generate_ccf_groups">[docs]</a><span class="k">def</span> <span class="nf">generate_ccf_groups</span><span class="p">(</span><span class="n">fault_tree</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates CCF groups from the existing basic events.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        fault_tree: The fault tree container of all events and constructs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">num_ccf</span><span class="p">:</span>
+        <span class="n">members</span> <span class="o">=</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">basic_events</span><span class="p">[:]</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">members</span><span class="p">)</span>
+        <span class="n">first_mem</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">last_mem</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">ccf_groups</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">num_ccf</span><span class="p">:</span>
+            <span class="n">max_args</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">num_args</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">group_size</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_args</span><span class="p">)</span>
+            <span class="n">last_mem</span> <span class="o">=</span> <span class="n">first_mem</span> <span class="o">+</span> <span class="n">group_size</span>
+            <span class="k">if</span> <span class="n">last_mem</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">members</span><span class="p">):</span>
+                <span class="k">break</span>
+            <span class="n">fault_tree</span><span class="o">.</span><span class="n">construct_ccf_group</span><span class="p">(</span><span class="n">members</span><span class="p">[</span><span class="n">first_mem</span><span class="p">:</span><span class="n">last_mem</span><span class="p">])</span>
+            <span class="n">first_mem</span> <span class="o">=</span> <span class="n">last_mem</span>
+        <span class="n">fault_tree</span><span class="o">.</span><span class="n">non_ccf_events</span> <span class="o">=</span> <span class="n">members</span><span class="p">[</span><span class="n">first_mem</span><span class="p">:]</span></div>
+
+
+<div class="viewcode-block" id="generate_fault_tree"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.generate_fault_tree">[docs]</a><span class="k">def</span> <span class="nf">generate_fault_tree</span><span class="p">(</span><span class="n">ft_name</span><span class="p">,</span> <span class="n">root_name</span><span class="p">,</span> <span class="n">factors</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates a fault tree of specified complexity.</span>
+
+<span class="sd">    The Factors class attributes are used as parameters for complexity.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ft_name: The name of the fault tree.</span>
+<span class="sd">        root_name: The name for the root gate of the fault tree.</span>
+<span class="sd">        factors: Factors for fault tree generation.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Top gate of the created fault tree.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fault_tree</span> <span class="o">=</span> <span class="n">GeneratorFaultTree</span><span class="p">(</span><span class="n">ft_name</span><span class="p">,</span> <span class="n">factors</span><span class="p">)</span>
+    <span class="n">fault_tree</span><span class="o">.</span><span class="n">construct_top_gate</span><span class="p">(</span><span class="n">root_name</span><span class="p">)</span>
+
+    <span class="c1"># Estimating the parameters</span>
+    <span class="n">num_gate</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">get_num_gate</span><span class="p">()</span>
+    <span class="n">num_common_basic</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">get_num_common_basic</span><span class="p">(</span><span class="n">num_gate</span><span class="p">)</span>
+    <span class="n">num_common_gate</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">get_num_common_gate</span><span class="p">(</span><span class="n">num_gate</span><span class="p">)</span>
+    <span class="n">common_basic</span> <span class="o">=</span> <span class="p">[</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">construct_basic_event</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_common_basic</span><span class="p">)]</span>
+    <span class="n">common_gate</span> <span class="o">=</span> <span class="p">[</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">construct_gate</span><span class="p">()</span>
+                   <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_common_gate</span><span class="p">)]</span>
+
+    <span class="c1"># Container for not yet initialized gates</span>
+    <span class="c1"># A deque is used to traverse the tree breadth-first</span>
+    <span class="n">gates_queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+    <span class="n">gates_queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">top_gate</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">gates_queue</span><span class="p">:</span>
+        <span class="n">init_gates</span><span class="p">(</span><span class="n">gates_queue</span><span class="p">,</span> <span class="n">common_basic</span><span class="p">,</span> <span class="n">common_gate</span><span class="p">,</span> <span class="n">fault_tree</span><span class="p">)</span>
+
+    <span class="k">assert</span><span class="p">(</span><span class="ow">not</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">basic_events</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">is_orphan</span><span class="p">()])</span>
+    <span class="k">assert</span><span class="p">(</span><span class="ow">not</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span>
+                <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">is_orphan</span><span class="p">()</span> <span class="ow">and</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">top_gate</span><span class="p">])</span>
+
+    <span class="n">distribute_house_events</span><span class="p">(</span><span class="n">fault_tree</span><span class="p">)</span>
+    <span class="n">generate_ccf_groups</span><span class="p">(</span><span class="n">fault_tree</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fault_tree</span></div>
+
+
+<div class="viewcode-block" id="write_info"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.write_info">[docs]</a><span class="k">def</span> <span class="nf">write_info</span><span class="p">(</span><span class="n">fault_tree</span><span class="p">,</span> <span class="n">tree_file</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Writes the information about the setup for fault tree generation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        fault_tree: A full, valid, well-formed fault tree.</span>
+<span class="sd">        tree_file: A file open for writing.</span>
+<span class="sd">        seed: The seed of the pseudo-random number generator.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">factors</span>
+    <span class="n">tree_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&lt;?xml version=</span><span class="se">\&quot;</span><span class="s2">1.0</span><span class="se">\&quot;</span><span class="s2">?&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">tree_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+        <span class="s2">&quot;&lt;!--</span><span class="se">\n</span><span class="s2">This is a description of the auto-generated fault tree</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;with the following parameters:</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The output file name: &quot;</span> <span class="o">+</span> <span class="n">tree_file</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The fault tree name: &quot;</span> <span class="o">+</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The root gate name: &quot;</span> <span class="o">+</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">top_gate</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The seed of the random number generator: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The number of basic events: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">num_basic</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The number of house events: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">num_house</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The number of CCF groups: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">num_ccf</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The average number of gate arguments: &quot;</span> <span class="o">+</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">num_args</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The weights of gate types [AND, OR, K/N, NOT, XOR]: &quot;</span> <span class="o">+</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">get_gate_weights</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;Percentage of common basic events per gate: &quot;</span> <span class="o">+</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">common_b</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;Percentage of common gates per gate: &quot;</span> <span class="o">+</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">common_g</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The avg. number of parents for common basic events: &quot;</span> <span class="o">+</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">parents_b</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The avg. number of parents for common gates: &quot;</span> <span class="o">+</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">parents_g</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;Maximum probability for basic events: &quot;</span> <span class="o">+</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">max_prob</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;Minimum probability for basic events: &quot;</span> <span class="o">+</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">min_prob</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;--&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_size_summary"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.get_size_summary">[docs]</a><span class="k">def</span> <span class="nf">get_size_summary</span><span class="p">(</span><span class="n">fault_tree</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gathers information about the size of the fault tree.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        fault_tree: A full, valid, well-formed fault tree.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A text snippet to be embedded in a XML summary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">and_gates</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;and&quot;</span><span class="p">]</span>
+    <span class="n">or_gates</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;or&quot;</span><span class="p">]</span>
+    <span class="n">atleast_gates</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;atleast&quot;</span><span class="p">]</span>
+    <span class="n">not_gates</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;not&quot;</span><span class="p">]</span>
+    <span class="n">xor_gates</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;xor&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="s2">&quot;The number of basic events: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">basic_events</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The number of house events: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">house_events</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The number of CCF groups: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">ccf_groups</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The number of gates: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;    AND gates: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">and_gates</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;    OR gates: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">or_gates</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;    K/N gates: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">atleast_gates</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;    NOT gates: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">not_gates</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;    XOR gates: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">xor_gates</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="calculate_complexity_factors"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.calculate_complexity_factors">[docs]</a><span class="k">def</span> <span class="nf">calculate_complexity_factors</span><span class="p">(</span><span class="n">fault_tree</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes complexity factors of the generated fault tree.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        fault_tree: A full, valid, well-formed fault tree.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        frac_b: fraction of basic events in arguments per gate</span>
+<span class="sd">        common_b: fraction of common basic events in basic events per gate</span>
+<span class="sd">        common_g: fraction of common gates in gates per gate</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">frac_b</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">common_b</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">common_g</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">gate</span> <span class="ow">in</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span><span class="p">:</span>
+        <span class="n">num_b_arguments</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gate</span><span class="o">.</span><span class="n">b_arguments</span><span class="p">)</span>
+        <span class="n">num_g_arguments</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gate</span><span class="o">.</span><span class="n">g_arguments</span><span class="p">)</span>
+        <span class="n">frac_b</span> <span class="o">+=</span> <span class="n">num_b_arguments</span> <span class="o">/</span> <span class="p">(</span><span class="n">num_g_arguments</span> <span class="o">+</span> <span class="n">num_b_arguments</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">gate</span><span class="o">.</span><span class="n">b_arguments</span><span class="p">:</span>
+            <span class="n">num_common_b</span> <span class="o">=</span> <span class="nb">len</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gate</span><span class="o">.</span><span class="n">b_arguments</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">is_common</span><span class="p">()])</span>
+            <span class="n">common_b</span> <span class="o">+=</span> <span class="n">num_common_b</span> <span class="o">/</span> <span class="n">num_b_arguments</span>
+        <span class="k">if</span> <span class="n">gate</span><span class="o">.</span><span class="n">g_arguments</span><span class="p">:</span>
+            <span class="n">num_common_g</span> <span class="o">=</span> <span class="nb">len</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gate</span><span class="o">.</span><span class="n">g_arguments</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">is_common</span><span class="p">()])</span>
+            <span class="n">common_g</span> <span class="o">+=</span> <span class="n">num_common_g</span> <span class="o">/</span> <span class="n">num_g_arguments</span>
+    <span class="n">common_b</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">b_arguments</span><span class="p">])</span>
+    <span class="n">common_g</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">g_arguments</span><span class="p">])</span>
+    <span class="n">frac_b</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">frac_b</span><span class="p">,</span> <span class="n">common_b</span><span class="p">,</span> <span class="n">common_g</span></div>
+
+
+<div class="viewcode-block" id="get_complexity_summary"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.get_complexity_summary">[docs]</a><span class="k">def</span> <span class="nf">get_complexity_summary</span><span class="p">(</span><span class="n">fault_tree</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gathers information about the complexity factors of the fault tree.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        fault_tree: A full, valid, well-formed fault tree.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A text snippet to be embedded in a XML summary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">frac_b</span><span class="p">,</span> <span class="n">common_b</span><span class="p">,</span> <span class="n">common_g</span> <span class="o">=</span> <span class="n">calculate_complexity_factors</span><span class="p">(</span><span class="n">fault_tree</span><span class="p">)</span>
+    <span class="n">shared_b</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">basic_events</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">is_common</span><span class="p">()]</span>
+    <span class="n">shared_g</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">is_common</span><span class="p">()]</span>
+    <span class="n">summary_txt</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;Basic events to gates ratio: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span>
+        <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">basic_events</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The average number of gate arguments: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span>
+        <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">num_arguments</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span><span class="p">)</span> <span class="o">/</span>
+         <span class="nb">len</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">gates</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The number of common basic events: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">shared_b</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;The number of common gates: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">shared_g</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;Percentage of common basic events per gate: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">common_b</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;Percentage of common gates per gate: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">common_g</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;Percentage of arguments that are basic events per gate: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span>
+        <span class="n">frac_b</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">shared_b</span><span class="p">:</span>
+        <span class="n">summary_txt</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="s2">&quot;The avg. number of parents for common basic events: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span>
+            <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">num_parents</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">shared_b</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">shared_b</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">shared_g</span><span class="p">:</span>
+        <span class="n">summary_txt</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="s2">&quot;The avg. number of parents for common gates: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span>
+            <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">num_parents</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">shared_g</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">shared_g</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">summary_txt</span></div>
+
+
+<div class="viewcode-block" id="write_summary"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.write_summary">[docs]</a><span class="k">def</span> <span class="nf">write_summary</span><span class="p">(</span><span class="n">fault_tree</span><span class="p">,</span> <span class="n">tree_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Writes the summary of the generated fault tree.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        fault_tree: A full, valid, well-formed fault tree.</span>
+<span class="sd">        tree_file: A file open for writing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tree_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+        <span class="s2">&quot;&lt;!--</span><span class="se">\n</span><span class="s2">The generated fault tree has the following metrics:</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">tree_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">get_size_summary</span><span class="p">(</span><span class="n">fault_tree</span><span class="p">))</span>
+    <span class="n">tree_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">get_complexity_summary</span><span class="p">(</span><span class="n">fault_tree</span><span class="p">))</span>
+    <span class="n">tree_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;--&gt;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="manage_cmd_args"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.manage_cmd_args">[docs]</a><span class="k">def</span> <span class="nf">manage_cmd_args</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Manages command-line description and arguments.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        argv: An optional list containing the command-line arguments.</span>
+<span class="sd">            If None, the command-line arguments from sys will be used.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Arguments that are collected from the command line.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ArgumentTypeError: There are problems with the arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ap</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Complex-Fault-Tree Generator&quot;</span><span class="p">,</span>
+                               <span class="n">formatter_class</span><span class="o">=</span><span class="n">ap</span><span class="o">.</span><span class="n">ArgumentDefaultsHelpFormatter</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--ft-name&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;name for the fault tree&quot;</span><span class="p">,</span>
+                        <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;NCNAME&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Autogenerated&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--root&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;name for the root gate&quot;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;root&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;NCNAME&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--seed&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;seed for the PRNG&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-b&quot;</span><span class="p">,</span> <span class="s2">&quot;--num-basic&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;# of basic events&quot;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-a&quot;</span><span class="p">,</span> <span class="s2">&quot;--num-args&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;avg. # of gate arguments&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--weights-g&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;weights for [AND, OR, K/N, NOT, XOR] gates&quot;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--common-b&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;avg. </span><span class="si">%%</span><span class="s2"> of common basic events per gate&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--common-g&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;avg. </span><span class="si">%%</span><span class="s2"> of common gates per gate&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--parents-b&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;avg. # of parents for common basic events&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--parents-g&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;avg. # of parents for common gates&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-g&quot;</span><span class="p">,</span> <span class="s2">&quot;--num-gate&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;# of gates (discards parents-b/g and common-b/g)&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--max-prob&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;maximum probability for basic events&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--min-prob&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;minimum probability for basic events&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num-house&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;# of house events&quot;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num-ccf&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;# of ccf groups&quot;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="s2">&quot;--out&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;fault_tree.xml&quot;</span><span class="p">,</span>
+                        <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;a file to write the fault tree&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--aralia&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;apply the Aralia format to the output&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--nest&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;nestedness of Boolean formulae in the XML output&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">nest</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ap</span><span class="o">.</span><span class="n">ArgumentTypeError</span><span class="p">(</span><span class="s2">&quot;The nesting factor cannot be negative&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">aralia</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">out</span> <span class="o">==</span> <span class="s2">&quot;fault_tree.xml&quot;</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">out</span> <span class="o">=</span> <span class="s2">&quot;fault_tree.txt&quot;</span>
+    <span class="k">return</span> <span class="n">args</span></div>
+
+
+<div class="viewcode-block" id="setup_factors"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.setup_factors">[docs]</a><span class="k">def</span> <span class="nf">setup_factors</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Configures the fault generation by assigning factors.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        args: Command-line arguments with values for factors.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Fully initialized Factors object.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ArgumentTypeError: Problems with the arguments.</span>
+<span class="sd">        FactorError: Invalid setup for factors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="n">Factors</span><span class="p">()</span>
+    <span class="n">factors</span><span class="o">.</span><span class="n">set_min_max_prob</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">min_prob</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">max_prob</span><span class="p">)</span>
+    <span class="n">factors</span><span class="o">.</span><span class="n">set_common_event_factors</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">common_b</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">common_g</span><span class="p">,</span>
+                                     <span class="n">args</span><span class="o">.</span><span class="n">parents_b</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">parents_g</span><span class="p">)</span>
+    <span class="n">factors</span><span class="o">.</span><span class="n">set_num_factors</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">num_args</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">num_basic</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">num_house</span><span class="p">,</span>
+                            <span class="n">args</span><span class="o">.</span><span class="n">num_ccf</span><span class="p">)</span>
+    <span class="n">factors</span><span class="o">.</span><span class="n">set_gate_weights</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">weights_g</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">num_gate</span><span class="p">:</span>
+        <span class="n">factors</span><span class="o">.</span><span class="n">constrain_num_gate</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">num_gate</span><span class="p">)</span>
+    <span class="n">factors</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">factors</span></div>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../scripts/fault_tree_generator.html#fault_tree_generator.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The main function of the fault tree generator.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        argv: An optional list containing the command-line arguments.</span>
+<span class="sd">            If None, the command-line arguments from sys will be used.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ArgumentTypeError: There are problems with the arguments.</span>
+<span class="sd">        FactorError: Invalid setup for factors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">manage_cmd_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="n">setup_factors</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">fault_tree</span> <span class="o">=</span> <span class="n">generate_fault_tree</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">ft_name</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">factors</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">out</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">tree_file</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">aralia</span><span class="p">:</span>
+            <span class="n">tree_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">to_aralia</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">write_info</span><span class="p">(</span><span class="n">fault_tree</span><span class="p">,</span> <span class="n">tree_file</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+            <span class="n">write_summary</span><span class="p">(</span><span class="n">fault_tree</span><span class="p">,</span> <span class="n">tree_file</span><span class="p">)</span>
+            <span class="n">tree_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fault_tree</span><span class="o">.</span><span class="n">to_xml</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">nest</span><span class="p">))</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">main</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">ap</span><span class="o">.</span><span class="n">ArgumentTypeError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Argument Error:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">FactorError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in factors:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015-2017, Olzhas Rakhimov, CC BY-SA 4.0.
+      Last updated on Mar 31, 2017.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.12.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

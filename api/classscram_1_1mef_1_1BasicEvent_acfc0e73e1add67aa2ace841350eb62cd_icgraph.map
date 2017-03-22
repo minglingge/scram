@@ -1,0 +1,5 @@
+<map id="scram::mef::BasicEvent::Validate" name="scram::mef::BasicEvent::Validate">
+<area shape="rect" id="node2" href="$classscram_1_1mef_1_1CcfGroup.xhtml#a16b746a13f13ec868723901e3bdbf216" title="scram::mef::CcfGroup\l::members" alt="" coords="216,39,368,80"/>
+<area shape="rect" id="node3" href="$classscram_1_1mef_1_1CcfGroup.xhtml#ab399c5ed0c1d7d0a316ac3b7244b7eb9" title="Processes the given factors and members to create common cause failure probabilities and new events t..." alt="" coords="448,5,600,47"/>
+<area shape="rect" id="node4" href="$reporter_8cc.xhtml#ad6460094a94fb73e56c2a4a5efc598ed" title="Describes all performed analyses deduced from settings. " alt="" coords="416,71,632,112"/>
+</map>

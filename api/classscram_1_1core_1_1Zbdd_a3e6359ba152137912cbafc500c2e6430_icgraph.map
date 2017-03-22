@@ -1,0 +1,4 @@
+<map id="scram::core::Zbdd::Freeze" name="scram::core::Zbdd::Freeze">
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1Zbdd.xhtml#a77945d28bd832d2735969d0b0a451c78" title="Runs the analysis with the representation of a PDAG as ZBDD. " alt="" coords="189,5,325,47"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1FaultTreeAnalyzer.xhtml#aedae0c884539dab245018194771f5021" title="scram::core::FaultTreeAnalyzer\l::algorithm" alt="" coords="373,5,579,47"/>
+</map>

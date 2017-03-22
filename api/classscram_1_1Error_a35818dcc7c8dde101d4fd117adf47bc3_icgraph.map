@@ -1,0 +1,6 @@
+<map id="scram::Error::msg" name="scram::Error::msg">
+<area shape="rect" id="node2" href="$classscram_1_1Config.xhtml#ab0d7940fbb627fab9867821e133eab5d" title="A constructor with configurations for analysis. " alt="" coords="201,5,352,32"/>
+<area shape="rect" id="node3" href="$classscram_1_1mef_1_1Initializer.xhtml#a14baeb786ca655ac41c6ad3197ebf612" title="Specializations for elements defined after registration. " alt="" coords="203,57,351,98"/>
+<area shape="rect" id="node4" href="$classscram_1_1mef_1_1Initializer.xhtml#a8fb6959baa83f7619b3ca9ed8423d40a" title="Reads input files with the structure of analysis constructs. " alt="" coords="203,122,351,163"/>
+<area shape="rect" id="node5" href="$structscram_1_1mef_1_1Initializer_1_1Extractor_3_01T_00-1_01_4.xhtml#aa3a2ab99081e017bfa97747a8f6bca04" title="Constructs an expression with a variable number of arguments. " alt="" coords="180,187,373,229"/>
+</map>

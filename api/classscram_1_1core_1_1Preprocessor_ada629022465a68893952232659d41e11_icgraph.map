@@ -1,0 +1,11 @@
+<map id="scram::core::Preprocessor::TopologicalOrder" name="scram::core::Preprocessor::TopologicalOrder">
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1Preprocessor.xhtml#afb4e28af2f1ec12db694af6e93ffbd1d" title="Assigns order for PDAG variables. " alt="" coords="229,127,405,168"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1Preprocessor.xhtml#a9caf4677a024ed935d831210b57b8ed9" title="Gathers nodes in the sub&#45;graph. " alt="" coords="1181,5,1357,47"/>
+<area shape="rect" id="node4" href="$classscram_1_1core_1_1Preprocessor.xhtml#ad13e133278ea7563c1ba037c05c35aa2" title="Normalizes the gates of the whole PDAG into OR, AND gates. " alt="" coords="453,127,629,168"/>
+<area shape="rect" id="node9" href="$classscram_1_1core_1_1CustomPreprocessor_3_01Zbdd_01_4.xhtml#a5185075f852c647c7aa4313d23420ee5" title="Performs preprocessing for analyses with Zero&#45;Suppressed Binary Decision Diagrams. " alt="" coords="1157,196,1380,237"/>
+<area shape="rect" id="node5" href="$classscram_1_1core_1_1Preprocessor.xhtml#a5ee92284aef510ce01a71c962d50f51c" title="Runs the graph preprocessing. " alt="" coords="1181,113,1357,155"/>
+<area shape="rect" id="node7" href="$classscram_1_1core_1_1Preprocessor.xhtml#a44f820b6fe2c23594c818432b33e26a6" title="The initial phase of preprocessing. " alt="" coords="677,61,853,103"/>
+<area shape="rect" id="node10" href="$classscram_1_1core_1_1Preprocessor.xhtml#abf2c66723172a85b2ae87ef2a034cd1f" title="Application of gate normalization. " alt="" coords="677,127,853,168"/>
+<area shape="rect" id="node6" href="$classscram_1_1core_1_1Preprocessor_1_1GateSet.xhtml#ae00239084858979e096032c4cf2f05b9" title="Inserts a gate into the set if it is semantically unique. " alt="" coords="1428,113,1604,155"/>
+<area shape="rect" id="node8" href="$classscram_1_1core_1_1Preprocessor.xhtml#a2b6705e815fa3d02119c405b483766d5" title="Container of unique gates by semantics. " alt="" coords="901,91,1109,118"/>
+</map>

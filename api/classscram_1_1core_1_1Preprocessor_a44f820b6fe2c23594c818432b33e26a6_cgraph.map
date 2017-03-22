@@ -1,0 +1,20 @@
+<map id="scram::core::Preprocessor::RunPhaseOne" name="scram::core::Preprocessor::RunPhaseOne">
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1Pdag.xhtml#ae8e2a4c99322296441f87c6ee9305979" title="scram::core::Pdag::\lcoherent" alt="" coords="249,5,386,47"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1Pdag.xhtml#aa43a9026583f7a629fe0a3f17440f55b" title="scram::core::Pdag::\lHasNullGates" alt="" coords="490,87,627,128"/>
+<area shape="rect" id="node4" href="$classscram_1_1core_1_1Pdag.xhtml#a09f0aa3bddb78b2eff0446736d040e1b" title="scram::core::Pdag::\lIsTrivial" alt="" coords="249,123,386,164"/>
+<area shape="rect" id="node5" href="$classscram_1_1core_1_1Pdag.xhtml#aacd4d834f5871136e75fcf77d3305397" title="Writes PDAG properties into logs. " alt="" coords="238,71,397,98"/>
+<area shape="rect" id="node7" href="$classscram_1_1core_1_1Preprocessor.xhtml#ad13e133278ea7563c1ba037c05c35aa2" title="Normalizes the gates of the whole PDAG into OR, AND gates. " alt="" coords="229,312,405,353"/>
+<area shape="rect" id="node18" href="$classscram_1_1core_1_1Pdag.xhtml#a1ec495a3595a7d088f1889f46eeb725d" title="Removes gates of Null logic with a single argument (maybe constant). " alt="" coords="490,583,627,624"/>
+<area shape="rect" id="node6" href="$classscram_1_1Logger.xhtml#addb585eb19dfd78f4a82f2e3df74b4e7" title="scram::Logger::report\l_level" alt="" coords="485,21,632,63"/>
+<area shape="rect" id="node8" href="$classscram_1_1core_1_1Pdag.xhtml#aa883d0e58b9faab69186bec03574c633" title="Clears marks from graph nodes. " alt="" coords="736,335,873,376"/>
+<area shape="rect" id="node9" href="$classscram_1_1core_1_1Preprocessor.xhtml#afb4e28af2f1ec12db694af6e93ffbd1d" title="Assigns order for PDAG variables. " alt="" coords="471,400,647,441"/>
+<area shape="rect" id="node11" href="$classscram_1_1core_1_1Pdag.xhtml#ae9407efbb00e5f28aecb40db2ab7925b" title="scram::core::Pdag::root" alt="" coords="725,466,884,493"/>
+<area shape="rect" id="node12" href="$classscram_1_1core_1_1Pdag.xhtml#af5900b29c6c9f1b1cca22ed83e4dd58b" title="scram::core::Pdag::\lcomplement" alt="" coords="490,517,627,559"/>
+<area shape="rect" id="node13" href="$classscram_1_1core_1_1Preprocessor.xhtml#a6ee8f65454835d8de931a2d38bf8b276" title="Notifies all parents of negative gates, such as NOT, NOR, and NAND, before transforming these gates i..." alt="" coords="453,152,664,193"/>
+<area shape="rect" id="node14" href="$classscram_1_1core_1_1Preprocessor.xhtml#abfe2eda90c983750e28db49900a4909d" title="Normalizes complex gates into OR, AND gates. " alt="" coords="471,217,647,259"/>
+<area shape="rect" id="node17" href="$classscram_1_1core_1_1Pdag.xhtml#a7933096368b6a16f9d6aab7c4abbb02b" title="scram::core::Pdag::\lHasConstants" alt="" coords="490,283,627,324"/>
+<area shape="rect" id="node10" href="$classscram_1_1core_1_1Preprocessor.xhtml#ada629022465a68893952232659d41e11" title="Assigns topological ordering to nodes of the PDAG. " alt="" coords="717,400,893,441"/>
+<area shape="rect" id="node15" href="$classscram_1_1core_1_1Preprocessor.xhtml#a45cf08c3809e801be50eda53dd68fca6" title="Normalizes a gate with XOR logic. " alt="" coords="717,179,893,220"/>
+<area shape="rect" id="node16" href="$classscram_1_1core_1_1Preprocessor.xhtml#a56b5719bcfcfd1678928befe31d9b729" title="Normalizes a VOTE gate with a vote number. " alt="" coords="717,244,893,285"/>
+<area shape="rect" id="node19" href="$pdag_8h.xhtml#aa00922ee92d35a300d86442f8b9ad331" title="Traverses and visits gates and nodes in the graph. " alt="" coords="712,590,897,617"/>
+</map>

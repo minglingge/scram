@@ -1,0 +1,12 @@
+<map id="scram::core::Preprocessor::DetectModules" name="scram::core::Preprocessor::DetectModules">
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1Preprocessor.xhtml#ac83a0afe1f22761907f2a017abd96268" title="Traverses the given gate and assigns time of visit to nodes. " alt="" coords="229,5,405,47"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1Pdag.xhtml#aa883d0e58b9faab69186bec03574c633" title="Clears marks from graph nodes. " alt="" coords="249,71,386,112"/>
+<area shape="rect" id="node4" href="$classscram_1_1core_1_1Preprocessor.xhtml#afbce0b5c45a445c3b70ae298b9518281" title="Determines modules from original gates that have been already timed. " alt="" coords="229,136,405,177"/>
+<area shape="rect" id="node10" href="$classscram_1_1core_1_1Pdag.xhtml#aa43a9026583f7a629fe0a3f17440f55b" title="scram::core::Pdag::\lHasNullGates" alt="" coords="249,201,386,243"/>
+<area shape="rect" id="node11" href="$classscram_1_1core_1_1Pdag.xhtml#ae9407efbb00e5f28aecb40db2ab7925b" title="scram::core::Pdag::root" alt="" coords="238,267,397,294"/>
+<area shape="rect" id="node5" href="$classscram_1_1core_1_1Preprocessor.xhtml#a4e97ffcda9c98ffc5aff93214f827c18" title="Processes gate arguments found during the module detection. " alt="" coords="453,136,629,177"/>
+<area shape="rect" id="node6" href="$classscram_1_1core_1_1Preprocessor.xhtml#a434534b6a7c3fccc82c073e6aced90b1" title="Creates a new module as an argument of an existing gate if the logic of the existing parent gate allo..." alt="" coords="901,139,1077,180"/>
+<area shape="rect" id="node7" href="$classscram_1_1core_1_1Preprocessor.xhtml#aa65bdffb78291a0e41a34d34bf3fa198" title="Checks if a group of modular arguments share anything with non&#45;modular arguments. ..." alt="" coords="677,103,853,144"/>
+<area shape="rect" id="node8" href="$classscram_1_1core_1_1Preprocessor.xhtml#a5c10e807e558b06a1573c08ed13e205e" title="Groups modular arguments by their common elements. " alt="" coords="677,168,853,209"/>
+<area shape="rect" id="node9" href="$classscram_1_1core_1_1Preprocessor.xhtml#affe78b1e830afb73585affe0ada477be" title="Creates new module gates from groups of modular arguments if the logic of the parent gate allows sub&#45;..." alt="" coords="677,233,853,275"/>
+</map>

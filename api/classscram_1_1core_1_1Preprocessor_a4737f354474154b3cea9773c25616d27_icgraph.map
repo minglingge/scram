@@ -1,0 +1,12 @@
+<map id="scram::core::Preprocessor::DetectDistributivity" name="scram::core::Preprocessor::DetectDistributivity">
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1Preprocessor.xhtml#a79fe8e90f0e8fbc20a76610aaf09fe6e" title="Detects and manipulates AND and OR gate distributivity. " alt="" coords="229,51,405,92"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1Preprocessor.xhtml#a9d5f89471499508eb9e6c01ea43e0f15" title="Preprocessing phase of the original structure of the graph. " alt="" coords="229,116,405,157"/>
+<area shape="rect" id="node4" href="$classscram_1_1core_1_1Preprocessor.xhtml#a5ee92284aef510ce01a71c962d50f51c" title="Runs the graph preprocessing. " alt="" coords="957,104,1133,145"/>
+<area shape="rect" id="node6" href="$classscram_1_1core_1_1Preprocessor.xhtml#a2b6705e815fa3d02119c405b483766d5" title="Container of unique gates by semantics. " alt="" coords="677,111,885,138"/>
+<area shape="rect" id="node9" href="$classscram_1_1core_1_1Preprocessor.xhtml#a3569bbcd5e863c750cdfa69115399600" title="The final phase that cleans up the graph, and puts the structure of the graph ready for analysis..." alt="" coords="693,228,869,269"/>
+<area shape="rect" id="node10" href="$classscram_1_1core_1_1Preprocessor.xhtml#a5c224938dfba861f061525658bd7b156" title="Propagation of complements. " alt="" coords="693,163,869,204"/>
+<area shape="rect" id="node11" href="$classscram_1_1core_1_1Preprocessor.xhtml#abf2c66723172a85b2ae87ef2a034cd1f" title="Application of gate normalization. " alt="" coords="453,57,629,99"/>
+<area shape="rect" id="node5" href="$classscram_1_1core_1_1Preprocessor_1_1GateSet.xhtml#ae00239084858979e096032c4cf2f05b9" title="Inserts a gate into the set if it is semantically unique. " alt="" coords="1204,104,1380,145"/>
+<area shape="rect" id="node7" href="$classscram_1_1core_1_1Preprocessor.xhtml#a9caf4677a024ed935d831210b57b8ed9" title="Gathers nodes in the sub&#45;graph. " alt="" coords="957,39,1133,80"/>
+<area shape="rect" id="node8" href="$classscram_1_1core_1_1CustomPreprocessor_3_01Zbdd_01_4.xhtml#a5185075f852c647c7aa4313d23420ee5" title="Performs preprocessing for analyses with Zero&#45;Suppressed Binary Decision Diagrams. " alt="" coords="933,169,1156,211"/>
+</map>

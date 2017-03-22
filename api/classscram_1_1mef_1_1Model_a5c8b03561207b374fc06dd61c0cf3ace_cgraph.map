@@ -1,0 +1,9 @@
+<map id="scram::mef::Model::ccf_groups" name="scram::mef::Model::ccf_groups">
+<area shape="rect" id="node2" href="$classscram_1_1mef_1_1Model.xhtml#a1ebc111c90194d255400e58a8ab02563" title="Adds MEF constructs into the model container. " alt="" coords="193,5,356,32"/>
+<area shape="rect" id="node3" href="$classscram_1_1mef_1_1Model.xhtml#ae7266a6fb9b501538885c208dfc934f6" title="Binds a formula with its argument event. " alt="" coords="205,57,344,98"/>
+<area shape="rect" id="node4" href="$classscram_1_1mef_1_1Model.xhtml#ab0ac16c0222b9718760e19a65e736093" title="Finds an entity (parameter, basic and house event, gate) from a reference. " alt="" coords="205,122,344,163"/>
+<area shape="rect" id="node5" href="$element_8h.xhtml#a34a172bfae7e234836f4ca9cc55a193d" title="Computes the full path of an element. " alt="" coords="192,212,357,239"/>
+<area shape="rect" id="node6" href="$classscram_1_1mef_1_1Model.xhtml#ac100f59b5e4163a617b5d3b893afd3f9" title="Finds an entity (parameter, basic and house event, gate) from a reference. " alt="" coords="205,263,344,305"/>
+<area shape="rect" id="node7" href="$classscram_1_1mef_1_1Model.xhtml#ad94f586b7fe8d530e74ca6188d76632f" title="Finds an entity (parameter, basic and house event, gate) from a reference. " alt="" coords="205,329,344,370"/>
+<area shape="rect" id="node8" href="$classscram_1_1mef_1_1Model.xhtml#a0ccac47c51f11484aed5e7cf3bdd73dd" title="Finds an entity (parameter, basic and house event, gate) from a reference. " alt="" coords="205,394,344,435"/>
+</map>

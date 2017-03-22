@@ -1,0 +1,12 @@
+<map id="model.cc" name="model.cc">
+<area shape="rect" id="node2" href="$model_8h.xhtml" title="Representation for a model container for risk analysis. " alt="" coords="975,80,1043,107"/>
+<area shape="rect" id="node18" href="$error_8h.xhtml" title="Exceptions for SCRAM. " alt="" coords="116,393,174,420"/>
+<area shape="rect" id="node25" href="$find__iterator_8h.xhtml" title="Convenience iterator adaptor to wrap find calls and results. " alt="" coords="1440,80,1562,107"/>
+<area shape="rect" id="node11" href="$ccf__group_8h.xhtml" title="Functional containers for basic events grouped by common cause failure. " alt="" coords="1116,244,1206,271"/>
+<area shape="rect" id="node14" href="$element_8h.xhtml" title="Helper classes, structs, and properties common to all other classes. " alt="" coords="1048,468,1127,495"/>
+<area shape="rect" id="node17" href="$event_8h.xhtml" title="Contains event classes for fault trees. " alt="" coords="712,319,778,345"/>
+<area shape="rect" id="node21" href="$event__tree_8h.xhtml" title="Event Tree facilities. " alt="" coords="895,319,990,345"/>
+<area shape="rect" id="node22" href="$fault__tree_8h.xhtml" title="Fault Tree and Component containers. " alt="" coords="651,162,738,189"/>
+<area shape="rect" id="node24" href="$parameter_8h.xhtml" title="Parameter expressions that act like a shareable variable. " alt="" coords="452,319,542,345"/>
+<area shape="rect" id="node20" href="$expression_8h.xhtml" title="Provides the base class for all expressions and units for expression values. " alt="" coords="908,393,1004,420"/>
+</map>

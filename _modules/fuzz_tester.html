@@ -1,0 +1,606 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+<meta name="robots" content="noindex, nofollow"/>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fuzz_tester &mdash; SCRAM 0.12.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/s_blue.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="SCRAM 0.12.0 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/>
+ 
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61330377-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> SCRAM
+          
+
+          
+            
+            <img src="../_static/scram_blue.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.12
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../doc/installation.html">Installation Instructions</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../doc/design_description.html">Design Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/coding_standards.html">Coding Style and Quality Assurance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/todo.html">TODO List for the SCRAM Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/bugs.html">Bugs and Issues</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Analysis</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../doc/description.html">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/fault_tree_analysis.html">Fault Tree Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/fta_preprocessing.html">FTA: Preprocessing Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/fta_algorithms.html">FTA: Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/probability_analysis.html">Probability Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/uncertainty_analysis.html">Uncertainty Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/common_cause_analysis.html">Common Cause Failure</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Format</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../doc/input_file.html">Input Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/config_file.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/report_file.html">Report Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/opsa_support.html">The Open-PSA Model Exchange Format</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../doc/fault_tree_generator.html">Fault Tree Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/gui.html">GUI Front-End</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellanea</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../doc/theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/citation.html">Citation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc/xml_comments.html">XML File Helper Tools</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SCRAM</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>fuzz_tester</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for fuzz_tester</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2015-2016 Olzhas Rakhimov</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation; either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;Runs SCRAM with various input files and configurations.</span>
+
+<span class="sd">This script is helpful to detect rare bugs, failed assumptions,</span>
+<span class="sd">flawed design, and bottlenecks.</span>
+<span class="sd">For the full functionality of the Fuzz tester,</span>
+<span class="sd">SCRAM must be built in non-Release mode</span>
+<span class="sd">so that NDEBUG is undefined.</span>
+
+<span class="sd">In addition to its main purpose,</span>
+<span class="sd">the script is handy to discover</span>
+<span class="sd">complex auto-generated analysis inputs and configurations.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">multiprocessing</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">resource</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">call</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="k">import</span> <span class="n">NamedTemporaryFile</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span> <span class="k">as</span> <span class="nn">ap</span>
+
+<span class="kn">import</span> <span class="nn">fault_tree_generator</span> <span class="k">as</span> <span class="nn">ft_gen</span>
+
+
+<div class="viewcode-block" id="Config"><a class="viewcode-back" href="../scripts/fuzz_tester.html#fuzz_tester.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Storage for configurations.</span>
+
+<span class="sd">    Empty strings mean the default options of SCRAM.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        switch: SCRAM flags that take true or false values.</span>
+<span class="sd">        approximation: SCRAM quantitative analysis approximations.</span>
+<span class="sd">        analysis: Qualitative analysis algorithms.</span>
+<span class="sd">        max_limit: The largest size limit on the cut sets.</span>
+<span class="sd">        additional: A list of commands to be appended without fuzzing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">switch</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;--probability&quot;</span><span class="p">,</span> <span class="s2">&quot;--importance&quot;</span><span class="p">]</span>
+    <span class="n">approximation</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;--rare-event&quot;</span><span class="p">,</span> <span class="s2">&quot;--mcub&quot;</span><span class="p">]</span>
+    <span class="n">analysis</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;--mocus&quot;</span><span class="p">,</span> <span class="s2">&quot;--bdd&quot;</span><span class="p">,</span> <span class="s2">&quot;--zbdd&quot;</span><span class="p">]</span>
+    <span class="n">max_limit</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">additional</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Config.restrict"><a class="viewcode-back" href="../scripts/fuzz_tester.html#fuzz_tester.Config.restrict">[docs]</a>    <span class="k">def</span> <span class="nf">restrict</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Restricts configurations for testing preprocessor.&quot;&quot;&quot;</span>
+        <span class="n">Config</span><span class="o">.</span><span class="n">switch</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">Config</span><span class="o">.</span><span class="n">approximation</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
+        <span class="n">Config</span><span class="o">.</span><span class="n">additional</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--preprocessor&quot;</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Config.configure"><a class="viewcode-back" href="../scripts/fuzz_tester.html#fuzz_tester.Config.configure">[docs]</a>    <span class="k">def</span> <span class="nf">configure</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adjusts configurations with the cmd-line arguments.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">cross_validate</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Cross validating algorithms&quot;</span><span class="p">)</span>
+            <span class="n">Config</span><span class="o">.</span><span class="n">analysis</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
+            <span class="n">Config</span><span class="o">.</span><span class="n">switch</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">Config</span><span class="o">.</span><span class="n">approximation</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">prime_implicants</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Focusing on Prime Implicants&quot;</span><span class="p">)</span>
+            <span class="n">Config</span><span class="o">.</span><span class="n">analysis</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;--bdd&quot;</span><span class="p">]</span>
+            <span class="n">Config</span><span class="o">.</span><span class="n">approximation</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
+            <span class="n">Config</span><span class="o">.</span><span class="n">additional</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--prime-implicants&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">mocus</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Focusing on MOCUS&quot;</span><span class="p">)</span>
+            <span class="n">Config</span><span class="o">.</span><span class="n">analysis</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;--mocus&quot;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">bdd</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Focusing on BDD&quot;</span><span class="p">)</span>
+            <span class="n">Config</span><span class="o">.</span><span class="n">analysis</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;--bdd&quot;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">zbdd</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Focusing on ZBDD&quot;</span><span class="p">)</span>
+            <span class="n">Config</span><span class="o">.</span><span class="n">analysis</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;--zbdd&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">preprocessor</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Focusing on Preprocessor&quot;</span><span class="p">)</span>
+            <span class="n">Config</span><span class="o">.</span><span class="n">restrict</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="generate_input"><a class="viewcode-back" href="../scripts/fuzz_tester.html#fuzz_tester.generate_input">[docs]</a><span class="k">def</span> <span class="nf">generate_input</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">coherent</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calls fault tree generator.</span>
+
+<span class="sd">    The auto-generated input file is located in the run-time directory</span>
+<span class="sd">    with the default name given by the fault tree generator.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        normal: Flag for models with AND/OR gates only.</span>
+<span class="sd">        coherent: Flag for generation of coherent models.</span>
+<span class="sd">        output_dir: The directory to put the generated input file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The path to the input file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">input_file</span> <span class="o">=</span> <span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;fault_tree_&quot;</span><span class="p">,</span>
+                                    <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.xml&quot;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;--num-basic&quot;</span><span class="p">,</span> <span class="s2">&quot;100&quot;</span><span class="p">,</span> <span class="s2">&quot;--common-b&quot;</span><span class="p">,</span> <span class="s2">&quot;0.4&quot;</span><span class="p">,</span> <span class="s2">&quot;--parents-b&quot;</span><span class="p">,</span> <span class="s2">&quot;5&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;--common-g&quot;</span><span class="p">,</span> <span class="s2">&quot;0.2&quot;</span><span class="p">,</span> <span class="s2">&quot;--parents-g&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="s2">&quot;--num-args&quot;</span><span class="p">,</span> <span class="s2">&quot;2.5&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;--seed&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1e8</span><span class="p">)),</span>
+           <span class="s2">&quot;--max-prob&quot;</span><span class="p">,</span> <span class="s2">&quot;0.5&quot;</span><span class="p">,</span> <span class="s2">&quot;--min-prob&quot;</span><span class="p">,</span> <span class="s2">&quot;0.1&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="n">input_file</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;--weights-g&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">normal</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">coherent</span> <span class="ow">and</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]):</span>
+            <span class="n">weights</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;0.01&quot;</span><span class="p">,</span> <span class="s2">&quot;0.1&quot;</span><span class="p">]</span>  <span class="c1"># Add non-coherence</span>
+    <span class="n">cmd</span> <span class="o">+=</span> <span class="n">weights</span>
+    <span class="n">ft_gen</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">input_file</span><span class="o">.</span><span class="n">name</span></div>
+
+
+<div class="viewcode-block" id="get_log_file_name"><a class="viewcode-back" href="../scripts/fuzz_tester.html#fuzz_tester.get_log_file_name">[docs]</a><span class="k">def</span> <span class="nf">get_log_file_name</span><span class="p">(</span><span class="n">input_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates a unique log file name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_file: The name of input file with &quot;.xml&quot; suffix.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The name of the log file with &quot;.log&quot; suffix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">input_file</span><span class="p">[:</span><span class="n">input_file</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)]</span> <span class="o">+</span> <span class="s2">&quot;.log&quot;</span></div>
+
+
+<div class="viewcode-block" id="get_limit_order"><a class="viewcode-back" href="../scripts/fuzz_tester.html#fuzz_tester.get_limit_order">[docs]</a><span class="k">def</span> <span class="nf">get_limit_order</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Generates the size limit on cut set order.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Random integer between 1 and the maximum limit on cut set order.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">Config</span><span class="o">.</span><span class="n">max_limit</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="generate_analysis_call"><a class="viewcode-back" href="../scripts/fuzz_tester.html#fuzz_tester.generate_analysis_call">[docs]</a><span class="k">def</span> <span class="nf">generate_analysis_call</span><span class="p">(</span><span class="n">input_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates the analysis call.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_file: The path to the input file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An array to pass to the call command.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;scram&quot;</span><span class="p">,</span> <span class="n">input_file</span><span class="p">,</span> <span class="s2">&quot;--limit-order&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">get_limit_order</span><span class="p">())]</span>
+    <span class="k">if</span> <span class="n">Config</span><span class="o">.</span><span class="n">switch</span><span class="p">:</span>
+        <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">Config</span><span class="o">.</span><span class="n">switch</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">])]</span>
+    <span class="n">approx</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">Config</span><span class="o">.</span><span class="n">approximation</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">approx</span><span class="p">:</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">approx</span><span class="p">)</span>
+    <span class="n">analysis</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">Config</span><span class="o">.</span><span class="n">analysis</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">analysis</span><span class="p">:</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">analysis</span><span class="p">)</span>
+    <span class="n">cmd</span> <span class="o">+=</span> <span class="n">Config</span><span class="o">.</span><span class="n">additional</span>
+    <span class="k">return</span> <span class="n">cmd</span></div>
+
+
+<div class="viewcode-block" id="call_scram"><a class="viewcode-back" href="../scripts/fuzz_tester.html#fuzz_tester.call_scram">[docs]</a><span class="k">def</span> <span class="nf">call_scram</span><span class="p">(</span><span class="n">input_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calls SCRAM with generated input files.</span>
+
+<span class="sd">    The logs with the call signature and report</span>
+<span class="sd">    are placed in a file with the name of the input file but &quot;log&quot; suffix.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_file: The path to the input file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        0 for successful runs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="n">generate_analysis_call</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+    <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--verbosity&quot;</span><span class="p">,</span> <span class="s2">&quot;5&quot;</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="s2">&quot;/dev/null&quot;</span><span class="p">]</span>
+    <span class="n">log_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">get_log_file_name</span><span class="p">(</span><span class="n">input_file</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="n">log_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">log_file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">log_file</span><span class="p">)</span>
+    <span class="n">log_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;SCRAM run return value: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+
+<div class="viewcode-block" id="cross_validate"><a class="viewcode-back" href="../scripts/fuzz_tester.html#fuzz_tester.cross_validate">[docs]</a><span class="k">def</span> <span class="nf">cross_validate</span><span class="p">(</span><span class="n">input_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calls all SCRAM algorithms with generated input files.</span>
+
+<span class="sd">    The logs with the call signature and report</span>
+<span class="sd">    are placed in a file with the name of the input file but &quot;log&quot; suffix.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_file: The path to the input file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        0 for successful runs.</span>
+<span class="sd">        1 for failed runs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="n">generate_analysis_call</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+    <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--print&quot;</span><span class="p">]</span>
+    <span class="n">log_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">get_log_file_name</span><span class="p">(</span><span class="n">input_file</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="n">log_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">check_algorithm</span><span class="p">(</span><span class="n">flag</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Runs SCRAM with the given algorithm flag.&quot;&quot;&quot;</span>
+        <span class="n">out_file</span> <span class="o">=</span> <span class="n">NamedTemporaryFile</span><span class="p">()</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">call</span><span class="p">(</span><span class="n">cmd</span> <span class="o">+</span> <span class="p">[</span><span class="n">flag</span><span class="p">],</span> <span class="n">stderr</span><span class="o">=</span><span class="n">out_file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ret</span><span class="p">:</span>
+            <span class="n">log_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;SCRAM run return value: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">as</span> <span class="n">report</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">report</span><span class="o">.</span><span class="n">readline</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">read</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="n">algorithm</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the results of running the algorithm.&quot;&quot;&quot;</span>
+        <span class="n">log_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Running &quot;</span> <span class="o">+</span> <span class="n">algorithm</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">summary</span><span class="p">,</span> <span class="n">md5_hash</span> <span class="o">=</span> <span class="n">check_algorithm</span><span class="p">(</span><span class="s2">&quot;--&quot;</span> <span class="o">+</span> <span class="n">algorithm</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">summary</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="n">log_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; Summary: &quot;</span> <span class="o">+</span> <span class="n">summary</span><span class="p">)</span>  <span class="c1"># Newline is in &#39;summary&#39;.</span>
+        <span class="n">log_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; Hash: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">md5_hash</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">summary</span><span class="p">,</span> <span class="n">md5_hash</span><span class="p">))</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="n">get_result</span><span class="p">(</span><span class="s2">&quot;bdd&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="n">get_result</span><span class="p">(</span><span class="s2">&quot;zbdd&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="n">get_result</span><span class="p">(</span><span class="s2">&quot;mocus&quot;</span><span class="p">):</span>
+        <span class="n">log_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Analysis failed!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+    <span class="k">assert</span> <span class="n">result</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">log_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Disagreement between algorithms!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../scripts/fuzz_tester.html#fuzz_tester.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;The main entrance for SCRAM Fuzz Tester.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        0 if tests finished without failures.</span>
+<span class="sd">        1 for test failures.</span>
+<span class="sd">        2 for system failures.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ap</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;SCRAM Fuzz Tester&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-n&quot;</span><span class="p">,</span> <span class="s2">&quot;--num-runs&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;# of SCRAM runs&quot;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--preprocessor&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;focus on Preprocessor&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--mocus&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;focus on MOCUS&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--bdd&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;focus on BDD&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--zbdd&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;focus on ZBDD&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--cross-validate&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;compare results of BDD, ZBDD, and MOCUS&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--coherent&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;focus on coherent models&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--normal&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;focus on models with AND/OR gates only&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--prime-implicants&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;focus on Prime Implicants&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--time-limit&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;seconds&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;CPU time limit for each run&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-j&quot;</span><span class="p">,</span> <span class="s2">&quot;--jobs&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;allow N runs (jobs) at once&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="s2">&quot;--output-dir&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;directory to put results&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">call</span><span class="p">([</span><span class="s2">&quot;which&quot;</span><span class="p">,</span> <span class="s2">&quot;scram&quot;</span><span class="p">]):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;SCRAM is not found in the PATH.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">2</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">output_dir</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output_dir</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;The output directory doesn&#39;t exist.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">2</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">time_limit</span><span class="p">:</span>
+        <span class="n">resource</span><span class="o">.</span><span class="n">setrlimit</span><span class="p">(</span><span class="n">resource</span><span class="o">.</span><span class="n">RLIMIT_CPU</span><span class="p">,</span>
+                           <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">time_limit</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">time_limit</span><span class="p">))</span>
+
+    <span class="n">Config</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">get_map</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">jobs</span><span class="p">)(</span><span class="n">Fuzzer</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">num_runs</span><span class="p">))))</span></div>
+
+
+<div class="viewcode-block" id="get_map"><a class="viewcode-back" href="../scripts/fuzz_tester.html#fuzz_tester.get_map">[docs]</a><span class="k">def</span> <span class="nf">get_map</span><span class="p">(</span><span class="n">working_threads</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the map method for jobs.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">working_threads</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">map</span>
+    <span class="k">return</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="n">working_threads</span><span class="p">)</span><span class="o">.</span><span class="n">imap_unordered</span></div>
+
+
+<div class="viewcode-block" id="Fuzzer"><a class="viewcode-back" href="../scripts/fuzz_tester.html#fuzz_tester.Fuzzer">[docs]</a><span class="k">class</span> <span class="nc">Fuzzer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+    <span class="sd">&quot;&quot;&quot;Runs fuzz testing.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Saves the argument for later use.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">call_function</span> <span class="o">=</span> <span class="p">(</span><span class="n">cross_validate</span>
+                              <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">cross_validate</span> <span class="k">else</span> <span class="n">call_scram</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_number</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns 1 for failure and 0 for success.&quot;&quot;&quot;</span>
+        <span class="n">input_file</span> <span class="o">=</span> <span class="n">generate_input</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">coherent</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span>
+        <span class="n">num_runs</span> <span class="o">=</span> <span class="n">job_number</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_function</span><span class="p">(</span><span class="n">input_file</span><span class="p">):</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;SCRAM failed run &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">num_runs</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span>
+                         <span class="n">input_file</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">get_log_file_name</span><span class="p">(</span><span class="n">input_file</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">num_runs</span> <span class="o">%</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">========== Finished run #&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">num_runs</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ==========</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">0</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015-2017, Olzhas Rakhimov, CC BY-SA 4.0.
+      Last updated on Mar 31, 2017.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.12.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

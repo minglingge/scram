@@ -1,0 +1,5 @@
+<map id="scram::core::Preprocessor::GatherModules" name="scram::core::Preprocessor::GatherModules">
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1Preprocessor.xhtml#a651b32816243e37c58b7835220997ef2" title="Merges common arguments for a specific group of gates. " alt="" coords="229,5,405,47"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1Preprocessor.xhtml#a5ee92284aef510ce01a71c962d50f51c" title="Runs the graph preprocessing. " alt="" coords="229,71,405,112"/>
+<area shape="rect" id="node4" href="$classscram_1_1core_1_1Preprocessor_1_1GateSet.xhtml#ae00239084858979e096032c4cf2f05b9" title="Inserts a gate into the set if it is semantically unique. " alt="" coords="453,71,629,112"/>
+</map>

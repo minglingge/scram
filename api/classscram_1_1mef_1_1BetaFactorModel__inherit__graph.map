@@ -1,0 +1,6 @@
+<map id="scram::mef::BetaFactorModel" name="scram::mef::BetaFactorModel">
+<area shape="rect" id="node2" href="$classscram_1_1mef_1_1CcfGroup.xhtml" title="Abstract base class for all common cause failure models. " alt="" coords="143,388,295,583"/>
+<area shape="rect" id="node3" href="$classscram_1_1mef_1_1Id.xhtml" title="Mixin class for assigning unique identifiers to elements. " alt="" coords="103,233,209,340"/>
+<area shape="rect" id="node4" href="$classscram_1_1mef_1_1Element.xhtml" title="Mixin class that represents any element of analysis that can have extra descriptions, such as attributes and a label. " alt="" coords="5,5,149,185"/>
+<area shape="rect" id="node5" href="$classscram_1_1mef_1_1Role.xhtml" title="Mixin class that manages private or public roles for elements as needed. " alt="" coords="173,35,296,156"/>
+</map>

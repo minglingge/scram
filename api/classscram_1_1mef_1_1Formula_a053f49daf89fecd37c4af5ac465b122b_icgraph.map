@@ -1,0 +1,4 @@
+<map id="scram::mef::Formula::gate_args" name="scram::mef::Formula::gate_args">
+<area shape="rect" id="node2" href="$classscram_1_1mef_1_1FaultTree.xhtml#a9535bd49edb4598ead887faf8dadd9f2" title="Collects top event gates in this fault tree with components. " alt="" coords="196,5,347,47"/>
+<area shape="rect" id="node3" href="$cycle_8h.xhtml#aded5afc42939ab61ad13d36a91a613ae" title="Retrieves nodes from a connector. " alt="" coords="204,71,339,112"/>
+</map>

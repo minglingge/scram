@@ -1,0 +1,12 @@
+<map id="event_tree.h" name="event_tree.h">
+<area shape="rect" id="node2" href="$event__tree_8cc.xhtml" title="Implementation of event tree facilities. " alt="" coords="5,80,107,107"/>
+<area shape="rect" id="node3" href="$initializer_8h.xhtml" title="A facility that processes input files into analysis constructs. " alt="" coords="63,155,147,181"/>
+<area shape="rect" id="node6" href="$model_8h.xhtml" title="Representation for a model container for risk analysis. " alt="" coords="221,80,289,107"/>
+<area shape="rect" id="node4" href="$initializer_8cc.xhtml" title="Implementation of input file processing into analysis constructs. " alt="" coords="45,229,136,256"/>
+<area shape="rect" id="node5" href="$scram_8cc.xhtml" title="Main entrance. " alt="" coords="135,304,211,331"/>
+<area shape="rect" id="node7" href="$model_8cc.xhtml" title="Implementation of functions in Model class. " alt="" coords="384,155,459,181"/>
+<area shape="rect" id="node8" href="$reporter_8h.xhtml" title="Reporter of results. " alt="" coords="352,229,429,256"/>
+<area shape="rect" id="node10" href="$risk__analysis_8h.xhtml" title="Contains the main system for performing analysis. " alt="" coords="200,155,309,181"/>
+<area shape="rect" id="node9" href="$reporter_8cc.xhtml" title="Implements Reporter class. " alt="" coords="349,304,433,331"/>
+<area shape="rect" id="node11" href="$risk__analysis_8cc.xhtml" title="Implementation of risk analysis handler. " alt="" coords="211,229,327,256"/>
+</map>

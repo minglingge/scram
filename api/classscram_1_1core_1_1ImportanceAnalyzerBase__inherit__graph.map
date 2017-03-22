@@ -1,0 +1,6 @@
+<map id="scram::core::ImportanceAnalyzerBase" name="scram::core::ImportanceAnalyzerBase">
+<area shape="rect" id="node5" href="$classscram_1_1core_1_1ImportanceAnalyzer.xhtml" title="Analyzer of importance factors with the help from probability analyzers. " alt="" coords="5,668,220,760"/>
+<area shape="rect" id="node6" href="$classscram_1_1core_1_1ImportanceAnalyzer_3_01Bdd_01_4.xhtml" title="Specialization of importance analyzer with Binary Decision Diagrams. " alt="" coords="244,668,459,760"/>
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1ImportanceAnalysis.xhtml" title="Analysis of importance factors of risk model variables. " alt="" coords="124,344,339,465"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1Analysis.xhtml" title="Base abstract class for all analysis with settings. " alt="" coords="157,131,306,296"/>
+</map>

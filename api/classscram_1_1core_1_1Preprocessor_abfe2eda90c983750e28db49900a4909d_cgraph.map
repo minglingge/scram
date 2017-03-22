@@ -1,0 +1,4 @@
+<map id="scram::core::Preprocessor::NormalizeGate" name="scram::core::Preprocessor::NormalizeGate">
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1Preprocessor.xhtml#a56b5719bcfcfd1678928befe31d9b729" title="Normalizes a VOTE gate with a vote number. " alt="" coords="229,5,405,47"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1Preprocessor.xhtml#a45cf08c3809e801be50eda53dd68fca6" title="Normalizes a gate with XOR logic. " alt="" coords="229,71,405,112"/>
+</map>

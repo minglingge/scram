@@ -1,0 +1,5 @@
+<map id="scram::mef::MissionTime::value" name="scram::mef::MissionTime::value">
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1McubCalculator.xhtml#af47379d2ba9190b34aef1acfa402e15c" title="Calculates probabilities using the minimal cut set upper bound (MCUB) approximation. " alt="" coords="224,5,415,47"/>
+<area shape="rect" id="node3" href="$classscram_1_1mef_1_1MissionTime.xhtml#a2822df6248414074cc83189d6527265f" title="scram::mef::MissionTime\l::MissionTime" alt="" coords="234,71,405,112"/>
+<area shape="rect" id="node4" href="$classscram_1_1mef_1_1MissionTime.xhtml#a23aa8c2adf6c79eaa5b875a9183f1acb" title="scram::mef::MissionTime\l::unit" alt="" coords="234,136,405,177"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="model.h" name="model.h">
+<area shape="rect" id="node10" href="$ccf__group_8h.xhtml" title="Functional containers for basic events grouped by common cause failure. " alt="" coords="757,169,848,196"/>
+<area shape="rect" id="node13" href="$element_8h.xhtml" title="Helper classes, structs, and properties common to all other classes. " alt="" coords="979,393,1058,420"/>
+<area shape="rect" id="node16" href="$event_8h.xhtml" title="Contains event classes for fault trees. " alt="" coords="635,244,701,271"/>
+<area shape="rect" id="node20" href="$event__tree_8h.xhtml" title="Event Tree facilities. " alt="" coords="1057,244,1151,271"/>
+<area shape="rect" id="node21" href="$fault__tree_8h.xhtml" title="Fault Tree and Component containers. " alt="" coords="546,87,633,114"/>
+<area shape="rect" id="node23" href="$parameter_8h.xhtml" title="Parameter expressions that act like a shareable variable. " alt="" coords="368,244,459,271"/>
+<area shape="rect" id="node19" href="$expression_8h.xhtml" title="Provides the base class for all expressions and units for expression values. " alt="" coords="885,319,981,345"/>
+<area shape="rect" id="node17" href="$error_8h.xhtml" title="Exceptions for SCRAM. " alt="" coords="144,319,203,345"/>
+</map>

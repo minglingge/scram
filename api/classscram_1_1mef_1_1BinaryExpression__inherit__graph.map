@@ -1,0 +1,7 @@
+<map id="scram::mef::BinaryExpression" name="scram::mef::BinaryExpression">
+<area shape="rect" id="node4" href="$classscram_1_1mef_1_1Add.xhtml" title="This expression adds all the given expressions&#39; values. " alt="" coords="5,535,124,642"/>
+<area shape="rect" id="node5" href="$classscram_1_1mef_1_1Div.xhtml" title="This expression performs division operation. " alt="" coords="148,528,264,649"/>
+<area shape="rect" id="node6" href="$classscram_1_1mef_1_1Mul.xhtml" title="This expression performs multiplication operation. " alt="" coords="289,535,406,642"/>
+<area shape="rect" id="node7" href="$classscram_1_1mef_1_1Sub.xhtml" title="This expression performs subtraction operation. " alt="" coords="429,535,548,642"/>
+<area shape="rect" id="node2" href="$classscram_1_1mef_1_1Expression.xhtml" title="Abstract base class for all sorts of expressions to describe events. " alt="" coords="196,131,357,355"/>
+</map>

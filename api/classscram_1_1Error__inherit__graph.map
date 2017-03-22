@@ -1,0 +1,12 @@
+<map id="scram::Error" name="scram::Error">
+<area shape="rect" id="node3" href="$structscram_1_1IllegalOperation.xhtml" title="This error can be used to indicate that call for a function or operation is not legal. " alt="" coords="5,329,161,407"/>
+<area shape="rect" id="node4" href="$structscram_1_1InvalidArgument.xhtml" title="This error class can be used to indicate unacceptable arguments. " alt="" coords="186,329,346,407"/>
+<area shape="rect" id="node5" href="$structscram_1_1IOError.xhtml" title="For input/output related errors. " alt="" coords="371,329,479,407"/>
+<area shape="rect" id="node6" href="$structscram_1_1LogicError.xhtml" title="Signals internal logic errors, for example, pre&#45;condition failure or use of functionality in ways not..." alt="" coords="503,329,629,407"/>
+<area shape="rect" id="node7" href="$structscram_1_1ValidationError.xhtml" title="For validating input parameters or user arguments. " alt="" coords="653,329,804,407"/>
+<area shape="rect" id="node11" href="$structscram_1_1ValueError.xhtml" title="For values that are not acceptable. " alt="" coords="828,329,955,407"/>
+<area shape="rect" id="node12" href="$structscram_1_1XmlStreamError.xhtml" title="Errors in using XML streaming facilities. " alt="" coords="979,329,1137,407"/>
+<area shape="rect" id="node8" href="$structscram_1_1CycleError.xhtml" title="Signals unacceptable cycles in invalid structures. " alt="" coords="487,462,615,539"/>
+<area shape="rect" id="node9" href="$structscram_1_1DuplicateArgumentError.xhtml" title="This error indicates that arguments must be unique. " alt="" coords="640,455,817,547"/>
+<area shape="rect" id="node10" href="$structscram_1_1RedefinitionError.xhtml" title="For cases when events or practically anything is redefined. " alt="" coords="842,462,1005,539"/>
+</map>

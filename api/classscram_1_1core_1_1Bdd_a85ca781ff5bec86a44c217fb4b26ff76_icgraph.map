@@ -1,0 +1,4 @@
+<map id="scram::core::Bdd::ClearMarks" name="scram::core::Bdd::ClearMarks">
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1Bdd.xhtml#ab9548d4c5f9afaa96dc24e17e2a01a57" title="Runs the Qualitative analysis with the representation of a PDAG as ROBDD. " alt="" coords="251,5,428,32"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1Bdd.xhtml#ab7af95900c1ab921446e2e67177a315c" title="Constructor with the analysis target. " alt="" coords="263,56,416,83"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="scram::Reporter::Report" name="scram::Reporter::Report">
+<area shape="rect" id="node2" href="$classscram_1_1XmlStreamElement.xhtml#ac8227ce1d2bf22ab83d3055a8e98fb2d" title="Adds a child element to the element. " alt="" coords="216,5,395,47"/>
+<area shape="rect" id="node4" href="$classscram_1_1core_1_1RiskAnalysis.xhtml#af34d3a418177073a278a32dc2db5e8ef" title="scram::core::RiskAnalysis\l::fault_tree_analyses" alt="" coords="217,71,393,112"/>
+<area shape="rect" id="node5" href="$classscram_1_1core_1_1RiskAnalysis.xhtml#a9c8baf268c8a81cdd1a8907c33b9455f" title="scram::core::RiskAnalysis\l::importance_analyses" alt="" coords="217,136,393,177"/>
+<area shape="rect" id="node6" href="$classscram_1_1core_1_1Settings.xhtml#a16c99e2ccd22a9be037f6c6fe229894b" title="scram::core::Settings\l::importance_analysis" alt="" coords="231,201,380,243"/>
+<area shape="rect" id="node7" href="$classscram_1_1core_1_1RiskAnalysis.xhtml#aeb52e10a276d08dccb36f95a11dfdc20" title="scram::core::RiskAnalysis\l::probability_analyses" alt="" coords="217,267,393,308"/>
+<area shape="rect" id="node8" href="$classscram_1_1core_1_1Settings.xhtml#a83ddd939f7217fb9f0438bd1dd01f7b1" title="scram::core::Settings\l::probability_analysis" alt="" coords="232,332,379,373"/>
+<area shape="rect" id="node9" href="$classscram_1_1core_1_1Analysis.xhtml#ab04a96c555ba726368fa3868a8701610" title="scram::core::Analysis\l::settings" alt="" coords="231,397,380,439"/>
+<area shape="rect" id="node10" href="$classscram_1_1core_1_1RiskAnalysis.xhtml#a43edc2bd0fae6b0f4b62bda6d21c53ba" title="scram::core::RiskAnalysis\l::uncertainty_analyses" alt="" coords="217,463,393,504"/>
+<area shape="rect" id="node11" href="$classscram_1_1core_1_1Settings.xhtml#aa07ede20b118ae78028fb0807e52f632" title="scram::core::Settings\l::uncertainty_analysis" alt="" coords="231,528,380,569"/>
+<area shape="rect" id="node3" href="$classscram_1_1XmlStreamElement.xhtml#af62b9ffc844dba0b3fa143136dc5ac50" title="Constructs a root streamer for the XML element data ready to accept attributes, elements, text. " alt="" coords="443,5,621,47"/>
+</map>

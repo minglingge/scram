@@ -1,0 +1,5 @@
+<map id="scram::mef::Gate::Validate" name="scram::mef::Gate::Validate">
+<area shape="rect" id="node2" href="$classscram_1_1mef_1_1Element.xhtml#a7db1af9365e25a0ce332a1745441630a" title="scram::mef::Element\l::GetAttribute" alt="" coords="232,5,376,47"/>
+<area shape="rect" id="node3" href="$classscram_1_1mef_1_1Element.xhtml#adb401e2ca84aa98cb60797bec2500a81" title="scram::mef::Element\l::name" alt="" coords="424,64,568,105"/>
+<area shape="rect" id="node4" href="$classscram_1_1mef_1_1Element.xhtml#ae291c86b68c20c0e2b845fbbc8bddb25" title="Checks if the element has a given attribute. " alt="" coords="232,123,376,164"/>
+</map>

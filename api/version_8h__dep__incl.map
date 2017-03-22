@@ -1,0 +1,5 @@
+<map id="version.h" name="version.h">
+<area shape="rect" id="node2" href="$reporter_8cc.xhtml" title="Implements Reporter class. " alt="" coords="5,80,89,107"/>
+<area shape="rect" id="node3" href="$scram_8cc.xhtml" title="Main entrance. " alt="" coords="113,80,189,107"/>
+<area shape="rect" id="node4" href="$version_8cc.xhtml" title="Implementations of functions returning the version information of the core and dependencies. " alt="" coords="214,80,297,107"/>
+</map>

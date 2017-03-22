@@ -1,0 +1,21 @@
+<map id="scram::core::Gate::args" name="scram::core::Gate::args">
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1Mocus.xhtml#a008348c27bdc85ad9d0d106b18dcc1a2" title="Finds minimal cut sets from the PDAG. " alt="" coords="233,25,371,67"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1Bdd.xhtml#ab9548d4c5f9afaa96dc24e17e2a01a57" title="Runs the Qualitative analysis with the representation of a PDAG as ROBDD. " alt="" coords="213,91,391,118"/>
+<area shape="rect" id="node4" href="$classscram_1_1core_1_1Bdd.xhtml#ab7af95900c1ab921446e2e67177a315c" title="Constructor with the analysis target. " alt="" coords="225,142,379,169"/>
+<area shape="rect" id="node5" href="$classscram_1_1core_1_1Zbdd.xhtml#ac90d12f0c653c679d22109124fa6344c" title="Find or adds a ZBDD SetNode vertex using information from gates. " alt="" coords="234,193,370,235"/>
+<area shape="rect" id="node6" href="$classscram_1_1core_1_1Preprocessor.xhtml#a394fb1b5b5f9ee31dc81ad8d64353ee3" title="Traverses the graph to find nodes that have more than one parent. " alt="" coords="214,259,390,300"/>
+<area shape="rect" id="node13" href="$classscram_1_1core_1_1Preprocessor_1_1GateSet.xhtml#ae00239084858979e096032c4cf2f05b9" title="Inserts a gate into the set if it is semantically unique. " alt="" coords="1652,300,1828,341"/>
+<area shape="rect" id="node18" href="$classscram_1_1core_1_1Preprocessor.xhtml#af4dae5abf76e5da8b8c9f4371550b7dc" title="Gathers all modules in the PDAG. " alt="" coords="214,324,390,365"/>
+<area shape="rect" id="node20" href="$classscram_1_1core_1_1Zbdd.xhtml#a38b5c81971df473b1b46de59d0752c81" title="Constructor with the analysis target. " alt="" coords="219,467,385,494"/>
+<area shape="rect" id="node7" href="$classscram_1_1core_1_1Preprocessor.xhtml#aebc709ad2e097c24e837889a6a9e4696" title="Propagates failures of common nodes to detect redundancy. " alt="" coords="446,168,622,209"/>
+<area shape="rect" id="node17" href="$classscram_1_1core_1_1Preprocessor.xhtml#ae12f3096132d7f6e9daa779724255f7e" title="The Shannon decomposition for common nodes in the PDAG. " alt="" coords="439,233,629,275"/>
+<area shape="rect" id="node8" href="$classscram_1_1core_1_1Preprocessor.xhtml#a9d5f89471499508eb9e6c01ea43e0f15" title="Preprocessing phase of the original structure of the graph. " alt="" coords="677,168,853,209"/>
+<area shape="rect" id="node9" href="$classscram_1_1core_1_1Preprocessor.xhtml#a2b6705e815fa3d02119c405b483766d5" title="Container of unique gates by semantics. " alt="" coords="1125,15,1333,42"/>
+<area shape="rect" id="node12" href="$classscram_1_1core_1_1Preprocessor.xhtml#a5ee92284aef510ce01a71c962d50f51c" title="Runs the graph preprocessing. " alt="" coords="1405,191,1581,232"/>
+<area shape="rect" id="node14" href="$classscram_1_1core_1_1Preprocessor.xhtml#abf2c66723172a85b2ae87ef2a034cd1f" title="Application of gate normalization. " alt="" coords="901,183,1077,224"/>
+<area shape="rect" id="node15" href="$classscram_1_1core_1_1Preprocessor.xhtml#a5c224938dfba861f061525658bd7b156" title="Propagation of complements. " alt="" coords="1141,132,1317,173"/>
+<area shape="rect" id="node16" href="$classscram_1_1core_1_1Preprocessor.xhtml#a3569bbcd5e863c750cdfa69115399600" title="The final phase that cleans up the graph, and puts the structure of the graph ready for analysis..." alt="" coords="1141,67,1317,108"/>
+<area shape="rect" id="node10" href="$classscram_1_1core_1_1Preprocessor.xhtml#a9caf4677a024ed935d831210b57b8ed9" title="Gathers nodes in the sub&#45;graph. " alt="" coords="1405,5,1581,47"/>
+<area shape="rect" id="node11" href="$classscram_1_1core_1_1CustomPreprocessor_3_01Zbdd_01_4.xhtml#a5185075f852c647c7aa4313d23420ee5" title="Performs preprocessing for analyses with Zero&#45;Suppressed Binary Decision Diagrams. " alt="" coords="1381,71,1604,112"/>
+<area shape="rect" id="node19" href="$classscram_1_1core_1_1Preprocessor.xhtml#a651b32816243e37c58b7835220997ef2" title="Merges common arguments for a specific group of gates. " alt="" coords="446,351,622,392"/>
+</map>

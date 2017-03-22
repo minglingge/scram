@@ -1,0 +1,6 @@
+<map id="scram::core::Preprocessor::ProcessModularArgs" name="scram::core::Preprocessor::ProcessModularArgs">
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1Preprocessor.xhtml#a434534b6a7c3fccc82c073e6aced90b1" title="Creates a new module as an argument of an existing gate if the logic of the existing parent gate allo..." alt="" coords="453,5,629,47"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1Preprocessor.xhtml#affe78b1e830afb73585affe0ada477be" title="Creates new module gates from groups of modular arguments if the logic of the parent gate allows sub&#45;..." alt="" coords="229,35,405,76"/>
+<area shape="rect" id="node4" href="$classscram_1_1core_1_1Preprocessor.xhtml#aa65bdffb78291a0e41a34d34bf3fa198" title="Checks if a group of modular arguments share anything with non&#45;modular arguments. ..." alt="" coords="229,100,405,141"/>
+<area shape="rect" id="node5" href="$classscram_1_1core_1_1Preprocessor.xhtml#a5c10e807e558b06a1573c08ed13e205e" title="Groups modular arguments by their common elements. " alt="" coords="229,165,405,207"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="scram::mef::NodeMark" name="scram::mef::NodeMark">
+<area shape="rect" id="node2" href="$classscram_1_1mef_1_1Gate.xhtml" title="A representation of a gate in a fault tree. " alt="" coords="5,175,129,325"/>
+<area shape="rect" id="node3" href="$classscram_1_1mef_1_1Parameter.xhtml" title="This class provides a representation of a variable in basic event description. " alt="" coords="153,160,309,340"/>
+</map>

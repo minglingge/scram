@@ -1,0 +1,5 @@
+<map id="scram::mef::Component" name="scram::mef::Component">
+<area shape="rect" id="node5" href="$classscram_1_1mef_1_1FaultTree.xhtml" title="Fault tree representation as a container of gates, basic and house events, and other information..." alt="" coords="159,828,310,935"/>
+<area shape="rect" id="node2" href="$classscram_1_1mef_1_1Element.xhtml" title="Mixin class that represents any element of analysis that can have extra descriptions, such as attributes and a label. " alt="" coords="5,5,149,185"/>
+<area shape="rect" id="node3" href="$classscram_1_1mef_1_1Role.xhtml" title="Mixin class that manages private or public roles for elements as needed. " alt="" coords="173,35,296,156"/>
+</map>

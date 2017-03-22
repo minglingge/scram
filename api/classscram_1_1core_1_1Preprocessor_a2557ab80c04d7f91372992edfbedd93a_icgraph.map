@@ -1,0 +1,4 @@
+<map id="scram::core::Preprocessor::TransformDistributiveArgs" name="scram::core::Preprocessor::TransformDistributiveArgs">
+<area shape="rect" id="node2" href="$classscram_1_1core_1_1Preprocessor.xhtml#a4b29173b8f6d18031d7a8cacbac15ce1" title="Manipulates gates with distributive arguments. " alt="" coords="236,5,412,47"/>
+<area shape="rect" id="node3" href="$classscram_1_1core_1_1Preprocessor.xhtml#a79fe8e90f0e8fbc20a76610aaf09fe6e" title="Detects and manipulates AND and OR gate distributivity. " alt="" coords="460,5,636,47"/>
+</map>

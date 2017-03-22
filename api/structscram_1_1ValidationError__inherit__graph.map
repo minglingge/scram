@@ -1,0 +1,6 @@
+<map id="scram::ValidationError" name="scram::ValidationError">
+<area shape="rect" id="node4" href="$structscram_1_1CycleError.xhtml" title="Signals unacceptable cycles in invalid structures. " alt="" coords="5,462,133,539"/>
+<area shape="rect" id="node5" href="$structscram_1_1DuplicateArgumentError.xhtml" title="This error indicates that arguments must be unique. " alt="" coords="158,455,335,547"/>
+<area shape="rect" id="node6" href="$structscram_1_1RedefinitionError.xhtml" title="For cases when events or practically anything is redefined. " alt="" coords="360,462,523,539"/>
+<area shape="rect" id="node2" href="$classscram_1_1Error.xhtml" title="The Error class is the base class for common exceptions specific to the SCRAM code. " alt="" coords="199,131,294,281"/>
+</map>

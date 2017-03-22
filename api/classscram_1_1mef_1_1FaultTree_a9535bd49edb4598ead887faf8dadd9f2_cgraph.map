@@ -1,0 +1,9 @@
+<map id="scram::mef::FaultTree::CollectTopEvents" name="scram::mef::FaultTree::CollectTopEvents">
+<area shape="rect" id="node2" href="$classscram_1_1mef_1_1Gate.xhtml#abde84a63a060e2424ab92431634f21d9" title="scram::mef::Gate::formula" alt="" coords="204,5,379,32"/>
+<area shape="rect" id="node3" href="$classscram_1_1mef_1_1Formula.xhtml#af3c5953f817cc202b5009cc4557c7d72" title="scram::mef::Formula\l::formula_args" alt="" coords="220,57,363,98"/>
+<area shape="rect" id="node4" href="$classscram_1_1mef_1_1Formula.xhtml#a053f49daf89fecd37c4af5ac465b122b" title="scram::mef::Formula\l::gate_args" alt="" coords="220,122,363,163"/>
+<area shape="rect" id="node5" href="$classscram_1_1mef_1_1Component.xhtml#a83d4c556f58ec061175b71895877375b" title="scram::mef::Component\l::gates" alt="" coords="210,187,373,229"/>
+<area shape="rect" id="node6" href="$classscram_1_1mef_1_1Component.xhtml#a63441da08667fe6826f3ae0c0a5a94fe" title="Recursively traverses components to gather gates relevant to the whole component. ..." alt="" coords="210,253,373,294"/>
+<area shape="rect" id="node8" href="$classscram_1_1mef_1_1NodeMark.xhtml#ae433446a44a3ae40ec411b08916ec4ca" title="scram::mef::NodeMark\l::mark" alt="" coords="213,318,369,359"/>
+<area shape="rect" id="node7" href="$classscram_1_1mef_1_1Element.xhtml#adb401e2ca84aa98cb60797bec2500a81" title="scram::mef::Element\l::name" alt="" coords="427,253,571,294"/>
+</map>
